@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/11 17:07:54 by fmoulin          ###   ########.fr       */
+/*   Created: 2025/04/28 15:51:23 by fmoulin           #+#    #+#             */
+/*   Updated: 2025/04/29 10:02:35 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <sys/types.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include "libft/libft.h"
-# include "libft/ft_printf.h"
-# include "libft/get_next_line.h"
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	if (size == 0)
+		return (ft_strlen((char *)src));
+	while (src[i] != '\0' && i < size - 1)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (ft_strlen((char *)src));
+}

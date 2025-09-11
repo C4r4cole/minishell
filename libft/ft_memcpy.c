@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/11 17:07:54 by fmoulin          ###   ########.fr       */
+/*   Created: 2025/04/28 11:47:54 by fmoulin           #+#    #+#             */
+/*   Updated: 2025/05/07 14:09:21 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <sys/types.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include "libft/libft.h"
-# include "libft/ft_printf.h"
-# include "libft/get_next_line.h"
+void	*ft_memcpy(void *dest, const void *src, size_t size)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	if (!dest && !src)
+		return (NULL);
+	while (i < size)
+	{
+		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
+		i++;
+	}
+	return (dest);
+}

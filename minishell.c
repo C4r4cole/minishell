@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/11 15:02:16 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/11 17:06:35 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int main()
 {
-	printf("hello world\n");
+	ft_printf("hello world\n");
+	printf("%d \n", ft_atoi("6"));
 	return (0);
 }
