@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/11 17:07:54 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/11 17:41:12 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <sys/types.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "libft/libft.h"
-# include "libft/ft_printf.h"
-# include "libft/get_next_line.h"
+# include "utils/libft/libft.h"
+# include "utils/libft/ft_printf.h"
+# include "utils/libft/get_next_line.h"
 
 #endif

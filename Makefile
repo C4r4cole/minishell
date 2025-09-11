@@ -6,7 +6,7 @@
 #    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/09/11 16:59:03 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/09/11 17:40:45 by fmoulin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ RM = rm -f
 LIBS = -lreadline -lhistory -lncurses
 
 # Libft
-LIBFT_DIR = libft
+LIBFT_DIR = utils/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # Regle par defaut
