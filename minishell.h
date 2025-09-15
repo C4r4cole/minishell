@@ -6,12 +6,16 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/15 14:22:02 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/15 17:21:55 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+// ======================== //
+// ====== LIBRAIRIES ====== //
+// ======================== //
 
 # include <unistd.h>
 # include <sys/types.h>
@@ -28,5 +32,42 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+// ======================== //
+// ====== STRUCTURES ====== //
+// ======================== //
+
+typedef struct s_redir
+{
+	int     type;   // <, >, >>, <<
+	char    *file;
+	struct s_redir *next;
+}   			t_redir;
+
+typedef struct s_cmd
+{
+	char          **argv;   // ["ls", "-l", NULL]
+	t_redir       *redir;   // liste des redirections
+	struct s_cmd  *next;    // si pipe → commande suivante
+}   			t_cmd;
+
+typedef struct s_env
+{
+	char          *key;
+	char          *value;
+	struct s_env  *next;
+}   			t_env;
+
+typedef struct s_sticky
+{
+	char			glued;
+	struct s_sticky	*next;
+}				t_sticky;
+
+// ======================= //
+// ====== FONCTIONS ====== //
+// ======================= //
+
+void	print_banner(void);
+t_cmd	*parse_input(char *line, t_env *env);
 
 #endif
