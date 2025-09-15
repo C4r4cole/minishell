@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/15 12:10:51 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/15 14:09:37 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 	{
 		char *input;
 
+		print_banner();
 		input = readline("minishell> ");
 		if (!input)
 			break;
