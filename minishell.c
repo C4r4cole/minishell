@@ -6,15 +6,14 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/11 17:06:35 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/11 18:03:26 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+int main(int argc, char **argv)
 {
-	ft_printf("hello world\n");
-	printf("%d \n", ft_atoi("6"));
+	
 	return (0);
 }
