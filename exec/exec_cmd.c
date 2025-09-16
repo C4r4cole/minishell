@@ -6,19 +6,19 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/11 15:54:33 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/16 14:15:52 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-if argv = "echo"
-{
+// if argv = "echo"
+// {
 	
-}
+// }
 void ft_echo(char *str)
 {
 	
-		
+		printf("test exec");
 }
 
