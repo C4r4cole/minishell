@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/15 16:30:20 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/16 12:36:17 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int main(void)
 {
+	char	**input_splitted;
+	int		i;
+	
 	print_banner();
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -26,7 +29,13 @@ int main(void)
 			break;
 		add_history(input);
 		// printf("cmd = %s\n", input);
-		parse_input(input, NULL);
+		input_splitted = input_splitter(input);
+		i = 0;
+		while (input_splitted[i])
+		{
+			printf("%d lexer -> %s\n", i, input_splitted[i]);
+			i++;
+		}
 		free(input);
 	}	
 	return (0);

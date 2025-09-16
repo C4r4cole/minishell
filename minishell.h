@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/15 17:21:55 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/16 12:41:30 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include "utils/libft/get_next_line.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# include "./parser/parser.h"
 
 // ======================== //
 // ====== STRUCTURES ====== //
@@ -68,6 +70,6 @@ typedef struct s_sticky
 // ======================= //
 
 void	print_banner(void);
-t_cmd	*parse_input(char *line, t_env *env);
+// t_cmd	*parse_input(char *line, t_env *env);
 
 #endif

@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 17:26:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 12:39:35 by fmoulin          ###   ########.fr       */
+/*   Created: 2025/09/16 10:35:56 by fmoulin           #+#    #+#             */
+/*   Updated: 2025/09/16 10:50:08 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utils.h"
 
-char	*ft_strdup(const char *s)
+int	is_special(char c)
 {
-	char	*s_dup;
-	int		i;
-
-	i = 0;
-	s_dup = malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (!s_dup)
-		return (NULL);
-	while (s[i])
-	{
-		s_dup[i] = s[i];
-		i++;
-	}
-	s_dup[i] = '\0';
-	return (s_dup);
+	return (c == '|'
+		 || c == '<'
+		 || c == '>'
+		 || c == '\''
+		 || c == '"'
+		 || c == '/'
+		 || c == '-'
+		 || c == '_'
+		 || c == '$'
+		 || c == '?');
 }

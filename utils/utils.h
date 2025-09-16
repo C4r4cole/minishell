@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:17:37 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/11 12:17:38 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/16 10:50:18 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef UTILS_H
+# define UTILS_H
+
+# include "../minishell.h"
+
+int	is_special(char c);
+
+#endif
