@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:17:37 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/16 10:50:18 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/16 16:23:24 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@
 # include "../minishell.h"
 
 int	is_special(char c);
+int is_redirection(char c);
 
 #endif

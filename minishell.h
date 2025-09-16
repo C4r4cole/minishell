@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 12:41:30 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/16 16:08:35 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,6 @@ typedef struct s_env
 	struct s_env  *next;
 }   			t_env;
 
-typedef struct s_sticky
-{
-	char			glued;
-	struct s_sticky	*next;
-}				t_sticky;
 
 // ======================= //
 // ====== FONCTIONS ====== //

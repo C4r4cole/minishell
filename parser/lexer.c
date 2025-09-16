@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 12:42:37 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/16 17:08:22 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,51 +16,59 @@ char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int l
 {
 	char	**new_split_tab;
 	char	*special_character;
+	int		i;
 	
-	new_split_tab = realloc(string_to_subsplit, sizeof(char *) * (*nb_splitted + 2));
+	new_split_tab = malloc(sizeof(char *) * (*nb_splitted + 2));
 	if (!new_split_tab)
 		return (string_to_subsplit);
+	i = 0;
+	while (i < *nb_splitted)
+	{
+		new_split_tab[i] = string_to_subsplit[i];
+		i++;
+	}
 	special_character = ft_strndup(start, len);
 	if (!special_character)
+	{
+		free(new_split_tab);
 		return (new_split_tab);
+	}
 	new_split_tab[*nb_splitted] = special_character;
 	(*nb_splitted)++;
 	new_split_tab[*nb_splitted] = NULL;
+	free(string_to_subsplit);
 	return (new_split_tab);
 }
 
 char **input_splitter(char *input)
 {
-	char	**input_splitted;
-	char	**final_split;
-	int		count;
-	int		start;
+	t_splitter result;
 	int		i;
 	int		j;
 	
-	input_splitted = ft_split(input, ' ');
-	final_split = NULL;
+	result.input_split = ft_split(input, ' ');
+	result.final_split = NULL;
 	i = 0;
-	count = 0;
-	while (input_splitted[i])
+	result.count = 0;
+	while (result.input_split[i])
 	{
 		j = 0;
-		while (input_splitted[i][j])
+		while (result.input_split[i][j])
 		{
-			if (is_special(input_splitted[i][j]))
+			if (is_special(result.input_split[i][j]) || is_redirection(result.input_split[i][j]))
 			{
-				final_split = add_split(final_split, &count, &input_splitted[i][j], 1);
+				result.final_split = add_split(result.final_split, &result.count, &result.input_split[i][j], 1);
 				j++;
 			}
 			else
 			{
-				start = j;
-				while (input_splitted[i][j] && !(is_special(input_splitted[i][j])))
+				result.start = j;
+				while (result.input_split[i][j] && (!(is_special(result.input_split[i][j])) && !is_redirection(result.input_split[i][j])))
 					j++;
-				final_split = add_split(final_split, &count, &input_splitted[i][j], j - start);
+				result.final_split = add_split(result.final_split, &result.count, &result.input_split[i][result.start], j - result.start);
 			}
 		}
 		i++;
 	}
-	return (final_split);
+	return (result.final_split);
 }
