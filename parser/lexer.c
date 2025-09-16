@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 17:08:22 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/16 17:54:03 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,3 +72,35 @@ char **input_splitter(char *input)
 	}
 	return (result.final_split);
 }
+
+// char	**create_tokens(char **final_split)
+// {
+// 	char	**tokens;
+// 	int		i;
+// 	int		j;
+// 	int		k;
+
+// 	tokens = malloc(sizeof(char *) * (ft_strlen(final_split) + 1));
+// 	i = 0;
+// 	k = 0;
+// 	while (final_split[k])
+// 	{
+// 		j = 0;
+// 		while (final_split[k][j])
+// 		{
+// 			if (final_split[k][j] == '"')
+// 			{
+// 				tokens[i][j] = final_split[k][j];
+// 				k++;
+// 			}
+// 			else
+// 			{
+// 				tokens[i][j] = final_split[k][j];
+// 				i++;
+// 				k++;
+// 			}
+// 			j++;
+// 		}
+// 		k++;
+// 	}
+// }
