@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 17:19:12 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/18 17:31:02 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,39 @@
 # include <readline/history.h>
 
 # include "./parser/parser.h"
+
+// ========================= //
+// ========= ENUMS ========= //
+// ========================= //
+
+enum symbols
+{
+	PIPE = '|',
+	SLASH = '/',
+	HYPHEN = '-',
+	UNDERSCORE = '_',
+	DOLLAR = '$',
+	QUESTION_MARK = '?',
+	DOUBLE_QUOTE = '"',
+	SINGLE_QUOTE = '\'',
+	REDIRECTION_IN = '<',
+	REDIRECTION_OUT = '>',
+	OPEN_BRACKET = '[',
+	TILDE = '~',
+	PERCENT = '%',
+	AMPERSAND = '&',
+	SEMI_COLON = ';',
+	OPENING_PARENTHESIS = '(',
+	CLOSING_PARENTHESIS = ')',
+	BACKTICK = '`',
+	SPACE_CHAR = ' ',
+	TAB_CHAR = '\t',
+	NEWLINE_CHAR = '\n',
+	BACKSLASH = '\\',
+	STAR = '*',
+	HASH = '#',
+	EQUAL = '='
+};
 
 // ======================== //
 // ====== STRUCTURES ====== //

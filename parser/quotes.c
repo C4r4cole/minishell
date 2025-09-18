@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/18 12:43:22 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/18 16:21:44 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**quotes_management(char **final_split)
 	char	**tokens;
 	char	*joined;
 	char 	*tmp;
-	char	*quoted;
+	// char	*quoted;
 	int		count;
 	int		i;
 
@@ -27,16 +27,16 @@ char	**quotes_management(char **final_split)
 	
 	while (final_split[i])
 	{
-		if (final_split[i][0] == '"' && final_split[i][1] == '\0')
+		if (is_double_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
 			i++;
 			joined = ft_strdup("");
-			while (final_split[i] && !(final_split[i][0] == '"' && final_split[i][1] == '\0'))
+			while (final_split[i] && !(is_double_quote(final_split[i][0]) && final_split[i][1] == '\0'))
 			{
 				tmp = joined;
 				joined = ft_strjoin(joined, final_split[i]);
 				free(tmp);
-				if (final_split[i + 1] && !(final_split[i + 1][0] == '"' && final_split[i + 1][1] == '\0'))
+				if (final_split[i + 1] && !(is_double_quote(final_split[i + 1][0]) && final_split[i + 1][1] == '\0'))
 				{
 					tmp = joined;
 					joined = ft_strjoin(joined, " ");
@@ -46,13 +46,50 @@ char	**quotes_management(char **final_split)
 			}
 			if (final_split[i])
 				i++;
-			quoted = ft_strjoin("\"", joined);
+			// quoted = ft_strjoin("\"", joined);
+			// free(joined);
+			// tmp = quoted;
+			// quoted = ft_strjoin(quoted, "\"");
+			// free(tmp);
+			// tokens = add_split(tokens, &count, quoted, ft_strlen(quoted));
+			// free(quoted);
+			
+			// ================================================================ //
+			// ======== ENVOYER VERS EXPAND POUR GERER '$', '`' ET '\' ======== //
+			// ================================================================ //
+			
+			tokens = add_split(tokens, &count, joined, ft_strlen(joined));
 			free(joined);
-			tmp = quoted;
-			quoted = ft_strjoin(quoted, "\"");
-			free(tmp);
-			tokens = add_split(tokens, &count, quoted, ft_strlen(quoted));
-			free(quoted);
+		}
+		else if (is_single_quote(final_split[i][0]) && final_split[i][1] == '\0')
+		{
+			i++;
+			joined = ft_strdup("");
+			while (final_split[i] && !(is_single_quote(final_split[i][0]) && final_split[i][1] == '\0'))
+			{
+				tmp = joined;
+				joined = ft_strjoin(joined, final_split[i]);
+				free(tmp);
+				if (final_split[i + 1] && !(is_single_quote(final_split[i + 1][0]) && final_split[i + 1][1] == '\0'))
+				{
+					tmp = joined;
+					joined = ft_strjoin(joined, " ");
+					free(tmp);
+				}
+				i++;
+			}
+			if (final_split[i])
+				i++;
+			// quoted = ft_strjoin("\"", joined);
+			// free(joined);
+			// tmp = quoted;
+			// quoted = ft_strjoin(quoted, "\"");
+			// free(tmp);
+			// tokens = add_split(tokens, &count, quoted, ft_strlen(quoted));
+			// free(quoted);
+			
+			tokens = add_split(tokens, &count, joined, ft_strlen(joined));
+			free(joined);
 		}
 		else
 		{
