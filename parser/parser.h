@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/17 17:13:12 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/18 12:50:32 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ typedef struct s_splitter
 // ====== FONCTIONS ====== //
 // ======================= //
 
-char **input_splitter(char *input);
+char	**input_splitter(char *input);
+char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
+char	**quotes_management(char **final_split);
+char	**test_parser(char *input);
+
 
 // ======================= //
 // == QUOTING FONCTIONS == //
