@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
+/*   quoting_04.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/17 17:28:17 by fmoulin          ###   ########.fr       */
+/*   Created: 2025/09/17 16:34:32 by fmoulin           #+#    #+#             */
+/*   Updated: 2025/09/17 16:37:03 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../parser.h"
 
-// char	**quotes_management(char **final_split)
-// {
-// 	char	**tokens;
-// 	int		count;
-// 	int		i;
+int	is_open_bracket(char c)
+{
+	return (c == '[');
+}
 
-// 	tokens = NULL;
-// 	count = 0;
-// 	i = 0;
-	
-// 	while (final_split[i])
-// 	{
-		
-// 	}
-// }
+int	is_hash(char c)
+{
+	return (c == '#');
+}
+
+int	is_tilde(char c)
+{
+	return (c == '~');
+}
+
+int	is_equal(char c)
+{
+	return (c == '=');
+}
+
+int	is_percent(char c)
+{
+	return (c == '%');
+}

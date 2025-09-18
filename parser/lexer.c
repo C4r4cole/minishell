@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 17:54:03 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/17 17:37:36 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char **input_splitter(char *input)
 		j = 0;
 		while (result.input_split[i][j])
 		{
-			if (is_special(result.input_split[i][j]) || is_redirection(result.input_split[i][j]))
+			if (is_quoting_symbols(result.input_split[i][j]))
 			{
 				result.final_split = add_split(result.final_split, &result.count, &result.input_split[i][j], 1);
 				j++;
@@ -63,7 +63,7 @@ char **input_splitter(char *input)
 			else
 			{
 				result.start = j;
-				while (result.input_split[i][j] && (!(is_special(result.input_split[i][j])) && !is_redirection(result.input_split[i][j])))
+				while (result.input_split[i][j] && !is_quoting_symbols(result.input_split[i][j]))
 					j++;
 				result.final_split = add_split(result.final_split, &result.count, &result.input_split[i][result.start], j - result.start);
 			}
@@ -72,35 +72,3 @@ char **input_splitter(char *input)
 	}
 	return (result.final_split);
 }
-
-// char	**create_tokens(char **final_split)
-// {
-// 	char	**tokens;
-// 	int		i;
-// 	int		j;
-// 	int		k;
-
-// 	tokens = malloc(sizeof(char *) * (ft_strlen(final_split) + 1));
-// 	i = 0;
-// 	k = 0;
-// 	while (final_split[k])
-// 	{
-// 		j = 0;
-// 		while (final_split[k][j])
-// 		{
-// 			if (final_split[k][j] == '"')
-// 			{
-// 				tokens[i][j] = final_split[k][j];
-// 				k++;
-// 			}
-// 			else
-// 			{
-// 				tokens[i][j] = final_split[k][j];
-// 				i++;
-// 				k++;
-// 			}
-// 			j++;
-// 		}
-// 		k++;
-// 	}
-// }

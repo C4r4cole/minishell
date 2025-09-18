@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/16 16:52:00 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/17 17:13:12 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,35 @@ typedef struct s_splitter
 
 char **input_splitter(char *input);
 
+// ======================= //
+// == QUOTING FONCTIONS == //
+// ======================= //
+
+int	is_pipe(char c);
+int	is_slash(char c);
+int is_backslash(char c);
+int	is_hyphen(char c);
+int	is_underscore(char c);
+int	is_dollar(char c);
+int	is_question_mark(char c);
+int	is_double_quote(char c);
+int is_single_quote(char c);
+int is_ampersand(char c);
+int is_redirection_in(char c);
+int	is_redirection_out(char c);
+int is_semicolon(char c);
+int is_opening_parenthesis(char c);
+int is_closing_parenthesis(char c);
+int is_backtick(char c);
+int	is_space(char c);
+int is_tab(char c);
+int	is_new_line(char c);
+int	is_star(char c);
+int	is_open_bracket(char c);
+int	is_hash(char c);
+int	is_tilde(char c);
+int	is_equal(char c);
+int	is_percent(char c);
+int	is_quoting_symbols(char c);
 
 #endif

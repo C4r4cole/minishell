@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
+/*   quoting_03.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/17 17:28:17 by fmoulin          ###   ########.fr       */
+/*   Created: 2025/09/17 16:26:50 by fmoulin           #+#    #+#             */
+/*   Updated: 2025/09/17 17:13:32 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../parser.h"
 
-// char	**quotes_management(char **final_split)
-// {
-// 	char	**tokens;
-// 	int		count;
-// 	int		i;
+int is_backtick(char c)
+{
+	return (c == '`');
+}
 
-// 	tokens = NULL;
-// 	count = 0;
-// 	i = 0;
-	
-// 	while (final_split[i])
-// 	{
-		
-// 	}
-// }
+int	is_space(char c)
+{
+	return (c == ' ');
+}
+
+int is_tab(char c)
+{
+	return (c == '\t');
+}
+
+int	is_new_line(char c)
+{
+	return (c == '\n');
+}
+
+int	is_star(char c)
+{
+	return (c == '*');
+}
