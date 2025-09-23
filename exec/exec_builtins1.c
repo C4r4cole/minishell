@@ -6,12 +6,12 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/23 13:43:45 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:04:42 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
-#include "minishell.h"
+#include "../minishell.h"
 
 int	check_n(const char *str)
 {

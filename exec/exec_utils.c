@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/23 14:33:24 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:18:52 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,21 @@ void	init_shell(t_shell *shell)
 	shell->exit_status = 0;
 }
 
-char	*find_path(char *args, char **envp)
+void	free_shell(t_shell *shell)
+{
+	if (shell->pwd)
+		free(shell->pwd);
+	if (shell->oldpwd)
+		free(shell->oldpwd);
+}
+
+char	*find_path(void)
 {
 	char	*path;
-	char	**paths;
+	char	**paths = NULL;
 	char	*tmp;
 	int		i;
+	i = 0;
 
 	path = getenv("PATH");
 	if (!path)
@@ -61,7 +70,7 @@ int	exec_one_cmd(char **argv, char **envp)
 	int		status;
 	char	*bin;
 
-	bin = find_path(argv[0], envp);
+	bin = find_path();
 	pid = fork();
 	if (pid < 0)
 		return (1);

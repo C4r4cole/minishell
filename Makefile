@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
+#    By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/09/17 17:25:48 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/09/23 15:02:57 by ilsedjal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS =	minishell.c utils/error.c utils/list_utils.c utils/banner.c \
 		parser/expand.c parser/lexer.c parser/parser.c parser/quotes.c parser/syntax.c \
 		parser/tokens.c parser/quoting/quoting_00.c parser/quoting/quoting_01.c \
 		parser/quoting/quoting_02.c parser/quoting/quoting_03.c parser/quoting/quoting_04.c \
-		parser/quoting/quoting_symbols.c
+		parser/quoting/quoting_symbols.c exec/exec_builtins1.c exec/exec_cmd.c exec/exec_utils.c \
 
 # Mains
 MAIN = minishell.c
