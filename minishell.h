@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/18 17:31:02 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:23:59 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# include "./parser/parser.h"
+# include "parser/parser.h"
 
 // ========================= //
 // ========= ENUMS ========= //
@@ -50,6 +50,8 @@ enum symbols
 	SINGLE_QUOTE = '\'',
 	REDIRECTION_IN = '<',
 	REDIRECTION_OUT = '>',
+	REDIRECTION_APPEND = 256,
+	HEREDOC = 257,
 	OPEN_BRACKET = '[',
 	TILDE = '~',
 	PERCENT = '%',
@@ -67,37 +69,12 @@ enum symbols
 	EQUAL = '='
 };
 
-// ======================== //
-// ====== STRUCTURES ====== //
-// ======================== //
-
-typedef struct s_redir
-{
-	int				type;   // <, >, >>, <<
-	char    		*file;
-	struct s_redir	*next;
-}   			t_redir;
-
-typedef struct s_cmd
-{
-	char          **argv;   // ["ls", "-l", NULL]
-	t_redir       *redir;   // liste des redirections
-	struct s_cmd  *next;    // si pipe → commande suivante
-}   			t_cmd;
-
-typedef struct s_env
-{
-	char          *key;		// $
-	char          *value;	// HOME
-	struct s_env  *next;
-}   			t_env;
-
-
 // ======================= //
 // ====== FONCTIONS ====== //
 // ======================= //
 
 void	print_banner(void);
-// t_cmd	*parse_input(char *line, t_env *env);
+// t_cmd	*parse_input(char *user_input, t_env *env);
+t_cmd	*parse_input(char *user_input);
 
 #endif

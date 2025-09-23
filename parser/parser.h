@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/18 17:30:55 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:02:38 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // ====== LIBRAIRIES ====== //
 // ======================== //
 
-# include "../minishell.h"
+# include "../structures.h"
 # include "../utils/utils.h"
 
 // ======================== //
@@ -40,8 +40,14 @@ typedef struct s_splitter
 char	**input_splitter(char *input);
 char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
 char	**quotes_management(char **final_split);
-char	**test_parser(char *input);
-
+// t_cmd	*parse_input(char *user_input, t_env *env);
+t_cmd	*parse_input(char *user_input);
+void	ft_rediradd_back(t_redir **lst, t_redir *new);
+void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
+int		is_env(char *present_token);
+int		is_redirection(char *present_token);
+t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
+t_redir	*ft_redirnew(char *type, char *file);
 
 // ======================= //
 // == QUOTING FONCTIONS == //
