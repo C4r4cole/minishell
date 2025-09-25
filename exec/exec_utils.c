@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/23 15:18:52 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:52:17 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ void	free_shell(t_shell *shell)
 		free(shell->oldpwd);
 }
 
-char	*find_path(void)
+char	*find_path(t_cmd *arg)
 {
 	char	*path;
 	char	**paths = NULL;
 	char	*tmp;
 	int		i;
+	char	*full_path;
 	i = 0;
 
 	path = getenv("PATH");
@@ -50,9 +51,12 @@ char	*find_path(void)
 	// je split les paths avec :
 	// je teste tout les chemins avec access
 	// si un chemin est ok je le retourne
+	paths = ft_split(path,':');
 	while (paths[i])
 	{
+		
 		tmp = ft_strjoin(paths[i], "/");
+		full_path = ft_strjoin(tmp,arg->argv[0]);
 		// free le join
 		if (access(tmp, X_OK) == 0)
 		{
@@ -64,19 +68,22 @@ char	*find_path(void)
 	return (NULL);
 }
 
-int	exec_one_cmd(char **argv, char **envp)
+int	exec_one_cmd(t_cmd *arg, char **envp)
 {
 	pid_t	pid;
 	int		status;
 	char	*bin;
 
-	bin = find_path();
+	bin = find_path(arg);
 	pid = fork();
 	if (pid < 0)
+	{
+		free(bin);
 		return (1);
+	}
 	if (pid == 0)
 	{
-		execve(bin, argv, envp);
+		execve(bin, arg->argv, envp);
 		perror("error 127");
 		exit(1);
 	}

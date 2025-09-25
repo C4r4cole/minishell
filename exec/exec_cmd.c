@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/23 15:07:38 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:49:48 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 		}
 		else
 		{
-			shell->exit_status = exec_one_cmd(current->argv, shell->envp);
+			shell->exit_status = exec_one_cmd(current, shell->envp);
 		}
 		current = current->next;
 	}
