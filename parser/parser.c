@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/22 17:59:00 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/24 15:15:00 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,44 +124,77 @@ t_cmd	*parse_input(char *user_input)
 	int		count;
 	int		start;
 	
+	if (!user_input)
+		return (NULL);
 	lexer = input_splitter(user_input);
+	if (!lexer)
+		return (NULL);
 	tokens = quotes_management(lexer);
 	cmd_list = NULL;
 	redirection_list = NULL;
 	i = 0;
-	j = 0;
+	// j = 0;
 	while (tokens[i])
 	{
 		if (is_redirection(tokens[i]))
 		{
-			redirection_sign = ft_redirnew(tokens[i], tokens[i + 1]);
-			ft_rediradd_back(&redirection_list, redirection_sign);
+			if (tokens[i + 1])
+			{
+				redirection_sign = ft_redirnew(tokens[i], tokens[i + 1]);
+				ft_rediradd_back(&redirection_list, redirection_sign);
+				i += 2;
+				continue;
+			}
+			else
+			{
+				break;
+			}
 		}
 		else if (is_env(tokens[i]))
 		{
 			ft_printf("TODO: code variables environnement");
+			i++;
+			continue;
 			// TODO expand file
 		}
 		else if (!is_pipe(tokens[i][0]))
 		{
 			start = i;
-			while (tokens[i] && ft_strncmp(tokens[i], "|", 1) != 0 && !is_redirection(tokens[i]))
+			while (tokens[i] && !is_pipe(tokens[i][0]) && !is_redirection(tokens[i]))
 				i++;
 			count = i - start;
+			if (count <= 0)
+				continue;
 			before_pipe_tokens_tab = malloc(sizeof(char *) * (count + 1));
 			if (!before_pipe_tokens_tab)
 				return (NULL);
+			j = 0;
 			while (j < count)
 			{
 				before_pipe_tokens_tab[j] = ft_strdup(tokens[start + j]);
+				if (!before_pipe_tokens_tab[j])
+				{
+					while (j > 0)
+					{
+						free(before_pipe_tokens_tab[j - 1]);
+						j--;
+					}
+					free(before_pipe_tokens_tab);
+					return (NULL);
+				}
 				j++;
 			}
 			before_pipe_tokens_tab[j] = NULL;
 			cmd = ft_cmdnew(before_pipe_tokens_tab, redirection_list);
 			ft_cmdadd_back(&cmd_list, cmd);
 			redirection_list = NULL;
+			continue;
 		}
-		i++;
+		else
+		{
+			// TODO: si c'est un pipe
+			i++;
+		}
 	}
 	return (cmd_list);
 }

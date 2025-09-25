@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/22 16:02:38 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/24 13:04:48 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ char	**quotes_management(char **final_split);
 t_cmd	*parse_input(char *user_input);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
+void	ft_envadd_back(t_env **lst, t_env *new);
 int		is_env(char *present_token);
 int		is_redirection(char *present_token);
 t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
 t_redir	*ft_redirnew(char *type, char *file);
+t_env	*ft_envnew(char *key, char *value);
 
 // ======================= //
 // == QUOTING FONCTIONS == //
