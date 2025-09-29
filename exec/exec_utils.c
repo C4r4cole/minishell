@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/24 11:32:55 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/29 15:31:57 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,47 @@ void	free_shell(t_shell *shell)
 		free(shell->oldpwd);
 }
 
-char	*find_path(void)
+char	*find_path(char *cmd)
 {
 	char	*path;
-	char	**paths = NULL;
+	char	**paths;
 	char	*tmp;
+	char	*full_path;
 	int		i;
-	i = 0;
 
 	path = getenv("PATH");
 	if (!path)
-	{
-		printf("path not found");
 		return (NULL);
-	}
-	// je split les paths avec :
-	// je teste tout les chemins avec access
-	// si un chemin est ok je le retourne
+	paths = ft_split(path, ':'); // ← remplir correctement paths
+	if (!paths)
+		return (NULL);
+
+	i = 0;
 	while (paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
-		// free le join
-		if (access(tmp, X_OK) == 0)
-		{
-			return (tmp);
-		}
-		i++;
+		full_path = ft_strjoin(tmp, cmd); // concatène avec la commande
 		free(tmp);
+		if (access(full_path, X_OK) == 0)
+		{
+			// ⚠️ libérer paths avant de return
+			int j = 0;
+			while (paths[j])
+				free(paths[j++]);
+			free(paths);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
 	}
+	// libérer paths si rien trouvé
+	i = 0;
+	while (paths[i])
+		free(paths[i++]);
+	free(paths);
 	return (NULL);
 }
+
 
 int	exec_one_cmd(char **argv, char **envp)
 {
@@ -70,7 +81,12 @@ int	exec_one_cmd(char **argv, char **envp)
 	int		status;
 	char	*bin;
 
-	bin = find_path();
+	bin = find_path(argv[0]);
+	if (!bin)
+	{
+		ft_printf("%s: command not found\n", argv[0]);
+		return (127);
+	}
 	pid = fork();
 	if (pid < 0)
 		return (1);
