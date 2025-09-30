@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/29 17:38:17 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/30 16:06:47 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int		is_env(char *present_token);
 int		is_redirection(char *present_token);
 t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
 t_redir	*ft_redirnew(char *type, char *file);
-t_env	*ft_envnew(char *envp);
-t_env	*stored_env(char **envp);
+t_env	*ft_envnew(char *key, char *value);
+// t_env	*stored_env(char **envp);
 
 
 // ======================= //

@@ -6,17 +6,13 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/09/25 15:11:48 by ilsedjal         ###   ########.fr       */
-=======
-/*   Updated: 2025/09/29 15:31:57 by fmoulin          ###   ########.fr       */
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
+/*   Updated: 2025/09/30 16:05:14 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-void	init_shell(t_shell *shell)
+void	init_shell(t_shell *shell, char **envp)
 {
 	shell->pwd = getcwd(NULL, 0); // ← INITIALISE CORRECTEMENT
 	if (!shell->pwd)
@@ -25,9 +21,48 @@ void	init_shell(t_shell *shell)
 		exit(EXIT_FAILURE);
 	}
 	shell->oldpwd = NULL;
-	shell->envp = NULL;
+	shell->envp = envp;
+	shell->envp_lst = env_list_from_envp(envp);
+	// shell->envp_lst = create_lst_envp(envp);
 	shell->exit_status = 0;
 }
+
+// t_env	*env_new(char *env_line)
+// {
+// 	t_env	*node;
+
+// 	node = malloc(sizeof(t_env));
+// 	if (!node)
+// 		return (NULL);
+// 	node->envp = ft_strdup(env_line);
+// 	node->next = NULL;
+// 	return (node);
+// }
+
+// t_env	*create_lst_envp(char **envp)
+// {
+// 	t_env	*head;
+// 	t_env	*tail;
+// 	int		i;
+// 	t_env	*new;
+
+// 	head = NULL;
+// 	tail = NULL;
+// 	i = 0;
+// 	while (envp && envp[i])
+// 	{
+// 		new = env_new(envp[i]);
+// 		if (!new)
+// 			break ;
+// 		if (!head)
+// 			head = new;
+// 		else
+// 			tail->next = new;
+// 		tail = new;
+// 		i++;
+// 	}
+// 	return (head);
+// }
 
 void	free_shell(t_shell *shell)
 {
@@ -36,74 +71,116 @@ void	free_shell(t_shell *shell)
 	if (shell->oldpwd)
 		free(shell->oldpwd);
 }
-
-<<<<<<< HEAD
-char	*find_path(t_cmd *arg)
-=======
-char	*find_path(char *cmd)
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
+void	free_tab(char **tab)
 {
-	char	*path;
-	char	**paths;
-	char	*tmp;
-	char	*full_path;
-	int		i;
-<<<<<<< HEAD
-	char	*full_path;
-	i = 0;
-=======
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
-
-	path = getenv("PATH");
-	if (!path)
-		return (NULL);
-<<<<<<< HEAD
-	}
-	// je split les paths avec :
-	// je teste tout les chemins avec access
-	// si un chemin est ok je le retourne
-	paths = ft_split(path,':');
-=======
-	paths = ft_split(path, ':'); // ← remplir correctement paths
-	if (!paths)
-		return (NULL);
+	int	i;
 
 	i = 0;
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
-	while (paths[i])
+	while (tab[i])
 	{
-		
-		tmp = ft_strjoin(paths[i], "/");
-<<<<<<< HEAD
-		full_path = ft_strjoin(tmp,arg->argv[0]);
-		// free le join
-		if (access(tmp, X_OK) == 0)
-		{
-			return (tmp);
-		}
-		i++;
-=======
-		full_path = ft_strjoin(tmp, cmd); // concatène avec la commande
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
-		free(tmp);
-		if (access(full_path, X_OK) == 0)
-		{
-			// ⚠️ libérer paths avant de return
-			int j = 0;
-			while (paths[j])
-				free(paths[j++]);
-			free(paths);
-			return (full_path);
-		}
-		free(full_path);
+		free(tab[i]);
 		i++;
 	}
-	// libérer paths si rien trouvé
+	free(tab);
+}
+
+char	*ft_strjoin_path(char *s1, char *s2)
+{
+	int		i;
+	int		j;
+	char	*res;
+
 	i = 0;
-	while (paths[i])
-		free(paths[i++]);
-	free(paths);
-	return (NULL);
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	res = malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
+	if (!res)
+		return (NULL);
+	while (s1[i])
+	{
+		res[i] = s1[i];
+		i++;
+	}
+	res[i++] = '/';
+	while (s2[j])
+	{
+		res[i] = s2[j];
+		i++;
+		j++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+
+char	*find_path(t_cmd *cmd, char **envp)
+{
+	int		i;
+	char	**paths;
+	char	*full_path;
+
+	paths = NULL;
+	if (!cmd || !cmd->argv || !cmd->argv[0])
+	{
+		return (NULL);
+<<<<<<< HEAD
+	}
+	if (ft_strchr(cmd->argv[0], '/'))
+		return (ft_strdup(cmd->argv[0]));
+	i = -1;
+	while (envp && envp[++i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			paths = ft_split(envp[i] + 5, ':');
+			break ;
+		}
+	}
+	if (!paths || !paths[0])
+	{
+		free_tab(paths);
+		return (NULL);
+	}
+	i = -1;
+	while (paths[++i])
+	{
+		full_path = ft_strjoin_path(paths[i], cmd->argv[0]);
+		if (!full_path)
+			return (free_tab(paths), NULL);
+		if (access(full_path, X_OK) == 0)
+			return (free_tab(paths), full_path);
+		free(full_path);
+	}
+	return (free_tab(paths), NULL);
+}
+
+t_env *env_list_from_envp(char **envp)
+{
+    t_env *head = NULL;
+    t_env *tail = NULL;
+    int i = 0;
+
+    while (envp && envp[i])
+    {
+        // Découpe la variable en key et value
+        char *equal = ft_strchr(envp[i], '=');
+        if (!equal)
+        {
+            i++;
+            continue;
+        }
+        int key_len = equal - envp[i];
+        char *key = ft_substr(envp[i], 0, key_len);
+        char *value = ft_strdup(equal + 1);
+        t_env *new = ft_envnew(key, value);
+        if (!head)
+            head = new;
+        else
+            tail->next = new;
+        tail = new;
+        i++;
+    }
+    return head;
 }
 
 <<<<<<< HEAD
@@ -113,20 +190,17 @@ int	exec_one_cmd(t_cmd *arg, char **envp)
 int	exec_one_cmd(char **argv, char **envp)
 >>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
 {
-	pid_t	pid;
-	int		status;
-	char	*bin;
+	pid_t pid;
+	int status;
+	char *bin;
 
-<<<<<<< HEAD
-	bin = find_path(arg);
-=======
-	bin = find_path(argv[0]);
+	bin = find_path(arg, envp);
 	if (!bin)
 	{
-		ft_printf("%s: command not found\n", argv[0]);
+		ft_putstr_fd("minishell: command not found\n", 2);
+		free(bin);
 		return (127);
 	}
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
 	pid = fork();
 	if (pid < 0)
 	{

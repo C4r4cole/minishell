@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/09/25 14:46:57 by ilsedjal         ###   ########.fr       */
-=======
-/*   Updated: 2025/09/29 15:32:51 by fmoulin          ###   ########.fr       */
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
+/*   Updated: 2025/09/30 16:07:47 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +23,21 @@
 # include "../structures.h"
 
 
+// typedef struct s_env 
+// {
+// 	char *envp;
+// 	struct s_env *next;	
+// } t_env;
+
 typedef struct s_shell
 {
     char    *pwd;
     char    *oldpwd;
-    char   **envp;         // ton tableau d’environnement
+    char   **envp;
+	t_env  *envp_lst;
     int      exit_status;
 }   t_shell;
+
 
 int		check_n(const char *str);
 int		ft_echo(char **argv);
@@ -41,12 +45,13 @@ int		ft_pwd(t_shell *shell);
 int		execute_cmds_list(t_cmd *cmds , t_shell *shell);
 <<<<<<< HEAD
 int		exec_one_cmd(t_cmd *arg, char **envp);
-char	*find_path(t_cmd *arg);
-=======
-int		exec_one_cmd(char **argv, char **envp);
-char	*find_path(char *cmd);
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
-void	init_shell(t_shell *shell);
+char	*find_path(t_cmd *cmd, char **envp);
+void	init_shell(t_shell *shell, char **envp);
 void	free_shell(t_shell *shell);
+int		ft_cd(char **argv);
+t_env 	*env_list_from_envp(char **envp);
+int		ft_export(char **argv, t_shell *shell);
+void 	env_update_or_add(t_env **lst, char *key, char *value);
+int		ft_env(t_shell *shell);
 #endif
 
