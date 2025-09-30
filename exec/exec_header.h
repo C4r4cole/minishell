@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 18:31:17 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/30 16:27:44 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include "../utils/libft/libft.h"
-// # include "../minishell.h"
-# include "../parser/parser.h"
+# include "../minishell.h"
 # include "../structures.h"
 
 int		check_n(const char *str);
@@ -32,12 +31,9 @@ char	*find_path(t_cmd *cmd, char **envp);
 void	init_shell(t_shell *shell, char **envp);
 void	free_shell(t_shell *shell);
 int		ft_cd(char **argv);
-// t_env 	*ft_envnew(const char *key, const char *value);
-// void    ft_envadd_back(t_env **lst, t_env *new);
-void    env_update_or_add(t_env **lst, const char *key, const char *value);
+t_env 	*env_list_from_envp(char **envp);
 int		ft_export(char **argv, t_shell *shell);
+void 	env_update_or_add(t_env **lst, char *key, char *value);
 int		ft_env(t_shell *shell);
-t_env	*env_list_from_envp(char **envp);
-
 #endif
 
