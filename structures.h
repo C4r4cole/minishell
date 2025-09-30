@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:21:00 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/22 15:23:08 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:25:14 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ typedef struct s_cmd
 
 typedef struct s_env
 {
-	char          *key;		// $
-	char          *value;	// HOME
+	char          *key;		// $HOME
+	char          *value;	// fmoulin
 	struct s_env  *next;
 }   			t_env;
 

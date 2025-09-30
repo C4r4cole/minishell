@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/24 13:04:48 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/29 17:38:17 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,41 @@
 
 # include "../structures.h"
 # include "../utils/utils.h"
+
+// ========================= //
+// ========= ENUMS ========= //
+// ========================= //
+
+enum symbols
+{
+	PIPE = '|',
+	SLASH = '/',
+	HYPHEN = '-',
+	UNDERSCORE = '_',
+	DOLLAR = '$',
+	QUESTION_MARK = '?',
+	DOUBLE_QUOTE = '"',
+	SINGLE_QUOTE = '\'',
+	REDIRECTION_IN = '<',
+	REDIRECTION_OUT = '>',
+	REDIRECTION_APPEND = 256,
+	HEREDOC = 257,
+	OPEN_BRACKET = '[',
+	TILDE = '~',
+	PERCENT = '%',
+	AMPERSAND = '&',
+	SEMI_COLON = ';',
+	OPENING_PARENTHESIS = '(',
+	CLOSING_PARENTHESIS = ')',
+	BACKTICK = '`',
+	SPACE_CHAR = ' ',
+	TAB_CHAR = '\t',
+	NEWLINE_CHAR = '\n',
+	BACKSLASH = '\\',
+	STAR = '*',
+	HASH = '#',
+	EQUAL = '='
+};
 
 // ======================== //
 // ====== STRUCTURES ====== //
@@ -39,9 +74,9 @@ typedef struct s_splitter
 
 char	**input_splitter(char *input);
 char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
-char	**quotes_management(char **final_split);
-// t_cmd	*parse_input(char *user_input, t_env *env);
-t_cmd	*parse_input(char *user_input);
+char	**quotes_management(char **final_split, t_env *env);
+t_cmd	*parse_input(char *user_input, t_env *env);
+// t_cmd	*parse_input(char *user_input);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 void	ft_envadd_back(t_env **lst, t_env *new);
@@ -49,7 +84,9 @@ int		is_env(char *present_token);
 int		is_redirection(char *present_token);
 t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
 t_redir	*ft_redirnew(char *type, char *file);
-t_env	*ft_envnew(char *key, char *value);
+t_env	*ft_envnew(char *envp);
+t_env	*stored_env(char **envp);
+
 
 // ======================= //
 // == QUOTING FONCTIONS == //
