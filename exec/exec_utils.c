@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 16:05:14 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:06:02 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ char	*find_path(t_cmd *cmd, char **envp)
 	if (!cmd || !cmd->argv || !cmd->argv[0])
 	{
 		return (NULL);
-<<<<<<< HEAD
 	}
 	if (ft_strchr(cmd->argv[0], '/'))
 		return (ft_strdup(cmd->argv[0]));
@@ -183,12 +182,7 @@ t_env *env_list_from_envp(char **envp)
     return head;
 }
 
-<<<<<<< HEAD
 int	exec_one_cmd(t_cmd *arg, char **envp)
-=======
-
-int	exec_one_cmd(char **argv, char **envp)
->>>>>>> f85283a89606eecda4a9efe4056ab5890c0e1736
 {
 	pid_t pid;
 	int status;

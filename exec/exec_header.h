@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 16:07:47 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:27:44 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,10 @@
 # include "../minishell.h"
 # include "../structures.h"
 
-
-// typedef struct s_env 
-// {
-// 	char *envp;
-// 	struct s_env *next;	
-// } t_env;
-
-typedef struct s_shell
-{
-    char    *pwd;
-    char    *oldpwd;
-    char   **envp;
-	t_env  *envp_lst;
-    int      exit_status;
-}   t_shell;
-
-
 int		check_n(const char *str);
 int		ft_echo(char **argv);
 int		ft_pwd(t_shell *shell);
 int		execute_cmds_list(t_cmd *cmds , t_shell *shell);
-<<<<<<< HEAD
 int		exec_one_cmd(t_cmd *arg, char **envp);
 char	*find_path(t_cmd *cmd, char **envp);
 void	init_shell(t_shell *shell, char **envp);

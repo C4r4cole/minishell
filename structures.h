@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:21:00 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 15:59:53 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:00:23 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,14 @@ typedef struct s_env
 	char          *value;	// fmoulin
 	struct s_env  *next;
 }   			t_env;
+
+typedef struct s_shell
+{
+    char    *pwd;
+    char    *oldpwd;
+    char   **envp;
+	t_env  *envp_lst;
+    int      exit_status;
+}   t_shell;
 
 #endif
