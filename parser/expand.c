@@ -6,21 +6,21 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 11:42:09 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 16:39:07 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:04:20 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_env	*ft_envnew(const char *key, const char *value)
+t_env	*ft_envnew(char *key, char *value)
 {
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->key = key ? ft_strdup(key) : NULL;
-	new->value = value ? ft_strdup(value) : NULL;
+	new->key = key;
+	new->value = value;
 	new->next = NULL;
 	return (new);
 }

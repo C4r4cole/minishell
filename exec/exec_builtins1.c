@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 16:35:48 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 14:05:39 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,86 +114,57 @@ int	ft_cd(char **argv)
 	// mtn il faut update les pwd dans mon **ENV ;
 }
 
-// Version robuste de ft_envnew
-#include <stdlib.h>
-#include <string.h>
-
-t_env *ft_envnew(const char *key, const char *value)
+void env_update_or_add(t_env **lst, char *key, char *value)
 {
-    t_env *new = malloc(sizeof(t_env));
-    if (!new)
-        return NULL;
-    new->key = key ? strdup(key) : NULL;
-    new->value = value ? strdup(value) : NULL;
-    new->next = NULL;
-    return new;
+	t_env *tmp = *lst;
+	while (tmp)
+	{
+		if (strcmp(tmp->key, key) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return;
+		}
+		tmp = tmp->next;
+	}
+	ft_envadd_back(lst, ft_envnew(ft_strdup(key), ft_strdup(value)));
 }
 
-void ft_envadd_back(t_env **lst, t_env *new)
-{
-    t_env *tmp;
-    if (!lst || !new)
-        return;
-    if (!*lst)
-    {
-        *lst = new;
-        return;
-    }
-    tmp = *lst;
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new;
-}
-
-void env_update_or_add(t_env **lst, const char *key, const char *value)
-{
-    t_env *tmp = *lst;
-    while (tmp)
-    {
-        if (strcmp(tmp->key, key) == 0)
-        {
-            free(tmp->value);
-            tmp->value = value ? strdup(value) : NULL;
-            return;
-        }
-        tmp = tmp->next;
-    }
-    ft_envadd_back(lst, ft_envnew(key, value));
-}
-
-int ft_env(t_shell *shell)
+int	ft_env(t_shell *shell)
 {
     t_env *tmp = shell->envp_lst;
     while (tmp)
     {
-        if (tmp->key && tmp->key[0] != '\0')
-            printf("%s=%s\n", tmp->key, tmp->value ? tmp->value : "");
+        if (tmp->value) // n'affiche que les variables avec une valeur
+            printf("%s=%s\n", tmp->key, tmp->value);
         tmp = tmp->next;
     }
     return (0);
 }
 
-int ft_export(char **argv, t_shell *shell)
+int	ft_export(char **argv, t_shell *shell)
 {
-    int i = 1;
-    char *equal;
-    int key_len;
-    char *key;
-    char *value;
-    while (argv[i])
-    {
-        equal = ft_strchr(argv[i], '=');
-        if (equal)
-        {
-            key_len = equal - argv[i];
-            key = ft_substr(argv[i], 0, key_len);
-            value = ft_strdup(equal + 1);
-            if (key && key[0] != '\0')
-                env_update_or_add(&(shell->envp_lst), key, value);
-            free(key);
-            free(value);
-        }
-        i++;
-    }
-    return (0);
+	int		i;
+	char	*equal;
+	int		key_len;
+	char	*key;
+	char	*value;
+
+	i = 1;
+	while (argv[i])
+	{
+		equal = ft_strchr(argv[i], '=');
+		if (equal)
+		{
+			key_len = equal - argv[i];
+			key = ft_substr(argv[i], 0, key_len);
+			value = ft_strdup(equal + 1);
+			if (key && key[0] != '\0') // N'ajoute que si la clé n'est pas vide
+				env_update_or_add(&(shell->envp_lst), key, value);
+			free(key);
+			free(value);
+		}
+		i++;
+	}
+	return (0);
 }
