@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 17:43:21 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/30 17:53:07 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,8 @@ t_cmd	*parse_input(char *user_input, t_env *env);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 void	ft_envadd_back(t_env **lst, t_env *new);
-int		is_env(char *present_token);
-int		is_redirection(char *present_token);
-t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
-t_redir	*ft_redirnew(char *type, char *file);
-t_env	*ft_envnew(char *key, char *value);
+t_env	*ft_envnew(const char *key, const char *value);
+void	env_update_or_add(t_env **lst, const char *key, const char *value);
 // t_env	*stored_env(char **envp);
 
 
