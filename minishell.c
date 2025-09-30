@@ -3,25 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/25 15:14:47 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/30 15:25:54 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec/exec_header.h"
+// void	print_env_list(t_env *env) 
+// {
+//     while (env)
+//     {
+// 		printf("%s=%s\n", env->key, env->value);
+//         env = env->next;
+//     }
+// } TEST POUR VOIR SI LA LISTE ENV_LST EST BIEN REMPLIE
 
-int main(void)
+int main(int argc, char **argv, char **envp)
 {
 	t_cmd	*tokens;
 	// int		i;
 	t_shell *data = malloc(sizeof(t_shell));
 	if (!data)
-		return 1;
-
-	init_shell(data);
+	return 1;
+	(void)argc;
+	(void)*argv;
+	init_shell(data,envp);
+	// print_env_list(data->envp_lst); // PRINT DE LA LISTE
 	print_banner();
 	rl_bind_key('\t', rl_complete);
 	using_history();
@@ -35,7 +45,9 @@ int main(void)
 		add_history(input);
 		// printf("cmd = %s\n", input);
 		tokens = parse_input(input);
-		execute_cmds_list(tokens, data);  // Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
+		execute_cmds_list(tokens, data); 
+		
+		 // Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
 	// 	i = 0;
 	// 	while (tokens)
 	// 	{
