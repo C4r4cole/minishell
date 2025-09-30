@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/23 15:19:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:32:51 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_echo(char **argv);
 int		ft_pwd(t_shell *shell);
 int		execute_cmds_list(t_cmd *cmds , t_shell *shell);
 int		exec_one_cmd(char **argv, char **envp);
-char	*find_path(void);
+char	*find_path(char *cmd);
 void	init_shell(t_shell *shell);
 void	free_shell(t_shell *shell);
 #endif
