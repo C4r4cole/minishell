@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 16:35:48 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:27:03 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+// #include "../minishell.h"
 #include "exec_header.h"
 
 int	check_n(const char *str)
