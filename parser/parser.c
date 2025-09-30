@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/29 17:44:49 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/09/30 17:43:42 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	**create_cmd_args(char **tokens, int start, int count)
 	
     before_pipe_tokens_tab = malloc(sizeof(char *) * (count + 1));
     if (!before_pipe_tokens_tab)
-	return (NULL);
+		return (NULL);
     j = 0;
     while (j < count)
     {
@@ -152,10 +152,10 @@ int	handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirectio
 	(*i)++;
     count = *i - start;
     if (count <= 0)
-	return (1);
+		return (1);
     cmd_args = create_cmd_args(tokens, start, count);
     if (!cmd_args)
-	return (0);
+		return (0);
     cmd = ft_cmdnew(cmd_args, *redirection_list);
     ft_cmdadd_back(cmd_list, cmd);
     *redirection_list = NULL;
@@ -185,11 +185,6 @@ t_cmd	*parse_input(char *user_input, t_env *env)
         {
             if (!handle_redirection(tokens, &i, &redirection_list))
                 break;
-        }
-        else if (is_env(tokens[i]))
-        {
-            ft_printf("TODO: code variables environnement");
-            i++;
         }
         else if (tokens[i][0] && !is_pipe(tokens[i][0]))
         {

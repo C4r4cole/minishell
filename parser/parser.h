@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 16:06:47 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:43:21 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	**input_splitter(char *input);
 char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
 char	**quotes_management(char **final_split, t_env *env);
 t_cmd	*parse_input(char *user_input, t_env *env);
-// t_cmd	*parse_input(char *user_input);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 void	ft_envadd_back(t_env **lst, t_env *new);
@@ -117,6 +116,6 @@ int	is_hash(char c);
 int	is_tilde(char c);
 int	is_equal(char c);
 int	is_percent(char c);
-int	is_quoting_symbols(char c);
+int	is_metacharacter(char c);
 
 #endif
