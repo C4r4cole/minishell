@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 16:37:10 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:30:38 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,23 @@
 # include "../minishell.h"
 # include "../structures.h"
 
+
+// typedef struct s_env 
+// {
+// 	char *envp;
+// 	struct s_env *next;	
+// } t_env;
+
+typedef struct s_shell
+{
+    char    *pwd;
+    char    *oldpwd;
+    char   **envp;
+	t_env  *envp_lst;
+    int      exit_status;
+}   t_shell;
+
+
 int		check_n(const char *str);
 int		ft_echo(char **argv);
 int		ft_pwd(t_shell *shell);
@@ -31,10 +48,9 @@ char	*find_path(t_cmd *cmd, char **envp);
 void	init_shell(t_shell *shell, char **envp);
 void	free_shell(t_shell *shell);
 int		ft_cd(char **argv);
-t_env 	*ft_envnew(const char *key, const char *value);
-void    ft_envadd_back(t_env **lst, t_env *new);
-void    env_update_or_add(t_env **lst, const char *key, const char *value);
+t_env 	*env_list_from_envp(char **envp);
 int		ft_export(char **argv, t_shell *shell);
+void 	env_update_or_add(t_env **lst, char *key, char *value);
 int		ft_env(t_shell *shell);
 #endif
 
