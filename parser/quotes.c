@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 17:01:15 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:12:09 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	**quotes_management(char **final_split, t_env *env)
 	char	**tokens;
 	char	*joined;
 	char 	*tmp;
-	// t_env	*env;
+	t_env	*current_env;
+	int		found;
 	// char	*var_name;
 	// char	*value;
 	// char	*quoted;
@@ -44,15 +45,18 @@ char	**quotes_management(char **final_split, t_env *env)
 				// ================================================================ //
 				if (is_dollar(final_split[i][0])) // || is_backtick(final_split[i][0]) || is_backslash(final_split[i][0])
 				{
-					while (env)
+					current_env = env;
+					found = 0;
+					while (current_env && !found)
 					{
-						if (!ft_strncmp(&final_split[i][1], env->key, ft_strlen(env->key)))
+						if (ft_strlen(&final_split[i][1]) == ft_strlen(current_env->key) && !ft_strncmp(&final_split[i][1], current_env->key, ft_strlen(current_env->key)))
 						{
 							tmp = joined;
-							joined = ft_strjoin(joined, env->value);
+							joined = ft_strjoin(joined, current_env->value);
 							free(tmp);
+							found = 1;
 						}
-						env = env->next;
+						current_env = current_env->next;
 					}
 					// var_name = &final_split[i][1];
 					// value  = getenv(var_name);
