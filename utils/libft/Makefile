@@ -6,7 +6,7 @@
 #    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 11:07:46 by fmoulin           #+#    #+#              #
-#    Updated: 2025/09/16 12:47:18 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/10/01 17:36:38 by fmoulin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c f
 	ft_lstadd_back_bonus.c ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c \
 	ft_lstmap_bonus.c ft_printf.c print_char.c print_digit.c print_digit_upperhexa.c \
 	print_format.c print_pointer_address.c print_str.c get_next_line_utils.c get_next_line.c \
-	ft_strndup.c
+	ft_strndup.c ft_strcmp.c
 
 # Fichiers objets dans obj/
 OBJS = $(SRCS:.c=.o)

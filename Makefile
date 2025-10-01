@@ -6,7 +6,7 @@
 #    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/10/01 15:06:59 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/10/01 17:31:51 by fmoulin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS_DIR = .
 OBJS_DIR = obj
 
 # Sources comunes
-SRCS =	minishell.c utils/error.c utils/list_utils.c utils/banner.c \
+SRCS =	minishell.c utils/error.c utils/list_utils.c utils/banner.c parser/cleaner.c \
 		parser/expand.c parser/lexer.c parser/parser.c parser/quotes.c parser/syntax.c \
 		parser/tokens.c parser/quoting/quoting_00.c parser/quoting/quoting_01.c \
 		parser/quoting/quoting_02.c parser/quoting/quoting_03.c parser/quoting/quoting_04.c \

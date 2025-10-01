@@ -1,43 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:22:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 17:36:19 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:36:06 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t size)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;
 
 	i = 0;
-	while ((unsigned char)s1[i] != '\0'
-		&& (unsigned char)s2[i] != '\0' && i < size)
+	while (s1[i] != '\0' && s2[i] != '\0')
 	{
 		if ((unsigned char)s1[i] != (unsigned char)s2[i])
 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		i++;
 	}
-	if (i < size)
-	{
-		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-	}
-	return (0);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
-
-// #include <stdio.h>
-
-// int	main(void)
-// {
-// 	char s1[] = "hello";
-// 	char s2[] = "helio";
-
-// 	printf("%d\n", ft_strncmp(s1, s2, 5));
-// 	return (0);
-// }

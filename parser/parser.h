@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 17:43:21 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:30:38 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ int		is_redirection(char *present_token);
 t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
 t_redir	*ft_redirnew(char *type, char *file);
 t_env	*ft_envnew(char *key, char *value);
-// t_env	*stored_env(char **envp);
-
+void	free_cmd_list(t_cmd *cmd_list);
+void	free_redir_list(t_redir *redir_list);
+void	free_tokens(char **tokens);
 
 // ======================= //
 // == QUOTING FONCTIONS == //

@@ -6,29 +6,29 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 16:11:57 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:31:23 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_redir	*ft_redirnew(char *type, char *file)
+t_redir *ft_redirnew(char *type, char *file)
 {
-	t_redir	*new;
-
-	new = malloc(sizeof(t_redir));
-	if (!new)
-		return (NULL);
-	if (ft_strncmp(type, "<", ft_strlen(type)) == 0)
-		new->type = REDIRECTION_IN, new->file = file;
-	if (ft_strncmp(type, ">", ft_strlen(type)) == 0)
-		new->type = REDIRECTION_OUT, new->file = file;
-	if (ft_strncmp(type, "<<", ft_strlen(type)) == 0)
-		new->type = HEREDOC, new->file = NULL;
-	if (ft_strncmp(type, ">>", ft_strlen(type)) == 0)
-		new->type = REDIRECTION_APPEND, new->file = NULL;
-	new->next = NULL;
-	return (new);
+    t_redir *new = malloc(sizeof(t_redir));
+    if (!new)
+        return (NULL);
+    
+    if (ft_strcmp(type, "<") == 0)
+        new->type = REDIRECTION_IN, new->file = file;
+    else if (ft_strcmp(type, ">") == 0)
+        new->type = REDIRECTION_OUT, new->file = file;
+    else if (ft_strcmp(type, "<<") == 0)
+        new->type = HEREDOC, new->file = file;
+    else if (ft_strcmp(type, ">>") == 0)
+        new->type = REDIRECTION_APPEND, new->file = file;
+    
+    new->next = NULL;
+    return (new);
 }
 
 t_cmd	*ft_cmdnew(char **argv, t_redir *redir)
@@ -48,18 +48,17 @@ int is_redirection(char *present_token)
 {
 	if (!present_token)
 		return (0);
-	return (ft_strncmp(present_token, "<", ft_strlen(present_token)) == 0
-			|| ft_strncmp(present_token, ">", ft_strlen(present_token)) == 0
-			|| ft_strncmp(present_token, "<<", ft_strlen(present_token)) == 0
-			|| ft_strncmp(present_token, ">>", ft_strlen(present_token)) == 0);
+	return (ft_strcmp(present_token, "<") == 0
+			|| ft_strcmp(present_token, ">") == 0
+			|| ft_strcmp(present_token, "<<") == 0
+			|| ft_strcmp(present_token, ">>") == 0);
 }
 
-int	is_env(char *present_token)
+int is_env(char *present_token)
 {
-	if (!present_token)
-		return (0);
-	return (ft_strncmp(present_token, "$", ft_strlen(present_token)) == 0
-			|| ft_strncmp(present_token, "~", ft_strlen(present_token)) == 0);
+    if (!present_token)
+        return (0);
+    return (present_token[0] == '$' || present_token[0] == '~');
 }
 
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new)
@@ -185,8 +184,6 @@ t_cmd	*parse_input(char *user_input, t_env *env)
     i = 0;
     while (tokens[i])
     {
-        if (!tokens[i])
-            break;
         if (is_redirection(tokens[i]))
         {
             if (!handle_redirection(tokens, &i, &redirection_list))
@@ -195,7 +192,12 @@ t_cmd	*parse_input(char *user_input, t_env *env)
         else if (tokens[i][0] && !is_pipe(tokens[i][0]))
         {
             if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
+			{
+				free_cmd_list(cmd_list);
+				free_redir_list(redirection_list);
+				free_tokens(tokens);
                 return (NULL);
+			}
         }
 		else if (is_pipe(tokens[i][0]))
 		{
