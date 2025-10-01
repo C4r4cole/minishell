@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 17:43:42 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:11:57 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,12 @@ int	handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirectio
     return (1);
 }
 
+int	handle_pipe(int *i)
+{
+	(*i)++;
+	return (1);
+}
+
 t_cmd	*parse_input(char *user_input, t_env *env)
 {
 	char	**tokens;
@@ -191,6 +197,11 @@ t_cmd	*parse_input(char *user_input, t_env *env)
             if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
                 return (NULL);
         }
+		else if (is_pipe(tokens[i][0]))
+		{
+			if (!handle_pipe(&i))
+				break;
+		}
         else
             i++;
     }

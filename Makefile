@@ -6,7 +6,7 @@
 #    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/09/29 16:26:40 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/10/01 15:06:59 by fmoulin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,5 +66,18 @@ fclean: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
+
+test: all
+	@valgrind \
+	 --memcheck:leak-check=full \
+	 --memcheck:track-fds=yes \
+	 --memcheck:suppressions=./minishell.supp \
+	 --memcheck:track-origins=yes \
+	 --memcheck:show-leak-kinds=all \
+	 --memcheck:show-reachable=no \
+	 --memcheck:show-error-list=yes \
+	 --log-file=valgrind.log ./minishell; \
+	 cat valgrind.log; \
+	 rm -f valgrind.log
 
 .PHONY: all bonus clean fclean re
