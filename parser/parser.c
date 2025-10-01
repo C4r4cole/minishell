@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 17:31:23 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:53:34 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,21 @@ t_cmd	*parse_input(char *user_input, t_env *env)
     t_redir	*redirection_list;
     int		i;
 
-    if (!user_input)
+	if (!user_input)
         return (NULL);
+	i = 0;
+	while (user_input[i] && user_input[i] == ' ')
+		i++;
+	if (!user_input[i])
+		return (NULL);
     tokens = quotes_management(input_splitter(user_input), env);
-    if (!tokens)
+	if (!tokens)
         return (NULL);
+	if (!tokens[0])
+	{
+		free(tokens);
+		return (NULL);
+	}
     cmd_list = NULL;
     redirection_list = NULL;
     i = 0;
@@ -207,5 +217,8 @@ t_cmd	*parse_input(char *user_input, t_env *env)
         else
             i++;
     }
+	if (redirection_list)
+		free_redir_list(redirection_list);
+	free(tokens);
     return (cmd_list);
 }
