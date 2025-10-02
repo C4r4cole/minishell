@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 17:30:38 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:11:12 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ t_cmd	*parse_input(char *user_input, t_env *env);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 void	ft_envadd_back(t_env **lst, t_env *new);
-int		is_env(char *present_token);
 int		is_redirection(char *present_token);
 t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
 t_redir	*ft_redirnew(char *type, char *file);
@@ -87,6 +86,10 @@ t_env	*ft_envnew(char *key, char *value);
 void	free_cmd_list(t_cmd *cmd_list);
 void	free_redir_list(t_redir *redir_list);
 void	free_tokens(char **tokens);
+int		handle_redirection(char **tokens, int *i, t_redir **redirection_list);
+char	**create_cmd_args(char **tokens, int start, int count);
+int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
+int		handle_pipe(int *i);
 
 // ======================= //
 // == QUOTING FONCTIONS == //
