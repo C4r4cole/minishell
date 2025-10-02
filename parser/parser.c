@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 14:46:41 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:51:46 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ t_cmd	*parse_input(char *user_input, t_env *env)
     }
 	if (redirection_list)
 		free_redir_list(redirection_list);
-	free(tokens);
+	free_tokens(tokens);
     return (cmd_list);
 }
