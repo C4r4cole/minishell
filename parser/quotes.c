@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 16:55:21 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 17:47:42 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,18 @@
 char	**double_quote_management(char **final_split, t_env *env, char **tokens, int *count, int *i)
 {
 	char	*joined;
-	t_env	*current_env;
-	int		found;
+	char	*expanded;
 	char 	*tmp;
 
 	(*i)++;
 	joined = ft_strdup("");
 	while (final_split[*i] && !(is_double_quote(final_split[*i][0]) && final_split[*i][1] == '\0'))
 	{
-		// ================================================================ //
-		// ======== ENVOYER VERS EXPAND POUR GERER '$', '`' ET '\' ======== //
-		// ================================================================ //
-		if (is_dollar(final_split[*i][0])) // || is_backtick(final_split[i][0]) || is_backslash(final_split[i][0])
-		{
-			current_env = env;
-			found = 0;
-			while (current_env && !found)
-			{
-				if (ft_strlen(&final_split[*i][1]) == ft_strlen(current_env->key) && !ft_strncmp(&final_split[*i][1], current_env->key, ft_strlen(current_env->key)))
-				{
-					tmp = joined;
-					joined = ft_strjoin(joined, current_env->value);
-					free(tmp);
-					found = 1;
-				}
-				current_env = current_env->next;
-			}
-		}
-		else
-		{
-			tmp = joined;
-			joined = ft_strjoin(joined, final_split[*i]);
-			free(tmp);
-		}
+		expanded = expand_dollar(final_split[*i], env);
+		tmp = joined;
+		joined = ft_strjoin(joined, expanded);
+		free(tmp);
+		free(expanded);
 		if (final_split[*i + 1] && !(is_double_quote(final_split[*i + 1][0]) && final_split[*i + 1][1] == '\0'))
 		{
 			tmp = joined;
@@ -59,8 +38,7 @@ char	**double_quote_management(char **final_split, t_env *env, char **tokens, in
 	if (final_split[*i])
 		(*i)++;
 	tokens = add_split(tokens, count, joined, ft_strlen(joined));
-	free(joined);
-	return (tokens);
+	return (free(joined), tokens);
 }
 
 char	**single_quote_management(char **final_split, char **tokens, int *count, int *i)

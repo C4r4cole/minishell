@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 15:56:41 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 17:28:49 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int		handle_redirection(char **tokens, int *i, t_redir **redirection_list);
 char	**create_cmd_args(char **tokens, int start, int count);
 int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
 int		handle_pipe(int *i);
+char	*expand_dollar(char *token, t_env *env);
 
 // ======================= //
 // == QUOTING FONCTIONS == //
