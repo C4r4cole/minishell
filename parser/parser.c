@@ -6,11 +6,44 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 15:51:46 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 19:03:17 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	is_empty_input(char *user_input)
+{
+	int	i;
+
+	i = 0;
+	if (!user_input)
+		return (1);
+	while (user_input[i] && user_input[i] == ' ')
+		i++;
+	return (!user_input[i]);
+}
+
+char	**get_tokens(char *user_input, t_env *env)
+{
+	char	**tokens;
+
+	tokens = quotes_management(input_splitter(user_input), env);
+	if (!tokens || !tokens[0])
+	{
+		if (tokens)
+			free(tokens);
+		return (NULL);
+	}
+	return (tokens);
+}
+
+void	cleanup_parse_error(t_cmd *cmd_list, t_redir *redirection_list, char **tokens)
+{
+	free_cmd_list(cmd_list);
+	free_redir_list(redirection_list);
+	free_tokens(tokens);
+}
 
 t_cmd	*parse_input(char *user_input, t_env *env)
 {
@@ -19,21 +52,11 @@ t_cmd	*parse_input(char *user_input, t_env *env)
     t_redir	*redirection_list;
     int		i;
 
-	if (!user_input)
-        return (NULL);
-	i = 0;
-	while (user_input[i] && user_input[i] == ' ')
-		i++;
-	if (!user_input[i])
+	if (is_empty_input(user_input))
 		return (NULL);
-    tokens = quotes_management(input_splitter(user_input), env);
+    tokens = get_tokens(user_input, env);
 	if (!tokens)
         return (NULL);
-	if (!tokens[0])
-	{
-		free(tokens);
-		return (NULL);
-	}
     cmd_list = NULL;
     redirection_list = NULL;
     i = 0;
