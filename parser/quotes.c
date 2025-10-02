@@ -6,29 +6,74 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 17:12:09 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 16:24:18 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+char	**double_quote_management(char **final_split, t_env *env, char **tokens, int *count, int *i)
+{
+	char	*joined;
+	t_env	*current_env;
+	int		found;
+	char 	*tmp;
+
+	(*i)++;
+	joined = ft_strdup("");
+	while (final_split[*i] && !(is_double_quote(final_split[*i][0]) && final_split[*i][1] == '\0'))
+	{
+		// ================================================================ //
+		// ======== ENVOYER VERS EXPAND POUR GERER '$', '`' ET '\' ======== //
+		// ================================================================ //
+		if (is_dollar(final_split[*i][0])) // || is_backtick(final_split[i][0]) || is_backslash(final_split[i][0])
+		{
+			current_env = env;
+			found = 0;
+			while (current_env && !found)
+			{
+				if (ft_strlen(&final_split[*i][1]) == ft_strlen(current_env->key) && !ft_strncmp(&final_split[*i][1], current_env->key, ft_strlen(current_env->key)))
+				{
+					tmp = joined;
+					joined = ft_strjoin(joined, current_env->value);
+					free(tmp);
+					found = 1;
+				}
+				current_env = current_env->next;
+			}
+		}
+		else
+		{
+			tmp = joined;
+			joined = ft_strjoin(joined, final_split[*i]);
+			free(tmp);
+		}
+		if (final_split[*i + 1] && !(is_double_quote(final_split[*i + 1][0]) && final_split[*i + 1][1] == '\0'))
+		{
+			tmp = joined;
+			joined = ft_strjoin(joined, " ");
+			free(tmp);
+		}
+		(*i)++;
+	}
+	if (final_split[*i])
+		(*i)++;
+	tokens = add_split(tokens, count, joined, ft_strlen(joined));
+	free(joined);
+	return (tokens);
+}
 
 char	**quotes_management(char **final_split, t_env *env)
 {
 	char	**tokens;
 	char	*joined;
 	char 	*tmp;
-	t_env	*current_env;
-	int		found;
-	// char	*var_name;
-	// char	*value;
-	// char	*quoted;
-	// t_env	*env_lst;
+	// t_env	*current_env;
+	// int		found;
 	int		count;
 	int		i;
 
 	tokens = NULL;
-	// env = NULL;
-	// env_lst = NULL;
 	count = 0;
 	i = 0;
 	
@@ -36,56 +81,48 @@ char	**quotes_management(char **final_split, t_env *env)
 	{
 		if (is_double_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
-			i++;
-			joined = ft_strdup("");
-			while (final_split[i] && !(is_double_quote(final_split[i][0]) && final_split[i][1] == '\0'))
-			{
-				// ================================================================ //
-				// ======== ENVOYER VERS EXPAND POUR GERER '$', '`' ET '\' ======== //
-				// ================================================================ //
-				if (is_dollar(final_split[i][0])) // || is_backtick(final_split[i][0]) || is_backslash(final_split[i][0])
-				{
-					current_env = env;
-					found = 0;
-					while (current_env && !found)
-					{
-						if (ft_strlen(&final_split[i][1]) == ft_strlen(current_env->key) && !ft_strncmp(&final_split[i][1], current_env->key, ft_strlen(current_env->key)))
-						{
-							tmp = joined;
-							joined = ft_strjoin(joined, current_env->value);
-							free(tmp);
-							found = 1;
-						}
-						current_env = current_env->next;
-					}
-					// var_name = &final_split[i][1];
-					// value  = getenv(var_name);
-					// if (!value)
-					// 	value = "";
-					// env = ft_envnew(final_split[i], value);
-					// ft_envadd_back(&env_lst, env);
-					// tmp = joined;
-					// joined = ft_strjoin(joined, env->value);
-					// free(tmp);
-				}
-				else
-				{
-					tmp = joined;
-					joined = ft_strjoin(joined, final_split[i]);
-					free(tmp);
-				}
-				if (final_split[i + 1] && !(is_double_quote(final_split[i + 1][0]) && final_split[i + 1][1] == '\0'))
-				{
-					tmp = joined;
-					joined = ft_strjoin(joined, " ");
-					free(tmp);
-				}
-				i++;
-			}
-			if (final_split[i])
-				i++;
-			tokens = add_split(tokens, &count, joined, ft_strlen(joined));
-			free(joined);
+			tokens = double_quote_management(final_split, env, tokens, &count, &i);
+			// i++;
+			// joined = ft_strdup("");
+			// while (final_split[i] && !(is_double_quote(final_split[i][0]) && final_split[i][1] == '\0'))
+			// {
+			// 	// ================================================================ //
+			// 	// ======== ENVOYER VERS EXPAND POUR GERER '$', '`' ET '\' ======== //
+			// 	// ================================================================ //
+			// 	if (is_dollar(final_split[i][0])) // || is_backtick(final_split[i][0]) || is_backslash(final_split[i][0])
+			// 	{
+			// 		current_env = env;
+			// 		found = 0;
+			// 		while (current_env && !found)
+			// 		{
+			// 			if (ft_strlen(&final_split[i][1]) == ft_strlen(current_env->key) && !ft_strncmp(&final_split[i][1], current_env->key, ft_strlen(current_env->key)))
+			// 			{
+			// 				tmp = joined;
+			// 				joined = ft_strjoin(joined, current_env->value);
+			// 				free(tmp);
+			// 				found = 1;
+			// 			}
+			// 			current_env = current_env->next;
+			// 		}
+			// 	}
+			// 	else
+			// 	{
+			// 		tmp = joined;
+			// 		joined = ft_strjoin(joined, final_split[i]);
+			// 		free(tmp);
+			// 	}
+			// 	if (final_split[i + 1] && !(is_double_quote(final_split[i + 1][0]) && final_split[i + 1][1] == '\0'))
+			// 	{
+			// 		tmp = joined;
+			// 		joined = ft_strjoin(joined, " ");
+			// 		free(tmp);
+			// 	}
+			// 	i++;
+			// }
+			// if (final_split[i])
+			// 	i++;
+			// tokens = add_split(tokens, &count, joined, ft_strlen(joined));
+			// free(joined);
 		}
 		else if (is_single_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
