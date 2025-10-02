@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 15:11:12 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:56:41 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,6 @@ int	is_tilde(char c);
 int	is_equal(char c);
 int	is_percent(char c);
 int	is_metacharacter(char c);
+int	is_quote(char c);
 
 #endif
