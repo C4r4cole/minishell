@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 11:42:09 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/16 17:09:58 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/16 17:47:15 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ char	*expand_dollar(char *token, t_env *env)
 		var_name = ft_substr(token, 2, len - 3);
 	else
 		var_name = ft_substr(token, 1, len - 1);
-	if (!var_name)
-		return (ft_strdup(""));
     while (current_env)
     {
 		if (ft_strcmp(var_name, current_env->key) == 0)
@@ -72,6 +70,5 @@ char	*expand_dollar(char *token, t_env *env)
 		}
 		current_env = current_env->next;
     }
-	free(var_name);
-    return (ft_strdup(""));
+    return (free(var_name), ft_strdup(""));
 }
