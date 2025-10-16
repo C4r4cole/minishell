@@ -6,28 +6,75 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/29 17:49:19 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 17:47:42 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+char	**double_quote_management(char **final_split, t_env *env, char **tokens, int *count, int *i)
+{
+	char	*joined;
+	char	*expanded;
+	char 	*tmp;
+
+	(*i)++;
+	joined = ft_strdup("");
+	while (final_split[*i] && !(is_double_quote(final_split[*i][0]) && final_split[*i][1] == '\0'))
+	{
+		expanded = expand_dollar(final_split[*i], env);
+		tmp = joined;
+		joined = ft_strjoin(joined, expanded);
+		free(tmp);
+		free(expanded);
+		if (final_split[*i + 1] && !(is_double_quote(final_split[*i + 1][0]) && final_split[*i + 1][1] == '\0'))
+		{
+			tmp = joined;
+			joined = ft_strjoin(joined, " ");
+			free(tmp);
+		}
+		(*i)++;
+	}
+	if (final_split[*i])
+		(*i)++;
+	tokens = add_split(tokens, count, joined, ft_strlen(joined));
+	return (free(joined), tokens);
+}
+
+char	**single_quote_management(char **final_split, char **tokens, int *count, int *i)
+{
+	char	*joined;
+	char 	*tmp;
+	
+	(*i)++;
+	joined = ft_strdup("");
+	while (final_split[*i] && !(is_single_quote(final_split[*i][0]) && final_split[*i][1] == '\0'))
+	{
+		tmp = joined;
+		joined = ft_strjoin(joined, final_split[*i]);
+		free(tmp);
+		if (final_split[*i + 1] && !(is_single_quote(final_split[*i + 1][0]) && final_split[*i + 1][1] == '\0'))
+		{
+			tmp = joined;
+			joined = ft_strjoin(joined, " ");
+			free(tmp);
+		}
+		(*i)++;
+	}
+	if (final_split[*i])
+		(*i)++;
+	tokens = add_split(tokens, count, joined, ft_strlen(joined));
+	free(joined);
+	return (tokens);
+}
+
 char	**quotes_management(char **final_split, t_env *env)
 {
 	char	**tokens;
-	char	*joined;
-	char 	*tmp;
-	// t_env	*env;
-	// char	*var_name;
-	// char	*value;
-	// char	*quoted;
-	// t_env	*env_lst;
 	int		count;
 	int		i;
 
 	tokens = NULL;
-	// env = NULL;
-	// env_lst = NULL;
 	count = 0;
 	i = 0;
 	
@@ -35,75 +82,11 @@ char	**quotes_management(char **final_split, t_env *env)
 	{
 		if (is_double_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
-			i++;
-			joined = ft_strdup("");
-			while (final_split[i] && !(is_double_quote(final_split[i][0]) && final_split[i][1] == '\0'))
-			{
-				// ================================================================ //
-				// ======== ENVOYER VERS EXPAND POUR GERER '$', '`' ET '\' ======== //
-				// ================================================================ //
-				if (is_dollar(final_split[i][0])) // || is_backtick(final_split[i][0]) || is_backslash(final_split[i][0])
-				{
-					while (env)
-					{
-						if (!ft_strncmp(&final_split[i][1], env->key, ft_strlen(env->key)))
-						{
-							tmp = joined;
-							joined = ft_strjoin(joined, env->value);
-							free(tmp);
-						}
-						env = env->next;
-					}
-					// var_name = &final_split[i][1];
-					// value  = getenv(var_name);
-					// if (!value)
-					// 	value = "";
-					// env = ft_envnew(final_split[i], value);
-					// ft_envadd_back(&env_lst, env);
-					// tmp = joined;
-					// joined = ft_strjoin(joined, env->value);
-					// free(tmp);
-				}
-				else
-				{
-					tmp = joined;
-					joined = ft_strjoin(joined, final_split[i]);
-					free(tmp);
-				}
-				if (final_split[i + 1] && !(is_double_quote(final_split[i + 1][0]) && final_split[i + 1][1] == '\0'))
-				{
-					tmp = joined;
-					joined = ft_strjoin(joined, " ");
-					free(tmp);
-				}
-				i++;
-			}
-			if (final_split[i])
-				i++;
-			tokens = add_split(tokens, &count, joined, ft_strlen(joined));
-			free(joined);
+			tokens = double_quote_management(final_split, env, tokens, &count, &i);
 		}
 		else if (is_single_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
-			i++;
-			joined = ft_strdup("");
-			while (final_split[i] && !(is_single_quote(final_split[i][0]) && final_split[i][1] == '\0'))
-			{
-				tmp = joined;
-				joined = ft_strjoin(joined, final_split[i]);
-				free(tmp);
-				if (final_split[i + 1] && !(is_single_quote(final_split[i + 1][0]) && final_split[i + 1][1] == '\0'))
-				{
-					tmp = joined;
-					joined = ft_strjoin(joined, " ");
-					free(tmp);
-				}
-				i++;
-			}
-			if (final_split[i])
-				i++;			
-			tokens = add_split(tokens, &count, joined, ft_strlen(joined));
-			free(joined);
+			tokens = single_quote_management(final_split, tokens, &count, &i);
 		}
 		else
 		{

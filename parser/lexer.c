@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/30 17:44:39 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:58:28 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	split_word(t_splitter *res, char *str, int *j)
 	int start;
 
 	start = *j;
-	while (str[*j] && !is_metacharacter(str[*j]))
+	while (str[*j] && !is_metacharacter(str[*j]) && !is_quote(str[*j]))
 		(*j)++;
 	res->final_split = add_split(res->final_split, &res->count, &str[start], *j - start);
 }
@@ -84,7 +84,7 @@ char **input_splitter(char *input)
 		j = 0;
 		while (result.input_split[i][j])
 		{
-			if (is_metacharacter(result.input_split[i][j]))
+			if (is_metacharacter(result.input_split[i][j]) || is_quote(result.input_split[i][j]))
 				split_special(&result, result.input_split[i], &j);
 			else
 				split_word(&result, result.input_split[i], &j);
