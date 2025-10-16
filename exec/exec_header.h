@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 18:44:49 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:10:26 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ int		exec_one_cmd(t_cmd *arg, char **envp);
 char	*find_path(t_cmd *cmd, char **envp);
 void	init_shell(t_shell *shell, char **envp);
 void	free_shell(t_shell *shell);
-int		ft_cd(char **argv);
-t_env 	*env_list_from_envp(char **envp);
+int		ft_cd(char **argv, t_shell *shell);
 t_env 	*env_list_from_envp(char **envp);
 int		ft_export(char **argv, t_shell *shell);
 void 	env_update_or_add(t_env **lst, char *key, char *value);
-void 	env_update_or_add(t_env **lst, char *key, char *value);
 int		ft_env(t_shell *shell);
+void	update_pwd(t_shell *shell, char *oldpwd);
 #endif
 

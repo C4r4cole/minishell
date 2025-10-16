@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 14:05:39 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:14:05 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,31 @@ int	ft_pwd(t_shell *shell)
 	}
 	return (0);
 }
+void	update_pwd(t_shell *shell, char *oldpwd)
+{
+	char	*newpwd;
 
-int	ft_cd(char **argv)
+	newpwd = getcwd(NULL, 0);
+	if (!newpwd)
+	{
+		perror("getcwd");
+		return ;
+	}
+	env_update_or_add(&(shell->envp_lst), "OLDPWD", oldpwd);
+	env_update_or_add(&(shell->envp_lst), "PWD", newpwd);
+	free(newpwd);
+}
+int	ft_cd(char **argv, t_shell *shell)
 {
 	char	*target;
 	char	*oldpwd;
+	char	*newpwd;
 
 	oldpwd = getcwd(NULL, 0);
 	if (!argv[1])
 		target = getenv("HOME");
 	else if (ft_strncmp(argv[1], "-", ft_strlen(argv[1])) == 0)
-		target = oldpwd;
+		target = shell->oldpwd;
 	else
 		target = argv[1];
 	if (!target)
@@ -110,20 +124,35 @@ int	ft_cd(char **argv)
 		free(oldpwd);
 		return (1);
 	}
+	newpwd = getcwd(NULL, 0);
+	if (newpwd)
+	{
+		// free ancien shell->oldpwd
+		free(shell->oldpwd);
+		shell->oldpwd = oldpwd;
+		free(shell->pwd);
+		shell->pwd = newpwd;
+		// mettre à jour dans l'env
+		env_update_or_add(&(shell->envp_lst), "OLDPWD", shell->oldpwd);
+		env_update_or_add(&(shell->envp_lst), "PWD", shell->pwd);
+	}
+	else
+		free(oldpwd); // on libère si jamais getcwd a échoué
 	return (0);
-	// mtn il faut update les pwd dans mon **ENV ;
 }
 
-void env_update_or_add(t_env **lst, char *key, char *value)
+void	env_update_or_add(t_env **lst, char *key, char *value)
 {
-	t_env *tmp = *lst;
+	t_env	*tmp;
+
+	tmp = *lst;
 	while (tmp)
 	{
 		if (strcmp(tmp->key, key) == 0)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(value);
-			return;
+			return ;
 		}
 		tmp = tmp->next;
 	}
@@ -132,14 +161,16 @@ void env_update_or_add(t_env **lst, char *key, char *value)
 
 int	ft_env(t_shell *shell)
 {
-    t_env *tmp = shell->envp_lst;
-    while (tmp)
-    {
-        if (tmp->value) // n'affiche que les variables avec une valeur
-            printf("%s=%s\n", tmp->key, tmp->value);
-        tmp = tmp->next;
-    }
-    return (0);
+	t_env	*tmp;
+
+	tmp = shell->envp_lst;
+	while (tmp)
+	{
+		if (tmp->value) // n'affiche que les variables avec une valeur
+			ft_printf("%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 int	ft_export(char **argv, t_shell *shell)

@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 15:32:06 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:25:51 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 		else if (ft_strncmp(current->argv[0], "cd",
 				ft_strlen(current->argv[0])) == 0)
 		{
-			ft_cd(current->argv);
+			ft_cd(current->argv,shell);
 		}
 		else if (ft_strncmp(current->argv[0], "export",
 				ft_strlen(current->argv[0])) == 0)
 		{
-			ft_export(current->argv, shell);
+			ft_export(current->argv, shell); // ajouter le export tout seul qui met les variables dans l'ordre alphabetique
 		}
 		else if (ft_strncmp(current->argv[0], "env",
 				ft_strlen(current->argv[0])) == 0)
