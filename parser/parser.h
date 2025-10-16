@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 17:28:49 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/16 15:50:00 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ enum symbols
 	REDIRECTION_APPEND = 256,
 	HEREDOC = 257,
 	OPEN_BRACKET = '[',
+	CLOSE_BRACKET = ']',
+	O_CURLY_BRACKET = '{',
+	C_CURLY_BRACKET = '}',
 	TILDE = '~',
 	PERCENT = '%',
 	AMPERSAND = '&',
@@ -117,6 +120,9 @@ int is_tab(char c);
 int	is_new_line(char c);
 int	is_star(char c);
 int	is_open_bracket(char c);
+int	is_close_bracket(char c);
+int is_o_curly_bracket(char c);
+int is_c_curly_bracket(char c);
 int	is_hash(char c);
 int	is_tilde(char c);
 int	is_equal(char c);

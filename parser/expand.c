@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 11:42:09 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 17:28:29 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/16 17:09:58 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,30 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 char	*expand_dollar(char *token, t_env *env)
 {
     t_env	*current_env;
-    
-    if (!is_dollar(token[0]))
-        return (ft_strdup(token));
-    
+	int		len;
+	char	*var_name;
+	char	*result;
+	
+    if (!token || !is_dollar(token[0]))
+		return (ft_strdup(token));
+    len = ft_strlen(token);
     current_env = env;
+	if (is_o_curly_bracket(token[1]) && is_c_curly_bracket(token[len - 1]))
+		var_name = ft_substr(token, 2, len - 3);
+	else
+		var_name = ft_substr(token, 1, len - 1);
+	if (!var_name)
+		return (ft_strdup(""));
     while (current_env)
     {
-        if (ft_strlen(&token[1]) == ft_strlen(current_env->key) && 
-            !ft_strncmp(&token[1], current_env->key, ft_strlen(current_env->key)))
-            return (ft_strdup(current_env->value));
-        current_env = current_env->next;
+		if (ft_strcmp(var_name, current_env->key) == 0)
+		{
+			result = ft_strdup(current_env->value);
+			free(var_name);
+			return (result);
+		}
+		current_env = current_env->next;
     }
+	free(var_name);
     return (ft_strdup(""));
 }
