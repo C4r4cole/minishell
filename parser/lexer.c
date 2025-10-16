@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 15:58:28 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/16 18:39:05 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ char **input_splitter(char *input)
 	t_splitter result;
 	int		i;
 	int		j;
-	
+
+	if (check_unclosed_quotes(input))
+		return (NULL);
 	result.input_split = ft_split(input, ' ');
 	result.final_split = NULL;
 	i = 0;
