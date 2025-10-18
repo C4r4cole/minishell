@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/01 13:25:51 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/18 17:15:56 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 		}
 		else
 		{
+			execute_redirections_cmds(cmds, shell->envp_lst);
 			shell->exit_status = exec_one_cmd(current, shell->envp);
 		}
 		current = current->next;

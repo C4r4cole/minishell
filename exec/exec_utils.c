@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/09/30 16:06:02 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/18 18:31:24 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,10 @@ int	exec_one_cmd(t_cmd *arg, char **envp)
 	pid_t pid;
 	int status;
 	char *bin;
+	t_env	*env;
 
+	env = env_list_from_envp(envp);
+	// heredoc_before_fork(arg);
 	bin = find_path(arg, envp);
 	if (!bin)
 	{
@@ -203,6 +206,7 @@ int	exec_one_cmd(t_cmd *arg, char **envp)
 	}
 	if (pid == 0)
 	{
+		execute_redirections_cmds(arg, env);
 		execve(bin, arg->argv, envp);
 		perror("error 127");
 		exit(1);

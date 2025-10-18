@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 14:50:02 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/17 11:11:02 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 t_redir *ft_redirnew(char *type, char *file)
 {
-    t_redir *new = malloc(sizeof(t_redir));
+    t_redir *new;
+	
+	new = malloc(sizeof(t_redir));
     if (!new)
         return (NULL);
-    
     if (ft_strcmp(type, "<") == 0)
-        new->type = REDIRECTION_IN, new->file = file;
+        new->type = REDIRECTION_IN, new->file = ft_strdup(file);
     else if (ft_strcmp(type, ">") == 0)
-        new->type = REDIRECTION_OUT, new->file = file;
+        new->type = REDIRECTION_OUT, new->file = ft_strdup(file);
     else if (ft_strcmp(type, "<<") == 0)
-        new->type = HEREDOC, new->file = file;
+        new->type = HEREDOC, new->file = ft_strdup(file);
     else if (ft_strcmp(type, ">>") == 0)
-        new->type = REDIRECTION_APPEND, new->file = file;
-    
+        new->type = REDIRECTION_APPEND, new->file = ft_strdup(file);
     new->next = NULL;
     return (new);
 }

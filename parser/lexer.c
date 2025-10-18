@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/16 18:39:05 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/18 13:37:06 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,35 @@ static void	split_word(t_splitter *res, char *str, int *j)
 	res->final_split = add_split(res->final_split, &res->count, &str[start], *j - start);
 }
 
+int	get_metacharacter_length(char *str)
+{
+	if (!str)
+		return (0);
+	if ((is_redirection_in(str[0]) && is_redirection_in(str[1]))
+		|| (is_redirection_out(str[0]) && is_redirection_out(str[1])))
+		return (2);
+	if (is_redirection_in(str[0]) || is_redirection_out(str[0]) || is_pipe(str[0]))
+		return (1);
+	return (0);
+}
+
 static void split_special(t_splitter *res, char *str, int *j)
 {
-	res->final_split = add_split(res->final_split, &res->count, &str[*j], 1);
-	if (str[*j])
-		(*j)++;
+	int	metacharacter_len;
+	
+	metacharacter_len = get_metacharacter_length(&str[*j]);
+	
+	if (metacharacter_len > 0)
+	{
+		res->final_split = add_split(res->final_split, &res->count, &str[*j], metacharacter_len);
+		*j += metacharacter_len;
+	}
+	else
+	{
+		res->final_split = add_split(res->final_split, &res->count, &str[*j], 1);
+		if (str[*j])
+			(*j)++;
+	}
 }
 
 char **input_splitter(char *input)

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/16 18:32:53 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/17 14:23:00 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ t_env	*ft_envnew(char *key, char *value);
 void	free_cmd_list(t_cmd *cmd_list);
 void	free_redir_list(t_redir *redir_list);
 void	free_tokens(char **tokens);
+void	free_tab(char **tab);
 int		handle_redirection(char **tokens, int *i, t_redir **redirection_list);
 char	**create_cmd_args(char **tokens, int start, int count);
 int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);

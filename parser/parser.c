@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/16 18:44:11 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/18 19:07:57 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,17 @@ t_cmd	*parse_input(char *user_input, t_env *env)
     i = 0;
     while (tokens[i])
     {
-        if (is_redirection(tokens[i]))
+        while (tokens[i] && is_redirection(tokens[i]))
         {
             if (!handle_redirection(tokens, &i, &redirection_list))
                 break;
         }
-        else if (tokens[i][0] && !is_pipe(tokens[i][0]))
+        if (tokens[i] && tokens[i][0] && !is_pipe(tokens[i][0]))
         {
             if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
                 return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
         }
-		else if (is_pipe(tokens[i][0]))
+		else if (tokens[i] && is_pipe(tokens[i][0]))
 		{
 			if (!handle_pipe(&i))
 				break;

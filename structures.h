@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:21:00 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 13:25:15 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/18 17:50:39 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_redir
 {
 	int				type;   // <, >, >>, <<
 	char    		*file;
+	int				heredoc_fd;
 	struct s_redir	*next;
 }   			t_redir;
 
