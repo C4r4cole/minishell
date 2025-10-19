@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 09:12:46 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 17:39:31 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/19 14:49:30 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <stddef.h>
 # include <ctype.h>
+# include "../../structures.h"
 
 // Bonus part
 
@@ -33,7 +34,7 @@ typedef struct s_list
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
-t_list	*ft_lstlast(t_list *lst);
+t_cmd	*ft_lstlast(t_cmd *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));

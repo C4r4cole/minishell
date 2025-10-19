@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/18 19:07:57 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/19 15:23:47 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_cmd	*parse_input(char *user_input, t_env *env)
     t_cmd	*cmd_list;
     t_redir	*redirection_list;
     int		i;
+	t_cmd	*current_cmd;
 
 	if (is_empty_input(user_input))
 		return (NULL);
@@ -66,28 +67,36 @@ t_cmd	*parse_input(char *user_input, t_env *env)
 		free_tokens(tokens);
 		return (NULL);
 	}
+	current_cmd = NULL;
     cmd_list = NULL;
     redirection_list = NULL;
     i = 0;
     while (tokens[i])
     {
-        while (tokens[i] && is_redirection(tokens[i]))
+        if (is_redirection(tokens[i]))
         {
-            if (!handle_redirection(tokens, &i, &redirection_list))
-                break;
+            if (!current_cmd)
+			{
+				ft_printf("Syntax error: redirection with no command\n");
+                break ;
+			}
+			handle_redirection(tokens, &i, &current_cmd->redir);
+			continue ;
         }
         if (tokens[i] && tokens[i][0] && !is_pipe(tokens[i][0]))
         {
             if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
                 return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
+			current_cmd = ft_lstlast(cmd_list);
+			continue ;
         }
-		else if (tokens[i] && is_pipe(tokens[i][0]))
+		if (tokens[i] && is_pipe(tokens[i][0]))
 		{
-			if (!handle_pipe(&i))
-				break;
+			current_cmd = NULL;
+			i++;
+			continue;
 		}
-        else
-            i++;
+        i++;
     }
 	if (redirection_list)
 		free_redir_list(redirection_list);

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/18 19:06:53 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/19 15:24:07 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ int is_redirection(char *present_token)
 
 int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 {
-	t_redir	*redirection_sign;
+	t_redir	*new_redir;
 	
     if (tokens[*i + 1])
     {
-		redirection_sign = ft_redirnew(tokens[*i], tokens[*i + 1]);
-        ft_rediradd_back(redirection_list, redirection_sign);
-		if (redirection_sign->type == HEREDOC)
-			handle_heredoc(redirection_sign->file);
+		new_redir = ft_redirnew(tokens[*i], tokens[*i + 1]);
+        ft_rediradd_back(redirection_list, new_redir);
         *i += 2;
         return (1);
     }

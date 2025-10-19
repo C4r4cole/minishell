@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/18 19:11:13 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/19 15:22:47 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,6 @@ void execute_redirections_cmds(t_cmd *cmd, t_env *env)
 	{
 		if (redir->type == HEREDOC)
 		{
-			// fd = handle_heredoc(redir->file);
-			// if (fd < 0)
-			// {
-			// 	perror("heredoc");
-			// 	free_tab(envp);
-			// 	return ;
-			// }
             if (dup2(redir->heredoc_fd, STDIN_FILENO) < 0)
             {
                 perror("dup2");
@@ -120,6 +113,7 @@ int	handle_heredoc(char *end_word)
 	fd_read = open(tmpfile, O_RDONLY);
 	if (fd_read < 0)
 		return (perror("heredoc read"), -1);
+	unlink(tmpfile);
 	return (fd_read);
 }
 

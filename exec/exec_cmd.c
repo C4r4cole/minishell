@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/18 17:15:56 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/19 15:11:35 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,16 @@
 int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 {
 	t_cmd	*current;
+	t_cmd	*tmp;
 
 	current = cmds;
+	tmp = cmds;
+	while (tmp)
+	{
+		if (heredoc_before_fork(tmp))
+			return (1);
+		tmp = tmp->next;
+	}
 	while (current)
 	{
 		if (ft_strncmp(current->argv[0], "echo",
@@ -46,7 +54,6 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 		}
 		else
 		{
-			execute_redirections_cmds(cmds, shell->envp_lst);
 			shell->exit_status = exec_one_cmd(current, shell->envp);
 		}
 		current = current->next;

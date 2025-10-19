@@ -6,13 +6,14 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:57:56 by francoismou       #+#    #+#             */
-/*   Updated: 2025/05/13 11:57:46 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/19 14:45:08 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "structures.h"
 
-t_list	*ft_lstlast(t_list *lst)
+t_cmd	*ft_lstlast(t_cmd *lst)
 {
 	if (!lst)
 		return (NULL);
