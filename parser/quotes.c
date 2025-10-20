@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/02 17:47:42 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/20 20:43:54 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char	**double_quote_management(char **final_split, t_env *env, char **tokens, in
 	if (final_split[*i])
 		(*i)++;
 	tokens = add_split(tokens, count, joined, ft_strlen(joined));
+	if (!tokens)
+		return (NULL);
 	return (free(joined), tokens);
 }
 
@@ -64,6 +66,8 @@ char	**single_quote_management(char **final_split, char **tokens, int *count, in
 	if (final_split[*i])
 		(*i)++;
 	tokens = add_split(tokens, count, joined, ft_strlen(joined));
+	if (!tokens)
+		return (NULL);
 	free(joined);
 	return (tokens);
 }
@@ -91,6 +95,8 @@ char	**quotes_management(char **final_split, t_env *env)
 		else
 		{
 			tokens = add_split(tokens, &count, final_split[i], ft_strlen(final_split[i]));
+			if (!tokens)
+				return (NULL);
 			i++;
 		}
 	}

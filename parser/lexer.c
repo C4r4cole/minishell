@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/18 13:37:06 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/20 20:42:29 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,17 @@ static char	**copy_old_split(char **old, int count)
 	i = 0;
 	while (i < count)
 	{
-		new[i] = old[i];
+		new[i] = ft_strdup(old[i]);
+		if (!new[i])
+		{
+			while (i > 0)
+				free(new[--i]);
+			free(new);
+			return (NULL);
+		}
 		i++;
 	}
+	new[i] = NULL;
 	return (new);
 }
 
@@ -38,17 +46,21 @@ char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int l
 		return (string_to_subsplit);
 	new_split_tab = copy_old_split(string_to_subsplit, *nb_splitted);
 	if (!new_split_tab)
-		return (string_to_subsplit);
+	{
+		free_tab(string_to_subsplit);
+		return (NULL);
+	}
 	special_character = ft_strndup(start, len);
 	if (!special_character)
 	{
-		free(new_split_tab);
-		return (new_split_tab);
+		free_tab(new_split_tab);
+		free_tab(string_to_subsplit);
+		return (NULL);
 	}
 	new_split_tab[*nb_splitted] = special_character;
 	new_split_tab[*nb_splitted + 1] = NULL;
 	(*nb_splitted)++;
-	free(string_to_subsplit);
+	free_tab(string_to_subsplit);
 	return (new_split_tab);
 }
 
@@ -60,6 +72,8 @@ static void	split_word(t_splitter *res, char *str, int *j)
 	while (str[*j] && !is_metacharacter(str[*j]) && !is_quote(str[*j]))
 		(*j)++;
 	res->final_split = add_split(res->final_split, &res->count, &str[start], *j - start);
+	if (!res->final_split)
+		return ;
 }
 
 int	get_metacharacter_length(char *str)
@@ -83,11 +97,15 @@ static void split_special(t_splitter *res, char *str, int *j)
 	if (metacharacter_len > 0)
 	{
 		res->final_split = add_split(res->final_split, &res->count, &str[*j], metacharacter_len);
+		if (!res->final_split)
+			return ;
 		*j += metacharacter_len;
 	}
 	else
 	{
 		res->final_split = add_split(res->final_split, &res->count, &str[*j], 1);
+		if (!res->final_split)
+			return ;
 		if (str[*j])
 			(*j)++;
 	}
@@ -117,5 +135,6 @@ char **input_splitter(char *input)
 		}
 		i++;
 	}
+	free_tab(result.input_split);
 	return (result.final_split);
 }

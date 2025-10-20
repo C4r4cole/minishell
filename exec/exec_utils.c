@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/19 15:20:27 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/20 20:29:08 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	free_tab(char **tab)
 {
 	int	i;
 
+	if (!tab)
+		return ;
 	i = 0;
 	while (tab[i])
 	{

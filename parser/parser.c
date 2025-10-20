@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/19 15:23:47 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/20 21:19:39 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	**get_tokens(char *user_input, t_env *env)
 	if (!split)
 		return (NULL);
 	tokens = quotes_management(split, env);
+	free_tab(split);
 	if (!tokens || !tokens[0])
 	{
 		if (tokens)
