@@ -6,12 +6,12 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 13:57:56 by francoismou       #+#    #+#             */
-/*   Updated: 2025/10/19 14:45:08 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/20 14:26:58 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "structures.h"
+#include "../../structures.h"
 
 t_cmd	*ft_lstlast(t_cmd *lst)
 {
