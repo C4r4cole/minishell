@@ -6,7 +6,7 @@
 #    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/10/18 17:09:03 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/10/20 17:04:12 by fmoulin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRCS =	minishell.c utils/error.c utils/list_utils.c utils/banner.c parser/cleane
 		parser/tokens.c parser/quoting/quoting_00.c parser/quoting/quoting_01.c \
 		parser/quoting/quoting_02.c parser/quoting/quoting_03.c parser/quoting/quoting_04.c \
 		parser/quoting/quoting_symbols.c exec/exec_builtins1.c exec/exec_cmd.c exec/exec_utils.c \
-		parser/parser_utils.c parser/quoting/quoting_05.c exec/exec_heredoc.c
+		parser/parser_utils.c parser/quoting/quoting_05.c exec/exec_heredoc.c \
+		exec/exec_redirections.c
 
 # Mains
 MAIN = minishell.c

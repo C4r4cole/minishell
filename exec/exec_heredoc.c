@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/19 15:22:47 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/20 16:51:07 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,47 +41,6 @@ char	**env_to_tab(t_env *env)
 	}
 	tab[i] = NULL;
 	return (tab);
-}
-
-void execute_redirections_cmds(t_cmd *cmd, t_env *env)
-{
-	t_redir	*redir;
-	int		fd;
-	char	*path;
-	char 	**envp;
-
-	envp = env_to_tab(env);
-	path = find_path(cmd, envp);
-	redir = cmd->redir;
-	while (redir)
-	{
-		if (redir->type == HEREDOC)
-		{
-            if (dup2(redir->heredoc_fd, STDIN_FILENO) < 0)
-            {
-                perror("dup2");
-				exit (1);
-            }
-			close(redir->heredoc_fd);
-		}
-		else if (redir->type == REDIRECTION_IN)
-		{
-			fd = open(redir->file, O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		else if (redir->type == REDIRECTION_OUT)
-		{
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
-		redir = redir->next;
-	}
-	execve(path, cmd->argv, envp);
-	perror("execve");
-	free_tab(envp);
-	exit(EXIT_FAILURE);
 }
 
 int	handle_heredoc(char *end_word)
