@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/20 14:34:33 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:14:30 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,4 +198,115 @@ int	ft_export(char **argv, t_shell *shell)
 		i++;
 	}
 	return (0);
+}
+void	env_remove(t_env **lst, char *key)
+{
+	t_env *prev = NULL;
+	t_env *tmp = *lst;
+
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*lst = tmp->next;
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
+			return;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+}
+
+int is_valid_env_name(const char *str)
+{
+    int i;
+
+    if (!str || !str[0])
+        return (0);
+    if (!ft_isalpha(str[0]) && str[0] != '_') // Le premier caractère doit être une lettre ou un underscore
+        return (0);
+    i = 1;
+    while (str[i])
+    {
+        if (!ft_isalnum(str[i]) && str[i] != '_') // Les caractères suivants doivent être alphanumériques ou des underscores
+            return (0);
+        i++;
+    }
+    return (1);
+}
+int ft_unset(char **argv, t_shell *shell)
+{
+    int i;
+
+    if (!argv[1])
+        return (0);
+    i = 1;
+    while (argv[i])
+    {
+        if (argv[i][0] && is_valid_env_name(argv[i]))
+        {
+            env_remove(&(shell->envp_lst), argv[i]);
+        }
+        else
+        {
+            ft_putstr_fd("': not a valid identifier\n", 2);
+            shell->exit_status = 1;
+        }
+        i++;
+    }
+    return (0);
+}
+
+int ft_isnumber(char *str)
+{
+	int i = 0;
+
+	if (!str || !str[0])
+		return (0);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+int ft_exit(char **argv, t_shell *shell)
+{
+	long long status;
+
+	status = 1;
+	ft_putstr_fd("exit\n", 2);
+	if (!argv[1])
+	{
+		status = shell->exit_status;
+	}
+	else if (!ft_isnumber(argv[1]))
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		status = 2;
+	}
+	else if (argv[2])
+	{
+		ft_putstr_fd("minishell: exit: Too many arguments\n", 2);
+		shell->exit_status = 1;
+		return (1);
+	}
+	else
+		status = ft_atoi(argv[1]); // remplacer par un atoll car on peut quitter avec un code erreur au dessus de int
+
+	// liberer la env aussi
+	free_shell(shell);
+
+	// quit avc le bon status
+	exit((int)status);
 }

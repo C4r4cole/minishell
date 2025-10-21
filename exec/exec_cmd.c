@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/20 17:43:12 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:14:05 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 	while (current)
 	{
 		if (ft_strcmp(current->argv[0], "echo") == 0
-		|| ft_strcmp(current->argv[0], "pwd") == 0
-		|| ft_strcmp(current->argv[0], "env") == 0)
+			|| ft_strcmp(current->argv[0], "pwd") == 0
+			|| ft_strcmp(current->argv[0], "env") == 0)
 		{
 			if (current->redir)
 			{
@@ -60,20 +60,24 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 					shell->exit_status = ft_echo(current->argv);
 				else if (ft_strcmp(current->argv[0], "pwd") == 0)
 					shell->exit_status = ft_pwd(shell);
-				else 
+				else
 					shell->exit_status = ft_env(shell);
 			}
 		}
 		else if (ft_strcmp(current->argv[0], "cd") == 0
 			|| ft_strcmp(current->argv[0], "export") == 0
+			|| ft_strcmp(current->argv[0], "unset") == 0
 			|| ft_strcmp(current->argv[0], "exit") == 0)
 		{
 			if (ft_strcmp(current->argv[0], "cd") == 0)
-				shell->exit_status = ft_cd(current->argv,shell);
+				shell->exit_status = ft_cd(current->argv, shell);
 			else if (ft_strcmp(current->argv[0], "export") == 0)
-				shell->exit_status = ft_export(current->argv, shell); // ajouter le export tout seul qui met les variables dans l'ordre alphabetique
-			// else if (ft_strcmp(current->argv[0], "exit") == 0)
-				// handle exit
+				shell->exit_status = ft_export(current->argv, shell);
+					// ajouter le export tout seul qui met les variables dans l'ordre alphabetique
+			else if (ft_strcmp(current->argv[0], "unset") == 0)
+				shell->exit_status = ft_unset(current->argv, shell);
+			else if (ft_strcmp(current->argv[0], "exit") == 0)
+				shell->exit_status = ft_exit(current->argv, shell);
 		}
 		else
 		{

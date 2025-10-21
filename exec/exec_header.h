@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/20 17:04:48 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 13:14:46 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int		ft_export(char **argv, t_shell *shell);
 void 	env_update_or_add(t_env **lst, char *key, char *value);
 int		ft_env(t_shell *shell);
 void	update_pwd(t_shell *shell, char *oldpwd);
+int		ft_exit(char **argv, t_shell *shell);
+int		ft_unset(char **argv, t_shell *shell);
 
 int		handle_heredoc(char *end_word);
 char	**env_to_tab(t_env *env);
