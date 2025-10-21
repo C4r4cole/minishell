@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 14:39:09 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 16:50:49 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	**single_quote_management(char **final_split, char **tokens, int *count, in
 char	**quotes_management(char **final_split, t_env *env)
 {
 	char	**tokens;
+	char	*expanded;
 	int		count;
 	int		i;
 
@@ -94,7 +95,9 @@ char	**quotes_management(char **final_split, t_env *env)
 		}
 		else
 		{
-			tokens = add_split(tokens, &count, final_split[i], ft_strlen(final_split[i]));
+			expanded = expand_dollar(final_split[i], env);
+			tokens = add_split(tokens, &count, expanded, ft_strlen(expanded));
+			free(expanded);
 			if (!tokens)
 				return (NULL);
 			i++;

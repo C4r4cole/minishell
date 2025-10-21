@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 14:31:29 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 14:44:48 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char **argv, char **envp)
 	// int		i;
 	t_shell	*data;
 	char 	*input;
-	t_shell	*shell;
 	// int		j;
 
 	data = malloc(sizeof(t_shell));
@@ -35,7 +34,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	(void)argc;
 	(void)*argv;
-	shell = init_shell(data, envp);
+	init_shell(data, envp);
 	// print_env_list(data->envp_lst); // PRINT DE LA LISTE
 	print_banner();
 	rl_bind_key('\t', rl_complete);
@@ -59,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(input);
 		// printf("cmd = %s\n", input);
-		tokens = parse_input(input, data->envp_lst, shell);
+		tokens = parse_input(input, data->envp_lst);
 		execute_cmds_list(tokens, data); 
 			// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
 	// 	i = 1;

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 14:38:59 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 15:59:38 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	**create_cmd_args(char **tokens, int start, int count);
 int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
 int		handle_pipe(int *i);
 char	*expand_dollar(char *token, t_env *env);
+char	*expand_variables(char *token, t_env *env);
 int		syntax_error(char *token);
 int		check_syntax_errors(char **tokens);
 int		check_unclosed_quotes(char *input);
