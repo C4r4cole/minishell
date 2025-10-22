@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/22 14:27:32 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 14:32:41 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ int	exec_one_cmd(t_cmd *arg, char **envp)
 	{
 		int sig = WTERMSIG(status);
 		if (sig == SIGQUIT)
-			ft_printf("Quit (core dumped)\n");
+			ft_printf("%d quit (core dumped)\n", pid);
 		return (128 + sig); // exit_status
 	}
 	else if (WIFEXITED(status))
