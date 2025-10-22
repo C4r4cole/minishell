@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 17:28:31 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:18:27 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include "utils/libft/get_next_line.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+// # include <signal.h>
+# include <termios.h>
 # include "exec/exec_header.h"
 # include "parser/parser.h"
 #include "exec/exec_header.h"
