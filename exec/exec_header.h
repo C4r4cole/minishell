@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/21 13:14:46 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/21 18:42:15 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		check_n(const char *str);
 int		ft_echo(char **argv);
 int		ft_pwd(t_shell *shell);
 int		execute_cmds_list(t_cmd *cmds , t_shell *shell);
+int		execute_piped_cmds(t_cmd *cmds, t_shell *shell);
 int		exec_one_cmd(t_cmd *arg, char **envp);
 char	*find_path(t_cmd *cmd, char **envp);
 void	init_shell(t_shell *shell, char **envp);

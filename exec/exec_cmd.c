@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/21 13:14:05 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/21 18:42:32 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,48 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 		current = current->next;
 	}
 	return (shell->exit_status);
+}
+
+int execute_piped_cmds(t_cmd *cmds, t_shell *shell)
+{
+    int fd[2];
+    int in_fd = 0;
+    pid_t pid;
+    t_cmd *current = cmds;
+
+    while (current)
+    {
+        if (current->next)
+            pipe(fd);
+        pid = fork();
+        if (pid == 0)
+        {
+            if (in_fd != 0)
+            {
+                dup2(in_fd, STDIN_FILENO);
+                close(in_fd);
+            }
+            if (current->next)
+            {
+                close(fd[0]);
+                dup2(fd[1], STDOUT_FILENO);
+                close(fd[1]);
+            }
+            if (current->redir)
+                execute_redirections_builtins(current->redir);
+            execve(find_path(current, shell->envp), current->argv, shell->envp);
+            perror("execve");
+            exit(1);
+        }
+        if (in_fd != 0)
+            close(in_fd);
+        if (current->next)
+        {
+            close(fd[1]);
+            in_fd = fd[0];
+        }
+        current = current->next;
+    }
+    while (wait(NULL) > 0);
+    return 0;
 }

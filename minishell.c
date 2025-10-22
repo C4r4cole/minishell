@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/01 14:52:49 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/21 18:44:16 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*tokens;
-	// int		i;
 	t_shell	*data;
-		char *input;
-	// int		j;
+	char	*input;
 
+	// int		i;
+	// int		j;
 	data = malloc(sizeof(t_shell));
 	if (!data)
 		return (1);
@@ -59,36 +59,43 @@ int	main(int argc, char **argv, char **envp)
 		add_history(input);
 		// printf("cmd = %s\n", input);
 		tokens = parse_input(input, data->envp_lst);
-		execute_cmds_list(tokens, data); 
-			// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
-	// 	i = 1;
-	// 	while (tokens)
-	// 	{
-	// 		printf("%d cmd ->", i);
-	// 		if (tokens->argv)
-	// 		{
-	// 			j = 0;
-	// 			while (tokens->argv[j])
-	// 			{
-	// 				printf(" %s", tokens->argv[j]);
-	// 				j++;
-	// 			}
-	// 		}
-	// 		printf("\n");
-	// 		// Parcourir les redirections liées à ce token
-	// 		t_redir *redir = tokens->redir;
-	// 		while (redir)
-	// 		{
-	// 			printf("   redir -> type=%d, file=%s\n", redir->type,redir->file);						
-	// 			redir = redir->next;
-	// 		}
-	// 		tokens = tokens->next;
-	// 		i++;
-	// 	}
-	// 	free(input);
-	// }
-	// 	// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
-	// 	return (0);
+		if (tokens)
+		{
+			if (tokens->next)
+				execute_piped_cmds(tokens, data); // s'execute si jai des commandes pipes
+			else
+				execute_cmds_list(tokens, data); // commande simple
+		}
+		// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
+		// 	i = 1;
+		// 	while (tokens)
+		// 	{
+		// 		printf("%d cmd ->", i);
+		// 		if (tokens->argv)
+		// 		{
+		// 			j = 0;
+		// 			while (tokens->argv[j])
+		// 			{
+		// 				printf(" %s", tokens->argv[j]);
+		// 				j++;
+		// 			}
+		// 		}
+		// 		printf("\n");
+		// 		// Parcourir les redirections liées à ce token
+		// 		t_redir *redir = tokens->redir;
+		// 		while (redir)
+		// 		{
+		// 			printf("   redir -> type=%d, file=%s\n",
+						//redir->type,redir->file);
+		// 			redir = redir->next;
+		// 		}
+		// 		tokens = tokens->next;
+		// 		i++;
+		// 	}
+		// 	free(input);
+		// }
+		// 	// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
+		// 	return (0);
 	}
 	free_shell(data);
 }
