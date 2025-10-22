@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/22 10:56:00 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:26:13 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_empty_input(char *user_input)
 	return (!user_input[i]);
 }
 
-char	**get_tokens(char *user_input, t_env *env)
+char	**get_tokens(char *user_input, t_shell *shell)
 {
 	char	**tokens;
 	char	**split;
@@ -32,7 +32,7 @@ char	**get_tokens(char *user_input, t_env *env)
 	split = input_splitter(user_input);
 	if (!split)
 		return (NULL);
-	tokens = quotes_management(split, env);
+	tokens = quotes_management(split, shell);
 	free_tab(split);
 	if (!tokens || !tokens[0])
 	{
@@ -50,7 +50,7 @@ void	cleanup_parse_error(t_cmd *cmd_list, t_redir *redirection_list, char **toke
 	free_tokens(tokens);
 }
 
-t_cmd	*parse_input(char *user_input, t_env *env)
+t_cmd	*parse_input(char *user_input, t_shell *shell)
 {
 	char	**tokens;
     t_cmd	*cmd_list;
@@ -60,7 +60,7 @@ t_cmd	*parse_input(char *user_input, t_env *env)
 
 	if (is_empty_input(user_input))
 		return (NULL);
-    tokens = get_tokens(user_input, env);
+    tokens = get_tokens(user_input, shell);
 	if (!tokens)
         return (NULL);
 	if (check_syntax_errors(tokens))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/22 14:00:36 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/22 14:27:57 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(input);
 		// printf("cmd = %s\n", input);
-		tokens = parse_input(input, data->envp_lst);
+		tokens = parse_input(input, data);
+		free(input);
 		if (tokens)
 		{
 			if (tokens->next)
