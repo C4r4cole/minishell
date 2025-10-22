@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 11:42:09 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 17:46:22 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:12:58 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char *ft_strjoin_free(char *s1, char *s2)
 	return (joined);
 }
 
-char	*expand_dollar(char *token, t_env *env)
+char	*expand_dollar(char *token, t_shell *shell)
 {
     // t_env	*current_env;
 	// int		len;
@@ -108,12 +108,19 @@ char	*expand_dollar(char *token, t_env *env)
 		if (is_dollar(token[i]))
 		{
 			i++;
+			if (is_question_mark(token[i]))
+			{
+				var_value = ft_itoa(shell->exit_status);
+				result = ft_strjoin_free(result, var_value);
+				i++;
+				continue ;
+			}
 			start = i;
 			while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
 				i++;
 			var_name = ft_substr(token, start, i - start);
 			var_value = ft_strdup("");
-			tmp = env;
+			tmp = shell->envp_lst;
 			while (tmp)
 			{
 				if (ft_strcmp(tmp->key, var_name) == 0)

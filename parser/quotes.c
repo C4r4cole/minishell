@@ -6,13 +6,13 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:05:13 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 16:50:49 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:16:44 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-char	**double_quote_management(char **final_split, t_env *env, char **tokens, int *count, int *i)
+char	**double_quote_management(char **final_split, t_shell *shell, char **tokens, int *count, int *i)
 {
 	char	*joined;
 	char	*expanded;
@@ -22,7 +22,7 @@ char	**double_quote_management(char **final_split, t_env *env, char **tokens, in
 	joined = ft_strdup("");
 	while (final_split[*i] && !(is_double_quote(final_split[*i][0]) && final_split[*i][1] == '\0'))
 	{
-		expanded = expand_dollar(final_split[*i], env);
+		expanded = expand_dollar(final_split[*i], shell);
 		tmp = joined;
 		joined = ft_strjoin(joined, expanded);
 		free(tmp);
@@ -72,7 +72,7 @@ char	**single_quote_management(char **final_split, char **tokens, int *count, in
 	return (tokens);
 }
 
-char	**quotes_management(char **final_split, t_env *env)
+char	**quotes_management(char **final_split, t_shell *shell)
 {
 	char	**tokens;
 	char	*expanded;
@@ -87,7 +87,7 @@ char	**quotes_management(char **final_split, t_env *env)
 	{
 		if (is_double_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
-			tokens = double_quote_management(final_split, env, tokens, &count, &i);
+			tokens = double_quote_management(final_split, shell, tokens, &count, &i);
 		}
 		else if (is_single_quote(final_split[i][0]) && final_split[i][1] == '\0')
 		{
@@ -95,7 +95,7 @@ char	**quotes_management(char **final_split, t_env *env)
 		}
 		else
 		{
-			expanded = expand_dollar(final_split[i], env);
+			expanded = expand_dollar(final_split[i], shell);
 			tokens = add_split(tokens, &count, expanded, ft_strlen(expanded));
 			free(expanded);
 			if (!tokens)

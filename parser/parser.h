@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 15:59:38 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:26:49 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # include "../structures.h"
 # include "../utils/utils.h"
+# include "../exec/exec_header.h"
 
 // ========================= //
 // ========= ENUMS ========= //
@@ -77,8 +78,8 @@ typedef struct s_splitter
 
 char	**input_splitter(char *input);
 char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
-char	**quotes_management(char **final_split, t_env *env);
-t_cmd	*parse_input(char *user_input, t_env *env);
+char	**quotes_management(char **final_split, t_shell *shell);
+t_cmd	*parse_input(char *user_input, t_shell *shell);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 void	ft_envadd_back(t_env **lst, t_env *new);
@@ -94,8 +95,7 @@ int		handle_redirection(char **tokens, int *i, t_redir **redirection_list);
 char	**create_cmd_args(char **tokens, int start, int count);
 int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
 int		handle_pipe(int *i);
-char	*expand_dollar(char *token, t_env *env);
-char	*expand_variables(char *token, t_env *env);
+char	*expand_dollar(char *token, t_shell *shell);
 int		syntax_error(char *token);
 int		check_syntax_errors(char **tokens);
 int		check_unclosed_quotes(char *input);
