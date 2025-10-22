@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/22 12:02:22 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/22 14:00:36 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ int	main(int argc, char **argv, char **envp)
 	// ============ //
 	// === TEST === //
 	// ============ //
-	setup_signals_main();
 	while (1)
 	{
+		// Installe le handler SIGINT juste avant readline
+		setup_signals_main();
 		input = readline("minishell> ");
 		if (!input)
 			break ;
@@ -63,9 +64,9 @@ int	main(int argc, char **argv, char **envp)
 		if (tokens)
 		{
 			if (tokens->next)
-				execute_piped_cmds(tokens, data); // s'execute si jai des commandes pipes
+				execute_piped_cmds(tokens, data);
 			else
-				execute_cmds_list(tokens, data); // commande simple
+				execute_cmds_list(tokens, data);
 		}
 		// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
 		// 	i = 1;

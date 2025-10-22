@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/21 14:38:27 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/22 14:21:58 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,33 +155,41 @@ char	*find_path(t_cmd *cmd, char **envp)
 	return (free_tab(paths), NULL);
 }
 
-t_env *env_list_from_envp(char **envp)
+t_env	*env_list_from_envp(char **envp)
 {
-    t_env *head = NULL;
-    t_env *tail = NULL;
-    int i = 0;
+	t_env	*head;
+	t_env	*tail;
+	int		i;
+	char	*equal;
+	int		key_len;
+	char	*key;
+	char	*value;
+	t_env	*new;
 
-    while (envp && envp[i])
-    {
-        // Découpe la variable en key et value
-        char *equal = ft_strchr(envp[i], '=');
-        if (!equal)
-        {
-            i++;
-            continue;
-        }
-        int key_len = equal - envp[i];
-        char *key = ft_substr(envp[i], 0, key_len);
-        char *value = ft_strdup(equal + 1);
-        t_env *new = ft_envnew(key, value);
-        if (!head)
-            head = new;
-        else
-            tail->next = new;
-        tail = new;
-        i++;
-    }
-    return head;
+	head = NULL;
+	tail = NULL;
+	i = 0;
+	while (envp && envp[i])
+	{
+		// Découpe la variable en key et value
+		equal = ft_strchr(envp[i], '=');
+		if (!equal)
+		{
+			i++;
+			continue ;
+		}
+		key_len = equal - envp[i];
+		key = ft_substr(envp[i], 0, key_len);
+		value = ft_strdup(equal + 1);
+		new = ft_envnew(key, value);
+		if (!head)
+			head = new;
+		else
+			tail->next = new;
+		tail = new;
+		i++;
+	}
+	return (head);
 }
 
 int	exec_one_cmd(t_cmd *arg, char **envp)
@@ -189,7 +197,7 @@ int	exec_one_cmd(t_cmd *arg, char **envp)
 	pid_t pid;
 	int status;
 	char *bin;
-	t_env	*env;
+	t_env *env;
 
 	env = env_list_from_envp(envp);
 	bin = find_path(arg, envp);
@@ -207,11 +215,26 @@ int	exec_one_cmd(t_cmd *arg, char **envp)
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		execute_redirections_cmds(arg, env);
 		execve(bin, arg->argv, envp);
 		perror("error 127");
 		exit(1);
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+	{
+		int sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+			ft_printf("Quit (core dumped)\n");
+		return (128 + sig); // exit_status
+	}
+	else if (WIFEXITED(status))
+	{
+		return (WEXITSTATUS(status));
+	}
+	return (1);
 }
