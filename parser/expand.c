@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 11:42:09 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/22 12:12:58 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/23 11:43:34 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 	// printf("Ajout ou update : %s=%s\n", key, value);
 }
 
-static char	*append_char(char *str, char c)
+char	*str_append_char(char *str, char c)
 {
 	char tmp[2];
 	char *joined;
@@ -67,7 +67,7 @@ char *ft_strjoin_free(char *s1, char *s2)
 	return (joined);
 }
 
-char	*expand_dollar(char *token, t_shell *shell)
+char	*expand_one_dollar(char *input, int *idx, t_shell *shell)
 {
     // t_env	*current_env;
 	// int		len;
@@ -94,51 +94,81 @@ char	*expand_dollar(char *token, t_shell *shell)
     // }
     // return (free(var_name), ft_strdup(""));
 	
-	char	*result;
-	int		i;
-	int		start;
-	char	*var_name;
-	char	*var_value;
-	t_env	*tmp;
+	// char	*result;
+	// int		i;
+	// int		start;
+	// char	*var_name;
+	// char	*var_value;
+	// t_env	*tmp;
 
-	result = ft_strdup("");
-	i = 0;
-	while (token[i])
-	{
-		if (is_dollar(token[i]))
-		{
-			i++;
-			if (is_question_mark(token[i]))
-			{
-				var_value = ft_itoa(shell->exit_status);
-				result = ft_strjoin_free(result, var_value);
-				i++;
-				continue ;
-			}
-			start = i;
-			while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
-				i++;
-			var_name = ft_substr(token, start, i - start);
-			var_value = ft_strdup("");
-			tmp = shell->envp_lst;
-			while (tmp)
-			{
-				if (ft_strcmp(tmp->key, var_name) == 0)
-				{
-					free(var_value);
-					var_value = ft_strdup(tmp->value);
-					break ;
-				}
-				tmp = tmp->next;
-			}
-			result = ft_strjoin_free(result, var_value);
-			free(var_name);
-		}
-		else
-		{
-			result = append_char(result, token[i]);
-			i++;
-		}
-	}
-	return (result);
+	// result = ft_strdup("");
+	// i = 0;
+	// while (token[i])
+	// {
+	// 	if (is_dollar(token[i]))
+	// 	{
+	// 		i++;
+	// 		if (is_question_mark(token[i]))
+	// 		{
+	// 			var_value = ft_itoa(shell->exit_status);
+	// 			result = ft_strjoin_free(result, var_value);
+	// 			i++;
+	// 			continue ;
+	// 		}
+	// 		start = i;
+	// 		while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
+	// 			i++;
+	// 		var_name = ft_substr(token, start, i - start);
+	// 		var_value = ft_strdup("");
+	// 		tmp = shell->envp_lst;
+	// 		while (tmp)
+	// 		{
+	// 			if (ft_strcmp(tmp->key, var_name) == 0)
+	// 			{
+	// 				free(var_value);
+	// 				var_value = ft_strdup(tmp->value);
+	// 				break ;
+	// 			}
+	// 			tmp = tmp->next;
+	// 		}
+	// 		result = ft_strjoin_free(result, var_value);
+	// 		free(var_name);
+	// 	}
+	// 	else
+	// 	{
+	// 		result = append_char(result, token[i]);
+	// 		i++;
+	// 	}
+	// }
+	// return (result);
+
+	    int i = *idx;
+    char *value;
+
+    if (input[i] == '?') {
+        (*idx)++;
+        return ft_itoa(shell->exit_status);
+    }
+    if (!ft_isalpha(input[i]) && input[i] != '_')
+        return ft_strdup("$"); // cas "$x" où x n’est pas un ident valide
+
+    int start = i;
+    while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
+        i++;
+    char *name = ft_substr(input, start, i - start);
+
+    // cherche dans env liste
+    t_env *e = shell->envp_lst;
+    value = ft_strdup("");
+    while (e) {
+        if (ft_strcmp(e->key, name) == 0) {
+            free(value);
+            value = ft_strdup(e->value ? e->value : "");
+            break;
+        }
+        e = e->next;
+    }
+    free(name);
+    *idx = i;
+    return value;
 }
