@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/22 14:27:57 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/23 13:29:55 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)*argv;
 	init_shell(data, envp);
 	// print_env_list(data->envp_lst); // PRINT DE LA LISTE
-	print_banner();
+	// print_banner();
 	rl_bind_key('\t', rl_complete);
 	using_history();
 	// env_list = stored_env(envp);

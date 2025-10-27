@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/23 11:43:44 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/27 16:48:30 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,12 @@ enum symbols
 
 typedef struct s_splitter
 {
-	char				**input_split;
-	char				**final_split;
-	int					count;
-	int					start;
+	char				**output;
+    int					count;
+    int					i;
+    int					in_single;
+	int					in_double;
+    char				*buf;
 	struct s_splitter	*next;
 }				t_splitter;
 
@@ -78,7 +80,6 @@ typedef struct s_splitter
 
 char	**input_splitter(char *input, t_shell *shell);
 char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
-// char	**quotes_management(char **final_split, t_shell *shell);
 t_cmd	*parse_input(char *user_input, t_shell *shell);
 void	ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/23 11:44:34 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/27 11:54:29 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,15 @@ int	is_empty_input(char *user_input)
 char	**get_tokens(char *user_input, t_shell *shell)
 {
 	char	**tokens;
-	// char	**split;
-
-	// split = input_splitter(user_input);
-	// if (!split)
-	// 	return (NULL);
-	// tokens = quotes_management(split, shell);
-	// free_tab(split);
-	// if (!tokens || !tokens[0])
-	// {
-	// 	if (tokens)
-	// 		free(tokens);
-	// 	return (NULL);
-	// }
-	// return (tokens);
-
+	
 	tokens = input_splitter(user_input, shell);
-	if (!tokens || !tokens[0]) {
-		if (tokens) free(tokens);
+	if (!tokens || !tokens[0])
+	{
+		if (tokens)
+			free(tokens);
 		return (NULL);
 	}
 	return (tokens);
-
 }
 
 void	cleanup_parse_error(t_cmd *cmd_list, t_redir *redirection_list, char **tokens)
