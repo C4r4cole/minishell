@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/22 14:32:41 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/28 14:46:51 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->envp_lst = env_list_from_envp(envp);
 	// shell->envp_lst = create_lst_envp(envp);
 	shell->exit_status = 0;
+	shell->in_pipe = 0;
 }
 
 // t_env	*env_new(char *env_line)
@@ -192,49 +193,44 @@ t_env	*env_list_from_envp(char **envp)
 	return (head);
 }
 
-int	exec_one_cmd(t_cmd *arg, char **envp)
+int exec_one_cmd(t_cmd *cmd, t_shell *shell)
 {
-	pid_t pid;
-	int status;
-	char *bin;
-	t_env *env;
+    pid_t pid;
+    int status;
+    char *path;
 
-	env = env_list_from_envp(envp);
-	bin = find_path(arg, envp);
-	if (!bin)
-	{
-		ft_putstr_fd("minishell: command not found\n", 2);
-		free(bin);
-		return (127);
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		free(bin);
-		return (1);
-	}
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		execute_redirections_cmds(arg, env);
-		execve(bin, arg->argv, envp);
-		perror("error 127");
-		exit(1);
-	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
-	{
-		int sig = WTERMSIG(status);
-		if (sig == SIGQUIT)
-			ft_printf("%d quit (core dumped)\n", pid);
-		return (128 + sig); // exit_status
-	}
-	else if (WIFEXITED(status))
-	{
-		return (WEXITSTATUS(status));
-	}
-	return (1);
+    pid = fork();
+    if (pid < 0)
+        return (perror("fork"), 1);
+
+    if (pid == 0) // CHILD
+    {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+
+        if (cmd->redir) // ✅ appliquer redirections avant execve
+            execute_redirections_cmds(cmd);
+
+        path = find_path(cmd, shell->envp);
+        if (!path)
+        {
+            ft_putstr_fd("minishell: command not found: ", 2);
+            ft_putstr_fd(cmd->argv[0], 2);
+            ft_putstr_fd("\n", 2);
+            exit(127);
+        }
+        execve(path, cmd->argv, shell->envp);
+        perror("execve"); // si execve échoue
+        exit(126);
+    }
+
+    // ✅ PARENT
+    waitpid(pid, &status, 0);
+
+    if (WIFSIGNALED(status))
+        shell->exit_status = 128 + WTERMSIG(status);
+    else
+        shell->exit_status = WEXITSTATUS(status);
+
+    return shell->exit_status;
 }

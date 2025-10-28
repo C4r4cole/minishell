@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/28 13:46:38 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:33:38 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ void env_update_or_add(t_env **lst, char *key, char *value)
         }
         tmp = tmp->next;
     }
-    // ajout de nouvelle variable
     ft_envadd_back(lst, ft_envnew(ft_strdup(key), value ? ft_strdup(value) : NULL));
 }
 
@@ -180,29 +179,31 @@ int	ft_env(t_shell *shell)
 	return (0);
 }
 
-int	export_error(char *arg)
+int export_error(char *arg)
 {
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
+    ft_putstr_fd("minishell: export: `", 2);
+    ft_putstr_fd(arg, 2);
+    ft_putstr_fd("': not a valid identifier\n", 2);
+    return (1);
 }
 
 int ft_export(char **argv, t_shell *shell)
 {
-    int i = 1;
-    char *equal;
-    char *key;
-    char *value;
-    int exit_code = 0;
+    int     i = 1;
+    char    *equal;
+    char    *key;
+    char    *value;
+    int     exit_code = 0;
 
-    if (!argv[i])
-        return (0); // pour l'instant rien afficher
+    // ✅ si export sans argument → on gérera ça plus tard
+    if (!argv[1])
+        return (0);
 
     while (argv[i])
     {
         equal = ft_strchr(argv[i], '=');
-        if (equal)
+
+        if (equal) // cas VAR=VALUE
         {
             key = ft_substr(argv[i], 0, equal - argv[i]);
             value = ft_strdup(equal + 1);
@@ -213,7 +214,7 @@ int ft_export(char **argv, t_shell *shell)
             free(key);
             free(value);
         }
-        else
+        else // cas VAR tout seul
         {
             if (!is_valid_env_name(argv[i]))
                 exit_code = export_error(argv[i]);
@@ -222,7 +223,11 @@ int ft_export(char **argv, t_shell *shell)
         }
         i++;
     }
-    return exit_code;
+
+    // ✅ Si on est dans un pipe, bash renvoie 1
+    if (shell->in_pipe)
+        return (1);
+    return (exit_code);
 }
 
 
