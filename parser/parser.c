@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/27 11:54:29 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/28 17:48:17 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,47 @@ void	cleanup_parse_error(t_cmd *cmd_list, t_redir *redirection_list, char **toke
 	free_tokens(tokens);
 }
 
+void	add_arg_to_cmd(t_cmd *cmd, char *arg)
+{
+	char	**new_argv;
+	int		count;
+	int		i;
+
+	if (!cmd || !arg)
+		return;
+
+	/* 1️⃣ Compter combien d'arguments on a déjà */
+	count = 0;
+	if (cmd->argv)
+	{
+		while (cmd->argv[count])
+			count++;
+	}
+
+	/* 2️⃣ Allouer un nouveau tableau de taille +2 (nouvel arg + NULL final) */
+	new_argv = malloc(sizeof(char *) * (count + 2));
+	if (!new_argv)
+		return;
+
+	/* 3️⃣ Copier les anciens arguments */
+	i = 0;
+	while (i < count)
+	{
+		new_argv[i] = cmd->argv[i];
+		i++;
+	}
+
+	/* 4️⃣ Ajouter le nouvel argument */
+	new_argv[i++] = ft_strdup(arg);
+	new_argv[i] = NULL;
+
+	/* 5️⃣ Libérer l'ancien tableau (mais pas les chaînes copiées) */
+	if (cmd->argv)
+		free(cmd->argv);
+
+	cmd->argv = new_argv;
+}
+
 t_cmd	*parse_input(char *user_input, t_shell *shell)
 {
 	char	**tokens;
@@ -67,33 +108,65 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
     cmd_list = NULL;
     redirection_list = NULL;
     i = 0;
-    while (tokens[i])
-    {
-        if (is_redirection(tokens[i]))
-        {
-            if (!current_cmd)
-			{
-				ft_printf("Syntax error: redirection with no command\n");
-                break ;
-			}
-			handle_redirection(tokens, &i, &current_cmd->redir);
-			continue ;
-        }
-        if (tokens[i] && tokens[i][0] && !is_pipe(tokens[i][0]))
-        {
-            if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
-                return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
-			current_cmd = ft_lstlast(cmd_list);
-			continue ;
-        }
-		if (tokens[i] && is_pipe(tokens[i][0]))
+    // while (tokens[i])
+    // {
+    //     if (is_redirection(tokens[i]))
+    //     {
+	// 		handle_redirection(tokens, &i, &current_cmd->redir);
+	// 		continue ;
+    //     }
+    //     if (tokens[i] && tokens[i][0] && !is_pipe(tokens[i][0]))
+    //     {
+    //         if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
+    //             return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
+	// 		current_cmd = ft_lstlast(cmd_list);
+	// 		continue ;
+    //     }
+	// 	if (tokens[i] && is_pipe(tokens[i][0]))
+	// 	{
+	// 		current_cmd = NULL;
+	// 		i++;
+	// 		continue;
+	// 	}
+    //     i++;
+    // }
+	while (tokens[i])
+	{
+		// 1️⃣ Si on rencontre un pipe → nouvelle commande
+		if (is_pipe(tokens[i][0]))
 		{
 			current_cmd = NULL;
 			i++;
 			continue;
 		}
-        i++;
-    }
+
+		// 2️⃣ Si c’est une redirection, on l’associe à la commande courante
+		if (is_redirection(tokens[i]))
+		{
+			// Si on n’a pas encore de commande, il faut en créer une (cas: "< infile cat")
+			if (!current_cmd)
+			{
+				if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
+					return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
+				current_cmd = ft_lstlast(cmd_list);
+			}
+			handle_redirection(tokens, &i, &current_cmd->redir);
+			continue;
+		}
+
+		// 3️⃣ Sinon, c’est un argument ou un mot de commande normal
+		if (!current_cmd)
+		{
+			if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
+				return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
+			current_cmd = ft_lstlast(cmd_list);
+			continue;
+		}
+
+		// 🔹 Ajoute l’argument directement à la commande courante
+		add_arg_to_cmd(current_cmd, tokens[i]);
+		i++;
+	}
 	if (redirection_list)
 		free_redir_list(redirection_list);
 	free_tokens(tokens);
