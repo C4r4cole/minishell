@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/22 12:03:56 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/28 13:39:38 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		ft_env(t_shell *shell);
 void	update_pwd(t_shell *shell, char *oldpwd);
 int		ft_exit(char **argv, t_shell *shell);
 int		ft_unset(char **argv, t_shell *shell);
+int 	is_valid_env_name(const char *str);
 
 int		handle_heredoc(char *end_word);
 char	**env_to_tab(t_env *env);
