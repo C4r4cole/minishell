@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/21 13:14:30 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/28 13:46:38 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ int	ft_cd(char **argv, t_shell *shell)
 	oldpwd = getcwd(NULL, 0);
 	if (!argv[1])
 		target = getenv("HOME");
+	if (argv[2])
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		shell->exit_status = 1;
+		return (1);
+	}
 	else if (ft_strncmp(argv[1], "-", ft_strlen(argv[1])) == 0)
 		target = shell->oldpwd;
 	else
@@ -141,23 +147,24 @@ int	ft_cd(char **argv, t_shell *shell)
 	return (0);
 }
 
-void	env_update_or_add(t_env **lst, char *key, char *value)
+void env_update_or_add(t_env **lst, char *key, char *value)
 {
-	t_env	*tmp;
+    t_env *tmp = *lst;
 
-	tmp = *lst;
-	while (tmp)
-	{
-		if (strcmp(tmp->key, key) == 0)
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
-			return ;
-		}
-		tmp = tmp->next;
-	}
-	ft_envadd_back(lst, ft_envnew(ft_strdup(key), ft_strdup(value)));
+    while (tmp)
+    {
+        if (ft_strcmp(tmp->key, key) == 0)
+        {
+            free(tmp->value);
+            tmp->value = value ? ft_strdup(value) : NULL;
+            return;
+        }
+        tmp = tmp->next;
+    }
+    // ajout de nouvelle variable
+    ft_envadd_back(lst, ft_envnew(ft_strdup(key), value ? ft_strdup(value) : NULL));
 }
+
 
 int	ft_env(t_shell *shell)
 {
@@ -173,37 +180,59 @@ int	ft_env(t_shell *shell)
 	return (0);
 }
 
-int	ft_export(char **argv, t_shell *shell)
+int	export_error(char *arg)
 {
-	int		i;
-	char	*equal;
-	int		key_len;
-	char	*key;
-	char	*value;
-
-	i = 1;
-	while (argv[i])
-	{
-		equal = ft_strchr(argv[i], '=');
-		if (equal)
-		{
-			key_len = equal - argv[i];
-			key = ft_substr(argv[i], 0, key_len);
-			value = ft_strdup(equal + 1);
-			if (key && key[0] != '\0') // N'ajoute que si la clé n'est pas vide
-				env_update_or_add(&(shell->envp_lst), key, value);
-			free(key);
-			free(value);
-		}
-		i++;
-	}
-	return (0);
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (1);
 }
+
+int ft_export(char **argv, t_shell *shell)
+{
+    int i = 1;
+    char *equal;
+    char *key;
+    char *value;
+    int exit_code = 0;
+
+    if (!argv[i])
+        return (0); // pour l'instant rien afficher
+
+    while (argv[i])
+    {
+        equal = ft_strchr(argv[i], '=');
+        if (equal)
+        {
+            key = ft_substr(argv[i], 0, equal - argv[i]);
+            value = ft_strdup(equal + 1);
+            if (!is_valid_env_name(key))
+                exit_code = export_error(argv[i]);
+            else
+                env_update_or_add(&(shell->envp_lst), key, value);
+            free(key);
+            free(value);
+        }
+        else
+        {
+            if (!is_valid_env_name(argv[i]))
+                exit_code = export_error(argv[i]);
+            else
+                env_update_or_add(&(shell->envp_lst), argv[i], NULL);
+        }
+        i++;
+    }
+    return exit_code;
+}
+
+
 void	env_remove(t_env **lst, char *key)
 {
-	t_env *prev = NULL;
-	t_env *tmp = *lst;
+	t_env	*prev;
+	t_env	*tmp;
 
+	prev = NULL;
+	tmp = *lst;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
@@ -215,57 +244,56 @@ void	env_remove(t_env **lst, char *key)
 			free(tmp->key);
 			free(tmp->value);
 			free(tmp);
-			return;
+			return ;
 		}
 		prev = tmp;
 		tmp = tmp->next;
 	}
 }
 
-int is_valid_env_name(const char *str)
+int	is_valid_env_name(const char *str)
 {
-    int i;
+	int	i;
 
-    if (!str || !str[0])
-        return (0);
-    if (!ft_isalpha(str[0]) && str[0] != '_') // Le premier caractère doit être une lettre ou un underscore
-        return (0);
-    i = 1;
-    while (str[i])
-    {
-        if (!ft_isalnum(str[i]) && str[i] != '_') // Les caractères suivants doivent être alphanumériques ou des underscores
-            return (0);
-        i++;
-    }
-    return (1);
+	if (!str || !str[0] || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	i = 1;
+	while (str[i])
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
 }
-int ft_unset(char **argv, t_shell *shell)
+int	ft_unset(char **argv, t_shell *shell)
 {
-    int i;
+	int	i;
 
-    if (!argv[1])
-        return (0);
-    i = 1;
-    while (argv[i])
-    {
-        if (argv[i][0] && is_valid_env_name(argv[i]))
-        {
-            env_remove(&(shell->envp_lst), argv[i]);
-        }
-        else
-        {
-            ft_putstr_fd("': not a valid identifier\n", 2);
-            shell->exit_status = 1;
-        }
-        i++;
-    }
-    return (0);
+	if (!argv[1])
+		return (0);
+	i = 1;
+	while (argv[i])
+	{
+		if (argv[i][0] && is_valid_env_name(argv[i]))
+		{
+			env_remove(&(shell->envp_lst), argv[i]);
+		}
+		else
+		{
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			shell->exit_status = 1;
+		}
+		i++;
+	}
+	return (0);
 }
 
-int ft_isnumber(char *str)
+int	ft_isnumber(char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!str || !str[0])
 		return (0);
 	if (str[i] == '+' || str[i] == '-')
@@ -278,12 +306,12 @@ int ft_isnumber(char *str)
 	}
 	return (1);
 }
-int ft_exit(char **argv, t_shell *shell)
+int	ft_exit(char **argv, t_shell *shell)
 {
-	long long status;
+	long long	status;
 
 	status = 1;
-	ft_putstr_fd("exit\n", 2);
+	//ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 	{
 		status = shell->exit_status;
@@ -297,16 +325,15 @@ int ft_exit(char **argv, t_shell *shell)
 	}
 	else if (argv[2])
 	{
-		ft_putstr_fd("minishell: exit: Too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		shell->exit_status = 1;
 		return (1);
 	}
 	else
-		status = ft_atoi(argv[1]); // remplacer par un atoll car on peut quitter avec un code erreur au dessus de int
-
+		status = ft_atoi(argv[1]);
+			// remplacer par un atoll car on peut quitter avec un code erreur au dessus de int
 	// liberer la env aussi
 	free_shell(shell);
-
 	// quit avc le bon status
 	exit((int)status);
 }
