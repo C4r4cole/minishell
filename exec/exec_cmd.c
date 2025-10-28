@@ -6,9 +6,11 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/28 15:04:08 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:37:30 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "exec_header.h"
 
 #include "exec_header.h"
 
@@ -19,8 +21,9 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 	pid_t	pid;
 	int		status;
 
-	if (cmds->next) // s'il y a un pipe -> on délègue à execute_piped_cmds
+	if (cmds->next) // s'il y a un pipe -> on délègue
 		return (execute_piped_cmds(cmds, shell));
+
 	current = cmds;
 	tmp = cmds;
 	while (tmp)
@@ -29,60 +32,61 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 			return (1);
 		tmp = tmp->next;
 	}
+
 	while (current)
 	{
-		if (ft_strcmp(current->argv[0], "echo") == 0
-			|| ft_strcmp(current->argv[0], "pwd") == 0
-			|| ft_strcmp(current->argv[0], "env") == 0)
+		// ---------- BUILTINS sans redirection ----------
+		if (!current->redir &&
+			(!ft_strcmp(current->argv[0], "echo") ||
+			!ft_strcmp(current->argv[0], "pwd") ||
+			!ft_strcmp(current->argv[0], "env")))
 		{
-			if (current->redir)
-			{
-				pid = fork();
-				status = 0;
-				if (pid == 0)
-				{
-					signal(SIGINT, SIG_DFL);
-					signal(SIGQUIT, SIG_DFL);
-					if (execute_redirections_builtins(current->redir))
-						exit(1);
-					if (ft_strcmp(current->argv[0], "echo") == 0)
-						exit(ft_echo(current->argv));
-					else if (ft_strcmp(current->argv[0], "pwd") == 0)
-						exit(ft_pwd(shell));
-					else
-						exit(ft_env(shell));
-				}
-				waitpid(pid, &status, 0);
-				if (WIFEXITED(status))
-					shell->exit_status = WEXITSTATUS(status);
-				else
-					shell->exit_status = 1;
-			}
+			if (!ft_strcmp(current->argv[0], "echo"))
+				shell->exit_status = ft_echo(current->argv);
+			else if (!ft_strcmp(current->argv[0], "pwd"))
+				shell->exit_status = ft_pwd(shell);
 			else
-			{
-				if (ft_strcmp(current->argv[0], "echo") == 0)
-					shell->exit_status = ft_echo(current->argv);
-				else if (ft_strcmp(current->argv[0], "pwd") == 0)
-					shell->exit_status = ft_pwd(shell);
-				else
-					shell->exit_status = ft_env(shell);
-			}
+				shell->exit_status = ft_env(shell);
 		}
-		else if (ft_strcmp(current->argv[0], "cd") == 0
-			|| ft_strcmp(current->argv[0], "export") == 0
-			|| ft_strcmp(current->argv[0], "unset") == 0
-			|| ft_strcmp(current->argv[0], "exit") == 0)
+		// ---------- BUILTINS avec redirections ----------
+		else if (current->redir &&
+			(!ft_strcmp(current->argv[0], "echo") ||
+			!ft_strcmp(current->argv[0], "pwd") ||
+			!ft_strcmp(current->argv[0], "env")))
 		{
-			if (ft_strcmp(current->argv[0], "cd") == 0)
+			pid = fork();
+			if (pid == 0)
+			{
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
+				if (execute_redirections_builtins(current->redir))
+					exit(1);
+				if (!ft_strcmp(current->argv[0], "echo"))
+					exit(ft_echo(current->argv));
+				else if (!ft_strcmp(current->argv[0], "pwd"))
+					exit(ft_pwd(shell));
+				else
+					exit(ft_env(shell));
+			}
+			waitpid(pid, &status, 0);
+			shell->exit_status = WEXITSTATUS(status);
+		}
+		// ---------- BUILTINS : export, unset, cd, exit ----------
+		else if (!ft_strcmp(current->argv[0], "cd")
+			|| !ft_strcmp(current->argv[0], "export")
+			|| !ft_strcmp(current->argv[0], "unset")
+			|| !ft_strcmp(current->argv[0], "exit"))
+		{
+			if (!ft_strcmp(current->argv[0], "cd"))
 				shell->exit_status = ft_cd(current->argv, shell);
-			else if (ft_strcmp(current->argv[0], "export") == 0)
+			else if (!ft_strcmp(current->argv[0], "export"))
 				shell->exit_status = ft_export(current->argv, shell);
-			// ajouter le export tout seul qui met les variables dans l'ordre alphabetique
-			else if (ft_strcmp(current->argv[0], "unset") == 0)
+			else if (!ft_strcmp(current->argv[0], "unset"))
 				shell->exit_status = ft_unset(current->argv, shell);
-			else if (ft_strcmp(current->argv[0], "exit") == 0)
+			else if (!ft_strcmp(current->argv[0], "exit"))
 				shell->exit_status = ft_exit(current->argv, shell);
 		}
+		// ---------- Commande externe ----------
 		else
 		{
 			shell->exit_status = exec_one_cmd(current, shell);
@@ -91,15 +95,18 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 	}
 	return (shell->exit_status);
 }
+
 int execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 {
-    int fd[2];
-    int in_fd = -1;
-    pid_t pid;
-    int status;
-    int last_status = 0;
+    int     fd[2];
+    int     in_fd = -1;
+    pid_t   pid;
+    int     status;
+    int     last_status = 0;
+    char    *path;
 
-    shell->in_pipe = 1; // flag pour export & unset
+    signal(SIGPIPE, SIG_IGN);
+    shell->in_pipe = 1;
 
     while (cmds)
     {
@@ -130,24 +137,23 @@ int execute_piped_cmds(t_cmd *cmds, t_shell *shell)
             if (cmds->redir)
                 execute_redirections_cmds(cmds);
 
-            // Builtins dans pipeline → exécutés localement
+            // Builtins interdits dans un pipe
+            if (!ft_strcmp(cmds->argv[0], "export")
+                || !ft_strcmp(cmds->argv[0], "unset")
+                || !ft_strcmp(cmds->argv[0], "cd")
+                || !ft_strcmp(cmds->argv[0], "exit"))
+                exit(1);
+
+            // Builtins simples dans pipe → OK
             if (!ft_strcmp(cmds->argv[0], "echo"))
                 exit(ft_echo(cmds->argv));
             if (!ft_strcmp(cmds->argv[0], "pwd"))
                 exit(ft_pwd(shell));
             if (!ft_strcmp(cmds->argv[0], "env"))
                 exit(ft_env(shell));
-            if (!ft_strcmp(cmds->argv[0], "export"))
-                exit(1); // bash: export dans pipe → pas d'effet
-            if (!ft_strcmp(cmds->argv[0], "unset"))
-                exit(1);
-            if (!ft_strcmp(cmds->argv[0], "cd"))
-                exit(1);
-            if (!ft_strcmp(cmds->argv[0], "exit"))
-                exit(1);
 
-            // Sinon commande externe
-            char *path = find_path(cmds, shell->envp);
+            // Commande externe
+            path = find_path(cmds, shell->envp);
             if (!path)
                 exit(127);
             execve(path, cmds->argv, shell->envp);
@@ -155,7 +161,6 @@ int execute_piped_cmds(t_cmd *cmds, t_shell *shell)
             exit(126);
         }
 
-        // parent
         if (in_fd != -1)
             close(in_fd);
         if (cmds->next)
@@ -163,11 +168,9 @@ int execute_piped_cmds(t_cmd *cmds, t_shell *shell)
             close(fd[1]);
             in_fd = fd[0];
         }
-
         cmds = cmds->next;
     }
 
-    // ✅ récupérer seulement la dernière valeur de retour
     while (wait(&status) > 0)
         last_status = status;
 

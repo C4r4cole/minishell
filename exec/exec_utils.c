@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/28 14:46:51 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:33:44 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,9 @@ t_env	*env_list_from_envp(char **envp)
 
 int exec_one_cmd(t_cmd *cmd, t_shell *shell)
 {
-    pid_t pid;
-    int status;
-    char *path;
+    pid_t   pid;
+    int     status;
+    char    *path;
 
     pid = fork();
     if (pid < 0)
@@ -208,7 +208,7 @@ int exec_one_cmd(t_cmd *cmd, t_shell *shell)
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
 
-        if (cmd->redir) // ✅ appliquer redirections avant execve
+        if (cmd->redir) // Appliquer les redirections
             execute_redirections_cmds(cmd);
 
         path = find_path(cmd, shell->envp);
@@ -220,11 +220,11 @@ int exec_one_cmd(t_cmd *cmd, t_shell *shell)
             exit(127);
         }
         execve(path, cmd->argv, shell->envp);
-        perror("execve"); // si execve échoue
+        perror("execve");
         exit(126);
     }
 
-    // ✅ PARENT
+    // PARENT – attend seulement ce processus
     waitpid(pid, &status, 0);
 
     if (WIFSIGNALED(status))

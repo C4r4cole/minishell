@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:50:21 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/28 15:13:23 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:51:13 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void execute_redirections_cmds(t_cmd *cmd)
         if (redir->type == HEREDOC)
         {
             if (dup2(redir->heredoc_fd, STDIN_FILENO) < 0)
-                perror("dup2 heredoc");
+                perror("dup2");
             close(redir->heredoc_fd);
         }
         else if (redir->type == REDIRECTION_IN)
@@ -31,12 +31,14 @@ void execute_redirections_cmds(t_cmd *cmd)
             fd = open(redir->file, O_RDONLY);
             if (fd < 0)
             {
-                fd = open("/dev/null", O_RDONLY);
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(redir->file, 2);
+                ft_putstr_fd(": No such file or directory\n", 2);
                 exit(1);
             }
             if (dup2(fd, STDIN_FILENO) < 0)
             {
-                perror("dup2 <");
+                perror("dup2");
                 exit(1);
             }
             close(fd);
@@ -46,12 +48,14 @@ void execute_redirections_cmds(t_cmd *cmd)
             fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (fd < 0)
             {
-                perror(redir->file);
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(redir->file, 2);
+                ft_putstr_fd(": Permission denied\n", 2);
                 exit(1);
             }
             if (dup2(fd, STDOUT_FILENO) < 0)
             {
-                perror("dup2 >");
+                perror("dup2");
                 exit(1);
             }
             close(fd);
@@ -61,12 +65,14 @@ void execute_redirections_cmds(t_cmd *cmd)
             fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
             if (fd < 0)
             {
-                perror(redir->file);
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(redir->file, 2);
+                ft_putstr_fd(": Permission denied\n", 2);
                 exit(1);
             }
             if (dup2(fd, STDOUT_FILENO) < 0)
             {
-                perror("dup2 >>");
+                perror("dup2");
                 exit(1);
             }
             close(fd);
@@ -74,7 +80,6 @@ void execute_redirections_cmds(t_cmd *cmd)
         redir = redir->next;
     }
 }
-
 
 int execute_redirections_builtins(t_redir *redir)
 {
@@ -121,3 +126,4 @@ int execute_redirections_builtins(t_redir *redir)
 	}
 	return (0);
 }
+
