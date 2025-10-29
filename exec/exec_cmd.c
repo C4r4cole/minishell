@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 14:25:35 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:35:09 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 	}
 	while (current)
 	{
+		// 🚧 garde-fou indispensable
+		if (!current->argv || !current->argv[0]) {
+			// commande vide (ex: ">> A" ou "<< A")
+			// on peut soit ignorer, soit poser un status d’erreur générique
+			shell->exit_status = 2; // bash sort souvent 2 sur erreur de syntaxe
+			current = current->next;
+			continue;
+		}
 		// ---------- BUILTINS sans redirection ----------
 		if (!current->redir && (!ft_strcmp(current->argv[0], "echo")
 				|| !ft_strcmp(current->argv[0], "pwd")

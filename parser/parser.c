@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 14:23:10 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/29 15:36:11 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,12 +184,12 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 		add_arg_to_cmd(current_cmd, tokens[i]);
 		i++;
 	}
-	if (!cmd_list || (cmd_list && !cmd_list->argv))
-	{
-		ft_putendl_fd("bash: syntax error near unexpected token `newline'", 2);
-		cleanup_parse_error(cmd_list, redirection_list, tokens);
-		return (NULL);
-	}
+	// if (!cmd_list || (cmd_list && !cmd_list->argv))
+	// {
+	// 	ft_putendl_fd("bash: syntax error near unexpected token `newline'", 2);
+	// 	cleanup_parse_error(cmd_list, redirection_list, tokens);
+	// 	return (NULL);
+	// }
 	if (redirection_list)
 		free_redir_list(redirection_list);
 	free_tokens(tokens);
