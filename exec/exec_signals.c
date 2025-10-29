@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:46:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/22 14:09:06 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 10:14:00 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,14 @@ void	handle_sigquit(int sig)
 }
 void	setup_signals_main(void)
 {
-	struct termios term;
+	struct termios	term;
 
 	// Récupère la configuration du terminal
 	tcgetattr(STDIN_FILENO, &term);
-
 	// Désactive l'affichage des caractères de contrôle (ex: ^C, ^\)
 	term.c_lflag &= ~ECHOCTL;
-
 	// Applique immédiatement la nouvelle configuration
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	
-	signal(SIGINT,handle_sigint);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }

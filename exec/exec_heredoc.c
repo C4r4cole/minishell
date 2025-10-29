@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/21 16:23:53 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 10:13:50 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	handle_heredoc(char *end_word)
 		free(line);
 	}
 	close(fd_write);
-	
 	fd_read = open(tmpfile, O_RDONLY);
 	if (fd_read < 0)
 		return (perror("heredoc read"), -1);
@@ -78,9 +77,9 @@ int	handle_heredoc(char *end_word)
 
 int	heredoc_before_fork(t_cmd *arg)
 {
-	t_redir	*redir;
-	int		fd;
-	
+	t_redir *redir;
+	int fd;
+
 	redir = arg->redir;
 	while (redir)
 	{

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
+#    By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/10/27 17:11:43 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/10/29 10:12:47 by ilsedjal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,10 @@ SRCS =	minishell.c utils/error.c utils/list_utils.c utils/banner.c parser/cleane
 		parser/expand.c parser/lexer.c parser/parser.c parser/syntax.c \
 		parser/tokens.c parser/quoting/quoting_00.c parser/quoting/quoting_01.c \
 		parser/quoting/quoting_02.c parser/quoting/quoting_03.c parser/quoting/quoting_04.c \
-		parser/quoting/quoting_symbols.c exec/exec_builtins1.c exec/exec_cmd.c exec/exec_utils.c \
-		parser/parser_utils.c parser/quoting/quoting_05.c exec/exec_heredoc.c \
-		exec/exec_redirections.c exec/exec_signals.c \
+		parser/quoting/quoting_symbols.c exec/exec_cmd.c exec/exec_utils1.c exec/exec_utils2.c \
+		exec/exec_utils3.c parser/parser_utils.c parser/quoting/quoting_05.c exec/exec_heredoc.c  \
+		exec/exec_redirections.c exec/exec_signals.c exec/exec_builtins1.c exec/exec_builtins2.c  \
+		
 
 # Mains
 MAIN = minishell.c
@@ -33,7 +34,7 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
 # Compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 IFLAGS = -Iinclude -Ilibft
 RM = rm -f
 
