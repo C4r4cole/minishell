@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 10:13:41 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:25:35 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ int	exec_one_cmd(t_cmd *cmd, t_shell *shell)
 		exit(126);
 	}
 	// ---- PARENT ----
+	signal(SIGINT, SIG_IGN);   // <- IMPORTANT ! Ignore Ctrl-C pendant que l’enfant tourne
+    signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
+	signal(SIGINT, handle_sigint); // remet les signaux
+    signal(SIGQUIT, SIG_IGN);
 	if (WIFEXITED(status))
 		shell->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

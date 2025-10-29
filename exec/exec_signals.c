@@ -6,15 +6,19 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:46:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 14:02:59 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:08:43 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
+int		g_sig = 0;
+
 void	handle_sigint(int sig)
 {
-	(void)sig;
+	// (void)sig;
+	g_sig = sig;
+	// printf(">>>>>>> SIG >>> %d\n", g_sig);
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();

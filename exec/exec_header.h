@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 13:51:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:51:28 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int		heredoc_before_fork(t_cmd *arg);
 
 void	setup_signals_main(void);
 void	handle_sigint(int sig);
+extern int g_sig; 
 
 #endif

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/23 13:29:55 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:49:26 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "exec/exec_header.h"
 
 // void	print_env_list(t_env *env)
 // {
@@ -58,6 +59,11 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("minishell> ");
 		if (!input)
 			break ;
+		if (g_sig == SIGINT)
+		{
+			data->exit_status = 130;
+			g_sig = 0;
+		}
 		add_history(input);
 		// printf("cmd = %s\n", input);
 		tokens = parse_input(input, data);
@@ -89,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 		// 		while (redir)
 		// 		{
 		// 			printf("   redir -> type=%d, file=%s\n",
-						//redir->type,redir->file);
+		// redir->type,redir->file);
 		// 			redir = redir->next;
 		// 		}
 		// 		tokens = tokens->next;
