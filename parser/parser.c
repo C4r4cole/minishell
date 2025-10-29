@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/28 17:48:17 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/29 14:23:10 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,15 +141,32 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 		}
 
 		// 2️⃣ Si c’est une redirection, on l’associe à la commande courante
+		// if (is_redirection(tokens[i]))
+		// {
+		// 	// Si on n’a pas encore de commande, il faut en créer une (cas: "< infile cat")
+		// 	if (!current_cmd)
+		// 	{
+		// 		if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
+		// 			return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
+		// 		current_cmd = ft_lstlast(cmd_list);
+		// 	}
+		// 	handle_redirection(tokens, &i, &current_cmd->redir);
+		// 	continue;
+		// }
+
 		if (is_redirection(tokens[i]))
 		{
-			// Si on n’a pas encore de commande, il faut en créer une (cas: "< infile cat")
+			// 🔸 Cas où il n’y a encore aucune commande en cours
 			if (!current_cmd)
 			{
-				if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
+				// Cas comme "< infile cat" → on crée un t_cmd vide juste pour stocker la redirection
+				current_cmd = ft_cmdnew(NULL, NULL);
+				if (!current_cmd)
 					return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
-				current_cmd = ft_lstlast(cmd_list);
+				ft_cmdadd_back(&cmd_list, current_cmd);
 			}
+
+			// 🔸 Gérer la redirection normalement
 			handle_redirection(tokens, &i, &current_cmd->redir);
 			continue;
 		}
@@ -166,6 +183,12 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 		// 🔹 Ajoute l’argument directement à la commande courante
 		add_arg_to_cmd(current_cmd, tokens[i]);
 		i++;
+	}
+	if (!cmd_list || (cmd_list && !cmd_list->argv))
+	{
+		ft_putendl_fd("bash: syntax error near unexpected token `newline'", 2);
+		cleanup_parse_error(cmd_list, redirection_list, tokens);
+		return (NULL);
 	}
 	if (redirection_list)
 		free_redir_list(redirection_list);
