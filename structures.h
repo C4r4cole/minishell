@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:21:00 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 11:48:47 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:38:50 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-    char    *pwd;
-    char    *oldpwd;
     char   **envp;
 	t_env  *envp_lst;
     int      exit_status;

@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 11:47:29 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:37:34 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	ft_pwd(t_shell *shell)
 {
 	char	*current_pwd;
 
-	if (shell && shell->pwd)
+	if (shell && env_get_value(shell->envp_lst, "PWD"))
 	{
-		printf("%s\n", shell->pwd);
+		ft_printf("%s\n", env_get_value(shell->envp_lst, "PWD"));
 		return (0);
 	}
 	current_pwd = getcwd(NULL, 0);
@@ -63,53 +63,62 @@ int	ft_pwd(t_shell *shell)
 	return (0);
 }
 
+char *env_get_value(t_env *env, const char *key)
+{
+    while (env)
+    {
+        if (!ft_strcmp(env->key, key))
+            return env->value;
+        env = env->next;
+    }
+    return NULL;
+}
+
+
 int	ft_cd(char **argv, t_shell *shell)
 {
-	char	*target;
-	char	*oldpwd;
-	char	*newpwd;
+    char *target;
+    char *oldpwd;
+    char *newpwd;
 
-	oldpwd = getcwd(NULL, 0);
-	if (!argv[1])
-		target = getenv("HOME");
+    oldpwd = env_get_value(shell->envp_lst, "PWD"); // Sauvegarde l'ancien PWD
+
+    // ----------- Déterminer la cible -----------
 	if (argv[2])
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		shell->exit_status = 1;
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
-	else if (ft_strncmp(argv[1], "-", ft_strlen(argv[1])) == 0)
-		target = shell->oldpwd;
-	else
-		target = argv[1];
-	if (!target)
-	{
-		perror("cd: no target found");
-		free(oldpwd);
-		return (1);
-	}
-	if (chdir(target) != 0)
-	{
-		perror("cd:");
-		free(oldpwd);
-		return (1);
-	}
-	newpwd = getcwd(NULL, 0);
-	if (newpwd)
-	{
-		// free ancien shell->oldpwd
-		free(shell->oldpwd);
-		shell->oldpwd = oldpwd;
-		free(shell->pwd);
-		shell->pwd = newpwd;
-		// mettre à jour dans l'env
-		env_update_or_add(&(shell->envp_lst), "OLDPWD", shell->envp_lst->key);
-		env_update_or_add(&(shell->envp_lst), "PWD", shell->envp_lst->key);
-	}
-	else
-		free(oldpwd); // on libère si jamais getcwd a échoué
-	return (0);
+    if (!argv[1] || !ft_strcmp(argv[1], "~"))
+        target = env_get_value(shell->envp_lst, "HOME");
+    else if (!ft_strcmp(argv[1], "-"))
+    {
+        target = env_get_value(shell->envp_lst, "OLDPWD");
+        if (!target)
+            return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2), 1);
+        ft_printf("%s\n", target); // comportement Bash pour cd -
+    }
+    else
+        target = argv[1];
+
+    if (!target)
+        return (ft_putstr_fd("minishell: cd: target not found\n", 2), 1);
+
+    if (chdir(target) != 0)
+        return (perror("minishell: cd"), 1);
+
+    newpwd = getcwd(NULL, 0);
+    if (!newpwd)
+        return (perror("getcwd"), 1);
+
+    if (oldpwd)
+        env_update_or_add(&(shell->envp_lst), "OLDPWD", oldpwd);
+    env_update_or_add(&(shell->envp_lst), "PWD", newpwd);
+
+    free(newpwd);
+    return (0);
 }
+
 
 int	ft_exit(char **argv, t_shell *shell)
 {

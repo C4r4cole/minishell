@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 11:49:40 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:38:24 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	init_shell(t_shell *shell, char **envp)
 {
-	shell->pwd = getcwd(NULL, 0); // ← INITIALISE CORRECTEMENT
-	if (!shell->pwd)
-	{
-		perror("getcwd");
-		exit(EXIT_FAILURE);
-	}
-	shell->oldpwd = NULL;
+	//shell->pwd = getcwd(NULL, 0); // ← INITIALISE CORRECTEMENT
+	// if (!shell->pwd)
+	// {
+	// 	perror("getcwd");
+	// 	exit(EXIT_FAILURE);
+	// }
+	//shell->oldpwd = NULL;
 	shell->envp = envp;
 	shell->envp_lst = env_list_from_envp(envp);
 	// shell->envp_lst = create_lst_envp(envp);
@@ -29,10 +29,11 @@ void	init_shell(t_shell *shell, char **envp)
 }
 void	free_shell(t_shell *shell)
 {
-	if (shell->pwd)
-		free(shell->pwd);
-	if (shell->oldpwd)
-		free(shell->oldpwd);
+// 	if (shell->pwd)
+// 		free(shell->pwd);
+// 	if (shell->oldpwd)
+// 		free(shell->oldpwd);
+(void)shell;
 }
 void	free_tab(char **tab)
 {

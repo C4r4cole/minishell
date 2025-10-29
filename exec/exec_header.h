@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 10:13:46 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:29:38 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		is_valid_env_name(const char *str);
 int		export_error(char *arg);
 int		ft_isnumber(char *str);
 void	env_remove(t_env **lst, char *key);
+char	*env_get_value(t_env *env, const char *key);
 // void 	execute_redirections_for_pipe(t_redir *redir);
 
 int		handle_heredoc(char *end_word);
