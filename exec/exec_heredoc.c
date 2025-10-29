@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 15:18:42 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:26:46 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,40 +45,47 @@ char	**env_to_tab(t_env *env)
 
 int	handle_heredoc(char *end_word)
 {
+	pid_t	pid;
+	int		fd[2];
 	char	*line;
-	int		fd_write;
-	int		fd_read;
-	char	*tmpfile;
+	int		status;
 
-	tmpfile = "/tmp/minishell_heredoc.txt";
-	fd_write = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd_write < 0)
-		return (perror("heredoc"), -1);
-	while (1)
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
 	{
-		line = readline("heredoc> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, end_word) == 0)
+		signal(SIGINT, SIG_DFL); // Ctrl-C arrête juste le heredoc
+		signal(SIGQUIT, SIG_IGN);
+		close(fd[0]); // on écrit seulement
+
+		while (1)
 		{
+			line = readline("heredoc> ");
+			if (!line || ft_strcmp(line, end_word) == 0)
+				break ;
+			write(fd[1], line, ft_strlen(line));
+			write(fd[1], "\n", 1);
 			free(line);
-			break ;
 		}
-		ft_putendl_fd(line, fd_write);
 		free(line);
+		close(fd[1]);
+		exit(0);
 	}
-	close(fd_write);
-	fd_read = open(tmpfile, O_RDONLY);
-	if (fd_read < 0)
-		return (perror("heredoc read"), -1);
-	unlink(tmpfile);
-	return (fd_read);
+	signal(SIGINT, SIG_IGN); // parent ignore signal pendant heredoc
+	close(fd[1]); // parent lit seulement
+	waitpid(pid, &status, 0);
+	signal(SIGINT, handle_sigint); // rétablir après heredoc
+
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		return (-1); // heredoc annulé par Ctrl-C
+	return (fd[0]); // retourne le fd de lecture
 }
+
 
 int	heredoc_before_fork(t_cmd *arg)
 {
 	t_redir *redir;
-	int fd;
+	int		fd;
 
 	redir = arg->redir;
 	while (redir)
@@ -87,10 +94,7 @@ int	heredoc_before_fork(t_cmd *arg)
 		{
 			fd = handle_heredoc(redir->file);
 			if (fd < 0)
-			{
-				perror("heredoc");
-				return (1);
-			}
+				return (1); // si Ctrl-C pendant heredoc → on arrête la commande
 			redir->heredoc_fd = fd;
 		}
 		redir = redir->next;
