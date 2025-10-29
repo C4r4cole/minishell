@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:46:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 15:08:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:35:45 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
+void    handle_sigint_heredoc(int sig)
+{
+    (void)sig;
+    write(1, "\n", 1);
+    rl_replace_line("", 0);   // efface la ligne
+    rl_on_new_line();         // nouvelle ligne clean
+    exit(130);                // très important : exit enfant heredoc !
+}
+
 void	handle_sigquit(int sig)
 {
 	(void)sig;

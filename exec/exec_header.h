@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 14:51:28 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:36:27 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	**env_to_tab(t_env *env);
 void	execute_redirections_cmds(t_cmd *cmd);
 int		execute_redirections_builtins(t_redir *redir);
 int		heredoc_before_fork(t_cmd *arg);
+void    handle_sigint_heredoc(int sig);
 
 void	setup_signals_main(void);
 void	handle_sigint(int sig);

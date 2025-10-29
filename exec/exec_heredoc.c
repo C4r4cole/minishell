@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 15:26:46 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:37:43 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,9 @@ int	handle_heredoc(char *end_word)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL); // Ctrl-C arrête juste le heredoc
+		signal(SIGINT, handle_sigint_heredoc); // Ctrl-C arrête juste le heredoc
 		signal(SIGQUIT, SIG_IGN);
 		close(fd[0]); // on écrit seulement
-
 		while (1)
 		{
 			line = readline("heredoc> ");
@@ -72,19 +71,17 @@ int	handle_heredoc(char *end_word)
 		exit(0);
 	}
 	signal(SIGINT, SIG_IGN); // parent ignore signal pendant heredoc
-	close(fd[1]); // parent lit seulement
+	close(fd[1]);            // parent lit seulement
 	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_sigint); // rétablir après heredoc
-
+	signal(SIGINT, handle_sigint_heredoc); // rétablir après heredoc
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		return (-1); // heredoc annulé par Ctrl-C
-	return (fd[0]); // retourne le fd de lecture
+	return (fd[0]);  // retourne le fd de lecture
 }
-
 
 int	heredoc_before_fork(t_cmd *arg)
 {
-	t_redir *redir;
+	t_redir	*redir;
 	int		fd;
 
 	redir = arg->redir;
