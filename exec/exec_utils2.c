@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 10:06:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 10:14:08 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:36:50 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,37 @@ int	ft_isnumber(char *str)
 		i++;
 	}
 	return (1);
+}
+
+char	**env_to_tab(t_env *env)
+{
+	t_env	*tmp;
+	char	**tab;
+	int		count;
+	int		i;
+	char	*tmp2;
+
+	count = 0;
+	i = 0;
+	tmp = env;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	tab = malloc(sizeof(char *) * (count + 1));
+	if (!tab)
+		return (NULL);
+	while (env)
+	{
+		tmp2 = ft_strjoin("=", env->value);
+		tab[i] = ft_strjoin(env->key, tmp2);
+		free(tmp2);
+		i++;
+		env = env->next;
+	}
+	tab[i] = NULL;
+	return (tab);
 }
 
 char	*ft_strjoin_path(char *s1, char *s2)

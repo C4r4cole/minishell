@@ -6,95 +6,82 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 15:37:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:56:47 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-char	**env_to_tab(t_env *env)
-{
-	t_env	*tmp;
-	char	**tab;
-	int		count;
-	int		i;
-	char	*tmp2;
-
-	count = 0;
-	i = 0;
-	tmp = env;
-	while (tmp)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	tab = malloc(sizeof(char *) * (count + 1));
-	if (!tab)
-		return (NULL);
-	while (env)
-	{
-		tmp2 = ft_strjoin("=", env->value);
-		tab[i] = ft_strjoin(env->key, tmp2);
-		free(tmp2);
-		i++;
-		env = env->next;
-	}
-	tab[i] = NULL;
-	return (tab);
-}
-
 int	handle_heredoc(char *end_word)
 {
 	pid_t	pid;
 	int		fd[2];
-	char	*line;
 	int		status;
+		char *line;
 
-	pipe(fd);
+	if (pipe(fd) == -1)
+		return (perror("pipe"), -1);
 	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), close(fd[0]), close(fd[1]), -1);
 	if (pid == 0)
 	{
-		signal(SIGINT, handle_sigint_heredoc); // Ctrl-C arrête juste le heredoc
+		// ----- CHILD (saisie heredoc) -----
+		signal(SIGINT, handle_sigint_heredoc); // Ctrl-C => exit(130)
 		signal(SIGQUIT, SIG_IGN);
-		close(fd[0]); // on écrit seulement
+		close(fd[0]); // on n’écrit que sur fd[1]
 		while (1)
 		{
 			line = readline("heredoc> ");
-			if (!line || ft_strcmp(line, end_word) == 0)
+			if (!line)
+				// EOF (Ctrl-D) ou SIGINT (mais on a déjà _exit(130) dans le handler)
 				break ;
+			if (ft_strcmp(line, end_word) == 0)
+			{
+				free(line);
+				break ;
+			}
 			write(fd[1], line, ft_strlen(line));
 			write(fd[1], "\n", 1);
 			free(line);
 		}
-		free(line);
 		close(fd[1]);
-		exit(0);
+		_exit(0); // fin normale
 	}
-	signal(SIGINT, SIG_IGN); // parent ignore signal pendant heredoc
-	close(fd[1]);            // parent lit seulement
+	// ----- PARENT -----
+	signal(SIGINT, SIG_IGN); // ignore Ctrl-C pendant la saisie heredoc
+	close(fd[1]);            // ne garde que la lecture
 	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_sigint_heredoc); // rétablir après heredoc
+	signal(SIGINT, handle_sigint); // rétablit le handler normal du shell
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		return (-1); // heredoc annulé par Ctrl-C
-	return (fd[0]);  // retourne le fd de lecture
+	{
+		close(fd[0]); // on ferme le tube, on annule
+		return (-1);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		close(fd[0]);
+		return (-1);
+	}
+	return (fd[0]); // OK : on renvoie le fd de lecture du contenu
 }
 
-int	heredoc_before_fork(t_cmd *arg)
+int	heredoc_before_fork(t_cmd *cmd)
 {
-	t_redir	*redir;
+	t_redir	*r;
 	int		fd;
 
-	redir = arg->redir;
-	while (redir)
+	r = cmd->redir;
+	while (r)
 	{
-		if (redir->type == HEREDOC)
+		if (r->type == HEREDOC)
 		{
-			fd = handle_heredoc(redir->file);
-			if (fd < 0)
-				return (1); // si Ctrl-C pendant heredoc → on arrête la commande
-			redir->heredoc_fd = fd;
+			fd = handle_heredoc(r->file);
+			if (fd == -1) // <- Ctrl-C détecté ici
+				return (-1);
+			r->heredoc_fd = fd;
 		}
-		redir = redir->next;
+		r = r->next;
 	}
 	return (0);
 }

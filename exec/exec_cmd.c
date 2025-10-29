@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 15:35:09 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/29 16:45:52 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,19 @@ int	exec_one_cmd(t_cmd *cmd, t_shell *shell)
 int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 {
 	t_cmd	*current;
-	t_cmd	*tmp;
+	//t_cmd	*tmp;
 	pid_t	pid;
 	int		status;
 
 	if (cmds->next) // s'il y a un pipe -> on délègue
 		return (execute_piped_cmds(cmds, shell));
 	current = cmds;
-	tmp = cmds;
-	while (tmp)
-	{
-		if (heredoc_before_fork(tmp))
-			return (1);
-		tmp = tmp->next;
-	}
+	//tmp = cmds;
+	if (heredoc_before_fork(cmds) == -1)
+    {
+        shell->exit_status = 130; // status de Ctrl-C
+        return 130;
+    }
 	while (current)
 	{
 		// 🚧 garde-fou indispensable
