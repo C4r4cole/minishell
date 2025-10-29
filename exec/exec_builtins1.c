@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 13:37:34 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:45:06 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,36 +77,40 @@ char *env_get_value(t_env *env, const char *key)
 
 int	ft_cd(char **argv, t_shell *shell)
 {
-    char *target;
-    char *oldpwd;
-    char *newpwd;
+    int     argc = 0;
+    char    *target;
+    char    *oldpwd;
+    char    *newpwd;
 
-    oldpwd = env_get_value(shell->envp_lst, "PWD"); // Sauvegarde l'ancien PWD
+    while (argv[argc])
+        argc++;
 
-    // ----------- Déterminer la cible -----------
-	if (argv[2])
-	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return (1);
-	}
-    if (!argv[1] || !ft_strcmp(argv[1], "~"))
+    if (argc > 2)
+        return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
+
+    oldpwd = env_get_value(shell->envp_lst, "PWD");
+
+    // ---- Déterminer target ----
+    if (argc == 1) // cd seul → HOME
         target = env_get_value(shell->envp_lst, "HOME");
-    else if (!ft_strcmp(argv[1], "-"))
+    else if (!ft_strcmp(argv[1], "-")) // cd -
     {
         target = env_get_value(shell->envp_lst, "OLDPWD");
         if (!target)
             return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2), 1);
-        ft_printf("%s\n", target); // comportement Bash pour cd -
+        ft_printf("%s\n", target); // afficher OLDPWD comme bash
     }
     else
         target = argv[1];
 
     if (!target)
-        return (ft_putstr_fd("minishell: cd: target not found\n", 2), 1);
+        return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
 
+    // ---- Changer de dossier ----
     if (chdir(target) != 0)
         return (perror("minishell: cd"), 1);
 
+    // ---- Mettre à jour PWD et OLDPWD ----
     newpwd = getcwd(NULL, 0);
     if (!newpwd)
         return (perror("getcwd"), 1);
@@ -120,12 +124,13 @@ int	ft_cd(char **argv, t_shell *shell)
 }
 
 
+
 int	ft_exit(char **argv, t_shell *shell)
 {
 	long long	status;
 
 	status = 1;
-	// ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 	{
 		status = shell->exit_status;
