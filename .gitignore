@@ -2,4 +2,6 @@
 *.a
 *.d
 *.swp
+minishell
+valgrind.log
 .vscode

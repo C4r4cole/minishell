@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/30 12:17:28 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 18:31:15 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,37 +49,8 @@ int	main(int argc, char **argv, char **envp)
 				execute_piped_cmds(tokens, data);
 			else
 				execute_cmds_list(tokens, data);
+			free_cmd_list(tokens);
 		}
-		// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
-		// 	i = 1;
-		// 	while (tokens)
-		// 	{
-		// 		printf("%d cmd ->", i);
-		// 		if (tokens->argv)
-		// 		{
-		// 			j = 0;
-		// 			while (tokens->argv[j])
-		// 			{
-		// 				printf(" %s", tokens->argv[j]);
-		// 				j++;
-		// 			}
-		// 		}
-		// 		printf("\n");
-		// 		// Parcourir les redirections liées à ce token
-		// 		t_redir *redir = tokens->redir;
-		// 		while (redir)
-		// 		{
-		// 			printf("   redir -> type=%d, file=%s\n",
-		// redir->type,redir->file);
-		// 			redir = redir->next;
-		// 		}
-		// 		tokens = tokens->next;
-		// 		i++;
-		// 	}
-		// 	free(input);
-		// }
-		// 	// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
-		// 	return (0);
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
 	}

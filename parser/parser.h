@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/30 11:38:59 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/30 17:39:27 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void	free_cmd_list(t_cmd *cmd_list);
 void	free_redir_list(t_redir *redir_list);
 void	free_tokens(char **tokens);
 void	free_tab(char **tab);
+void	free_splitter(t_splitter *s);
+void	free_env_list(t_env *env);
 int		handle_redirection(char **tokens, int *i, t_redir **redirection_list);
 char	**create_cmd_args(char **tokens, int start, int count);
 int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);

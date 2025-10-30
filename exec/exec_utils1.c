@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/30 11:47:24 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/30 18:27:46 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->exit_status = 0;
 	shell->in_pipe = 0;
 }
-void	free_shell(t_shell *shell)
+void	free_shell(t_shell *data)
 {
-// 	if (shell->pwd)
-// 		free(shell->pwd);
-// 	if (shell->oldpwd)
-// 		free(shell->oldpwd);
-(void)shell;
+	if (!data)
+		return;
+	free_env_list(data->envp_lst);
+	rl_clear_history();
+	free(data);
 }
+
 void	free_tab(char **tab)
 {
 	int	i;

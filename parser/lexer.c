@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/28 14:15:23 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/30 17:29:28 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,8 @@ int	actions_on_quotes(t_splitter *initialized, char *input, t_shell *shell)
 
 char **input_splitter(char *input, t_shell *shell)
 {
-	t_splitter *initialized;
+	t_splitter	*initialized;
+	char		**result;
 
 	initialized = splitter_init();
     while (input[initialized->i])
@@ -249,6 +250,7 @@ char **input_splitter(char *input, t_shell *shell)
     }
     if (initialized->buf[0] != '\0')
         initialized->output = add_split(initialized->output, &initialized->count, initialized->buf, ft_strlen(initialized->buf));
-    free(initialized->buf);
-    return (initialized->output);
+    result = initialized->output;
+	free_splitter(initialized);
+    return (result);
 }

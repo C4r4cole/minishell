@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 17:27:02 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/17 14:28:33 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/30 18:30:11 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,26 @@ void	free_tokens(char **tokens)
         i++;
     }
     free(tokens);
+}
+
+void	free_splitter(t_splitter *s)
+{
+	if (!s)
+		return;
+	free(s->buf);
+	free(s);
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->next;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
 }
