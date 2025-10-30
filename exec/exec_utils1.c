@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 12:38:24 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 11:47:24 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,8 @@
 
 void	init_shell(t_shell *shell, char **envp)
 {
-	//shell->pwd = getcwd(NULL, 0); // ← INITIALISE CORRECTEMENT
-	// if (!shell->pwd)
-	// {
-	// 	perror("getcwd");
-	// 	exit(EXIT_FAILURE);
-	// }
-	//shell->oldpwd = NULL;
 	shell->envp = envp;
 	shell->envp_lst = env_list_from_envp(envp);
-	// shell->envp_lst = create_lst_envp(envp);
 	shell->exit_status = 0;
 	shell->in_pipe = 0;
 }
