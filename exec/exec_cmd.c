@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
 /*   Updated: 2025/10/30 14:37:11 by ilsedjal         ###   ########.fr       */
@@ -173,6 +173,11 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 	last_pid = -1;
 	signal(SIGPIPE, SIG_IGN);
 	shell->in_pipe = 1;
+	if (heredoc_before_fork_all(cmds) == -1)
+    {
+        shell->exit_status = 130; // status de Ctrl-C
+        return (130);
+    }
 	while (cmds)
 	{
 		if (cmds->next && pipe(fd) == -1)

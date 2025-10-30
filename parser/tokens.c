@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/28 17:29:38 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/30 11:44:58 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,6 @@ int	get_redir_type(char *token)
 		return (HEREDOC);
 	return (-1);
 }
-
-// int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
-// {
-// 	t_redir	*new_redir;
-	
-//     if (tokens[*i + 1])
-//     {
-// 		new_redir = ft_redirnew(tokens[*i], tokens[*i + 1]);
-//         ft_rediradd_back(redirection_list, new_redir);
-//         *i += 2;
-//         return (1);
-//     }
-//     return (0);
-// }
 
 char	*remove_quotes(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 15:36:11 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/10/30 11:45:33 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,28 +108,6 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
     cmd_list = NULL;
     redirection_list = NULL;
     i = 0;
-    // while (tokens[i])
-    // {
-    //     if (is_redirection(tokens[i]))
-    //     {
-	// 		handle_redirection(tokens, &i, &current_cmd->redir);
-	// 		continue ;
-    //     }
-    //     if (tokens[i] && tokens[i][0] && !is_pipe(tokens[i][0]))
-    //     {
-    //         if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
-    //             return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
-	// 		current_cmd = ft_lstlast(cmd_list);
-	// 		continue ;
-    //     }
-	// 	if (tokens[i] && is_pipe(tokens[i][0]))
-	// 	{
-	// 		current_cmd = NULL;
-	// 		i++;
-	// 		continue;
-	// 	}
-    //     i++;
-    // }
 	while (tokens[i])
 	{
 		// 1️⃣ Si on rencontre un pipe → nouvelle commande
@@ -139,21 +117,6 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 			i++;
 			continue;
 		}
-
-		// 2️⃣ Si c’est une redirection, on l’associe à la commande courante
-		// if (is_redirection(tokens[i]))
-		// {
-		// 	// Si on n’a pas encore de commande, il faut en créer une (cas: "< infile cat")
-		// 	if (!current_cmd)
-		// 	{
-		// 		if (!handle_command(tokens, &i, &cmd_list, &redirection_list))
-		// 			return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
-		// 		current_cmd = ft_lstlast(cmd_list);
-		// 	}
-		// 	handle_redirection(tokens, &i, &current_cmd->redir);
-		// 	continue;
-		// }
-
 		if (is_redirection(tokens[i]))
 		{
 			// 🔸 Cas où il n’y a encore aucune commande en cours
@@ -184,12 +147,6 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 		add_arg_to_cmd(current_cmd, tokens[i]);
 		i++;
 	}
-	// if (!cmd_list || (cmd_list && !cmd_list->argv))
-	// {
-	// 	ft_putendl_fd("bash: syntax error near unexpected token `newline'", 2);
-	// 	cleanup_parse_error(cmd_list, redirection_list, tokens);
-	// 	return (NULL);
-	// }
 	if (redirection_list)
 		free_redir_list(redirection_list);
 	free_tokens(tokens);

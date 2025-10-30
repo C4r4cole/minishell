@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
 /*   Updated: 2025/10/30 11:29:24 by ilsedjal         ###   ########.fr       */
@@ -85,6 +85,20 @@ int	heredoc_before_fork(t_cmd *cmd)
 			r->heredoc_fd = fd;
 		}
 		r = r->next;
+	}
+	return (0);
+}
+
+int	heredoc_before_fork_all(t_cmd *cmds)
+{
+	t_cmd	*current;
+
+	current = cmds;
+	while (current)
+	{
+		if (heredoc_before_fork(current) == -1)
+			return (-1);
+		current = current->next;
 	}
 	return (0);
 }

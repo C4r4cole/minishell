@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
 /*   Updated: 2025/10/30 12:17:28 by ilsedjal         ###   ########.fr       */
@@ -13,45 +13,20 @@
 #include "exec/exec_header.h"
 #include "minishell.h"
 
-// void	print_env_list(t_env *env)
-// {
-//     while (env)
-//     {
-// 		printf("%s=%s\n", env->key, env->value);
-//         env = env->next;
-//     }
-// } TEST POUR VOIR SI LA LISTE ENV_LST EST BIEN REMPLIE
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*tokens;
 	t_shell	*data;
 	char	*input;
 
-	// int		i;
-	// int		j;
 	data = malloc(sizeof(t_shell));
 	if (!data)
 		return (1);
 	(void)argc;
 	(void)*argv;
 	init_shell(data, envp);
-	// print_env_list(data->envp_lst); // PRINT DE LA LISTE
-	// print_banner();
 	rl_bind_key('\t', rl_complete);
 	using_history();
-	// env_list = stored_env(envp);
-	// ============ //
-	// === TEST === //
-	// ============ //
-	// while (env_list)
-	// {
-	// 	printf("KEY : %s, VALUE : %s\n", env_list->key, env_list->value);
-	// 	env_list = env_list->next;
-	// }
-	// ============ //
-	// === TEST === //
-	// ============ //
 	while (1)
 	{
 		// Installe le handler SIGINT juste avant readline
@@ -66,7 +41,6 @@ int	main(int argc, char **argv, char **envp)
 			g_sig = 0;
 		}
 		add_history(input);
-		// printf("cmd = %s\n", input);
 		tokens = parse_input(input, data);
 		free(input);
 		if (tokens)

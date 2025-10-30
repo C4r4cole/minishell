@@ -1,0 +1,775 @@
+[33mcommit ed7e8506813b7c48f3adfb926b615cf59c29fd69[m[33m ([m[1;36mHEAD -> [m[1;32mtest_01[m[33m)[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s15.clusters.42paris.fr>
+Date:   Thu Oct 30 14:52:18 2025 +0100
+
+    exit error fix + signals fix
+
+[33mcommit 547dc510f747d19cbfef28fcb4ac83c24bd37074[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s15.clusters.42paris.fr>
+Date:   Thu Oct 30 12:35:04 2025 +0100
+
+    last fixings
+
+[33mcommit 3bc50efa38744e5458ebfdb32803c672d6f4e17b[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 17:54:42 2025 +0100
+
+    signals correct exit
+
+[33mcommit 3d51a416e8d7464d00d674fd66bd612ee4b1325e[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 29 15:41:04 2025 +0100
+
+    segfault heredoc
+
+[33mcommit 62a378a7317fd80dd543a973f44594dd18b3f9e3[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 15:39:52 2025 +0100
+
+    handling prompt heredoc
+
+[33mcommit b759f150cd0a24ee8e1a7b4436cfbd379ace21fe[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 15:28:28 2025 +0100
+
+    signals handled on heredoc
+
+[33mcommit 2f415a92e8593f9cfe2b0f171e83496366f83cd7[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 15:19:16 2025 +0100
+
+    commit3
+
+[33mcommit ae4d7403a1c0c8d02db61de8d1ee0834bf1d87a5[m
+Merge: ef3b94b 227ff69
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 15:11:31 2025 +0100
+
+    delete exec
+
+[33mcommit ef3b94bdf81b359015d0dbd81916b1f669df0c20[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 15:10:49 2025 +0100
+
+    handle signals errors code
+
+[33mcommit 227ff690fa2776fb7066499d8ed5b72e0c3351dd[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 29 14:51:38 2025 +0100
+
+    redirection as very first token fixed
+
+[33mcommit 1d1d4dfed9e5185e82f4508a6752d51c985aa625[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 14:04:54 2025 +0100
+
+    commit2
+
+[33mcommit ec04cf955ad5b9313ba2a67e4690f72a686c42c2[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 13:39:56 2025 +0100
+
+    delete pwd oldpwd chars from struct
+
+[33mcommit 1d60c3101bf1eb50186ade552afd243d4057382d[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s14.clusters.42paris.fr>
+Date:   Wed Oct 29 11:52:02 2025 +0100
+
+    tester OK
+
+[33mcommit 43e74818791ef77084f17e90611f1e2f88039974[m
+Merge: 0d9061b 43fb2a6
+Author: Ilyes Sedjal <ilsedjal@f6r8s11.clusters.42paris.fr>
+Date:   Tue Oct 28 17:59:06 2025 +0100
+
+    test
+
+[33mcommit 0d9061b2ea234de593d38925a5c06c5b966110f6[m
+Author: Ilyes Sedjal <ilsedjal@f6r8s11.clusters.42paris.fr>
+Date:   Tue Oct 28 17:57:47 2025 +0100
+
+    commit before pull
+
+[33mcommit 43fb2a6fc1af23f4f9a60398c7bfbd1ebc04045d[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Oct 28 17:55:40 2025 +0100
+
+    141/146
+
+[33mcommit f35291e762f86f89a5b0f6ddefcf97126a5b3e40[m
+Author: Ilyes Sedjal <ilsedjal@f6r8s11.clusters.42paris.fr>
+Date:   Tue Oct 28 15:15:00 2025 +0100
+
+    132/146
+
+[33mcommit 958ab07482a63e7b1c8120a37eef126cd7a6a230[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Oct 28 14:24:01 2025 +0100
+
+    104/146
+
+[33mcommit 62ab39aec43b46504ba58fdbbda531e2b8b44cdc[m
+Merge: b8db206 0e107a7
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Oct 28 14:18:51 2025 +0100
+
+    refactoring lexer.c
+
+[33mcommit b8db206c7843616e9da7b8d88435d7edb461c12b[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Oct 28 14:16:50 2025 +0100
+
+    refactoring lexer.c
+
+[33mcommit 0e107a7a543ed206f2362988b3b5411c538c42f4[m
+Author: Ilyes Sedjal <ilsedjal@f6r8s11.clusters.42paris.fr>
+Date:   Tue Oct 28 14:11:55 2025 +0100
+
+    103/146
+
+[33mcommit d3326a6ff2617a7ed3e08f71aea30050d14fac0f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Oct 27 18:36:21 2025 +0100
+
+    refactoring ongoing
+
+[33mcommit 5d08d125d064d9000f016f14eef942b06634048f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 23 11:59:47 2025 +0200
+
+    fixing quotes parsing
+
+[33mcommit 41e34d9132f168c7d6e9d33a4393d58e441c650b[m[33m ([m[1;31morigin/test[m[33m, [m[1;31morigin/parser[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 22 14:34:15 2025 +0200
+
+    pid added to printf exec_one_cmd
+
+[33mcommit ff3305b61ce7033c3819e37dc3f40f3591c21b85[m
+Merge: e040bc7 2fb1804
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 22 14:28:39 2025 +0200
+
+    version test ready ?
+
+[33mcommit 2fb18048e8eb46e737d810c107110685c4118a95[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 22 14:24:42 2025 +0200
+
+    0 managed
+
+[33mcommit e040bc70ba5550d02446ff75d953d32ff439e11c[m[33m ([m[1;31morigin/exec[m[33m)[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s12.clusters.42paris.fr>
+Date:   Wed Oct 22 14:23:04 2025 +0200
+
+    deleting vim files
+
+[33mcommit 735c9edf8f095541a9743bb9c00c63019d9a84a1[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s12.clusters.42paris.fr>
+Date:   Wed Oct 22 14:22:18 2025 +0200
+
+    handling signals
+
+[33mcommit bcbe0e15487a323fc5a3f7de2db47deb0c1d61ea[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s12.clusters.42paris.fr>
+Date:   Wed Oct 22 12:36:33 2025 +0200
+
+    test signals
+
+[33mcommit deab3681eb9169f48bd53f774a7b2f58fcb89086[m
+Merge: 2223996 1ac96eb
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 22 11:42:26 2025 +0200
+
+    test is on fire
+
+[33mcommit 2223996d090411524224e514a204734a585ee2af[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s12.clusters.42paris.fr>
+Date:   Wed Oct 22 10:48:10 2025 +0200
+
+    add pipes gestion 2
+
+[33mcommit 1564b2f32a00f58c9b750a4913ee48a39e73ec21[m
+Author: Ilyes Sedjal <ilsedjal@f6r9s12.clusters.42paris.fr>
+Date:   Wed Oct 22 10:47:26 2025 +0200
+
+    adding pipes gestion
+
+[33mcommit 1ac96ebccf8d6be1b06061753b983017f2261616[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Oct 21 18:12:52 2025 +0200
+
+    expand without quotes managed
+
+[33mcommit a1bb0013c3f7c63d2a4be86763811dfc83426dca[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Oct 21 14:43:16 2025 +0200
+
+    idk
+
+[33mcommit a84921294a0b4dfc5ce23acf5f82cdf97d58a7b9[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Oct 21 13:18:32 2025 +0200
+
+    adding ft_exit and ft_unset
+
+[33mcommit bfcf1be44a480ef86535247c00d873f4b2e9fd48[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Oct 20 21:22:17 2025 +0200
+
+    fixing leaks
+
+[33mcommit c7978469171be8536a9247cfbcf2cb1ed705c46f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Oct 20 17:47:29 2025 +0200
+
+    execute redir for builtins done
+
+[33mcommit 1b359f660d67a05880b41499415526c21e491a9d[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Oct 20 14:35:56 2025 +0200
+
+    prepare for push 2
+
+[33mcommit 442e72607c406279ba55c6c75b9a3324c656c6c1[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Oct 20 14:35:21 2025 +0200
+
+    prepare for test
+
+[33mcommit bb1ec55ecf1c7044b77df9693c24a788aa23709b[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Sun Oct 19 15:26:39 2025 +0200
+
+    heredoc done ?
+
+[33mcommit 8b2f86f9eabd929628e6861566a92712448b84fc[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Sat Oct 18 19:12:19 2025 +0200
+
+    heredoc ongoing
+
+[33mcommit 0635fd61c605746772cb3996144de4f867574b63[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 16 18:46:32 2025 +0200
+
+    commit after make fclean
+
+[33mcommit e32a98497e17acd0060db1e460c36c15927430f0[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 16 18:45:58 2025 +0200
+
+    syntax errors managed
+
+[33mcommit 0ac07bf42b36913e6418e49d3e65a83c67bbd465[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 16 17:49:20 2025 +0200
+
+    expand function -25 lines
+
+[33mcommit a8c1e7d516d8630f08cbb47155b4cd353ac40d08[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 16 17:43:41 2025 +0200
+
+    curly bracket expand done
+
+[33mcommit 014b556995487d2f9d27fd8d2e3b9a1d62d483fa[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 16 17:43:21 2025 +0200
+
+    curly bracket expand done
+
+[33mcommit 12a20f5e28d29e67e9fc53d0daefadc3a9b487c1[m
+Merge: e38d5fb dedb25a
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Thu Oct 16 14:43:38 2025 +0200
+
+    Merge branch 'test' of https://github.com/C4r4cole/minishell into test
+
+[33mcommit e38d5fb2d18cd1ec12563caf8b9951438ae83330[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Thu Oct 16 14:42:43 2025 +0200
+
+    test2
+
+[33mcommit dedb25a693d1c33a617f00555193ddef997dd04a[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 19:10:10 2025 +0200
+
+    refactoring parser.c
+
+[33mcommit 538cc17124eee3ccdae0cced8aa13834af7b3c1e[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 19:05:10 2025 +0200
+
+    refactoring parser.c
+
+[33mcommit c053d02e3a4bc085dee447d38b686626c9b00d70[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 17:49:53 2025 +0200
+
+    quotes.c completely refactored
+
+[33mcommit d9b01e9a00f0705732f61269e2b76f3389912b18[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 16:59:25 2025 +0200
+
+    single quote management refactoring
+
+[33mcommit f4ac73133d752ac25184c5d575f76e224d88b039[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 16:44:57 2025 +0200
+
+    some comments deleted on quotes.c
+
+[33mcommit 7ff49d8990870f1fa93ecaa999055f62bd7a04c8[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 16:26:32 2025 +0200
+
+    double quote management refactored
+
+[33mcommit c0ec8c1b566636ab07d1336830575eeb5a05f502[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 16:01:34 2025 +0200
+
+    fix metacharacter & quote
+
+[33mcommit 3de7ed147556e3cb39cac1d9841b65c59f6eb298[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 15:54:03 2025 +0200
+
+    fixed free_tokens in parser_input
+
+[33mcommit 056fbc47b18ae4f3e45c88071cbccd677b12292a[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Oct 2 15:16:23 2025 +0200
+
+    refactoring in tokens.c and parser_utils.c
+
+[33mcommit c86f7b25a3431e0bb84916a4cecc7d676be2c6de[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 1 17:55:43 2025 +0200
+
+    segfault on space and tab input fixed
+
+[33mcommit bf3de52284b1d4f7c98980be9ab1fb2efd785bc5[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 1 17:39:41 2025 +0200
+
+    updated ft_strncmp to ft_strcmp
+
+[33mcommit 57b21a62813286c917669d481607b37150932bd3[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 1 17:39:13 2025 +0200
+
+    updated ft_strncmp to ft_strcmp
+
+[33mcommit a9ad4fe031dd8d11e956d35f044ec799dc58fd6f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 1 17:13:37 2025 +0200
+
+    little fixes on quotes_management
+
+[33mcommit 1a5a9d70c8d663564539f827ebbfba3ea9e87cbf[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 1 17:02:53 2025 +0200
+
+    working expand version with gitignore and .supp
+
+[33mcommit b452830d7f46250f3fa92fc4ca0301d9c0e22897[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Wed Oct 1 16:17:33 2025 +0200
+
+    working expand version
+
+[33mcommit e80547109ff77ce18a4bc7f9440755ae7cd5bff9[m
+Merge: dfea29a 001d215
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 18:46:12 2025 +0200
+
+    idk
+
+[33mcommit dfea29ac163296cb44396d45a565c24b1d903ca2[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 18:43:32 2025 +0200
+
+    test
+
+[33mcommit 001d2155eaa99cbdf40a4817a31b5bc2581e1e59[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 18:42:03 2025 +0200
+
+    .o deleted
+
+[33mcommit 41299c52dab9fb8bf0f7e1be37a0ebdc802e9cca[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 18:40:41 2025 +0200
+
+    Reset test to match parser
+
+[33mcommit fa82d5c790cdc635eea248eae38e6c56d3ffa838[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 18:32:05 2025 +0200
+
+    error
+
+[33mcommit 569cd53d615cbf65e9d1c4c036d85db08f6141eb[m
+Merge: 01fdce7 57ebd7a
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 18:19:33 2025 +0200
+
+    Merge branch 'test' of github.com:C4r4cole/minishell into test
+
+[33mcommit 01fdce7f826c3ff78052b38ec714ab563dc8356b[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 18:17:10 2025 +0200
+
+    without .o
+
+[33mcommit 57ebd7ac3d6a311d1657186499cf81c88bfa1b4d[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 18:00:21 2025 +0200
+
+    delete .o
+
+[33mcommit c90d3681996871b789e34e9cda21fd46c6dae94f[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 17:54:35 2025 +0200
+
+    .o
+
+[33mcommit 1d10cb7be166b74936f7087be5f8b4f63f5122bb[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 17:48:17 2025 +0200
+
+    metacharacter managed
+
+[33mcommit 880dcbc686fa5e2b1b7cc609e493b4cd7beaa7ac[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 16:29:32 2025 +0200
+
+    merge and resolve conflits2
+
+[33mcommit d8468c640d9371ac04f07bbfffc44fc98b3fdc8e[m
+Merge: a409061 41f104a
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 16:29:04 2025 +0200
+
+    merge and resolve conflits
+
+[33mcommit a40906140180c6b6d407bd5d565368bea73efabc[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 15:43:32 2025 +0200
+
+    rien
+
+[33mcommit 294f38541d348db8774c963acec132b017adf959[m
+Merge: b065599 f85283a
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 15:41:09 2025 +0200
+
+    pwd cd export WIP
+
+[33mcommit f85283a89606eecda4a9efe4056ab5890c0e1736[m
+Merge: 7a43ad5 ea11050
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 30 15:39:03 2025 +0200
+
+    parser merged
+
+[33mcommit 41f104a82c5b942ce5096f5f4b18c8e88417c2ef[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s13.clusters.42paris.fr>
+Date:   Tue Sep 30 15:34:34 2025 +0200
+
+    add export pwd cd ... chained list env
+
+[33mcommit ea1105009ffaed0e1c86b946444c3d76361b4763[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 29 17:51:09 2025 +0200
+
+    env_list done + expand ongoing
+
+[33mcommit 392c6b1ecdb521d4cfa5b0d41b7d789d640a8ea3[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 25 15:15:23 2025 +0200
+
+    uncommenting exec testing lines
+
+[33mcommit 2f56bf142a4a7842cbdd6ed06387298a3114fc5f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 25 15:43:11 2025 +0200
+
+    commit test
+
+[33mcommit b065599b16c066b879584a57535ed59b877ce1e0[m
+Merge: 799a46f 7a43ad5
+Author: Ilyes Sedjal <ilsedjal@f6r11s11.clusters.42paris.fr>
+Date:   Thu Sep 25 15:17:01 2025 +0200
+
+    Merge branch 'test' of https://github.com/C4r4cole/minishell into test
+
+[33mcommit 799a46fe2a41d8bd6fb474b634d750d3226ae628[m
+Merge: 4f16a9e 8319e64
+Author: Ilyes Sedjal <ilsedjal@f6r11s11.clusters.42paris.fr>
+Date:   Thu Sep 25 15:16:53 2025 +0200
+
+    conflic resolv
+
+[33mcommit 7a43ad5b7043c2547c6be3c76395e152ef9d4f6a[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 25 15:15:23 2025 +0200
+
+    uncommenting exec testing lines
+
+[33mcommit 4f16a9e607b31c6d608f90d803a161a4cfc4de77[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s11.clusters.42paris.fr>
+Date:   Thu Sep 25 15:05:55 2025 +0200
+
+    fix segfaults
+
+[33mcommit 8319e641d32ea92df78c924905dddc75aa201abc[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 25 14:56:58 2025 +0200
+
+    refactoring
+
+[33mcommit 654a2bf9c6365afa188e55bba6c30a3538ccd96e[m
+Author: Ilyes Sedjal <ilsedjal@f6r12s13.clusters.42paris.fr>
+Date:   Tue Sep 23 15:24:12 2025 +0200
+
+    pwd works , segfault for echo and ls
+
+[33mcommit 2ec1ae7f12bc24e0934d4792b437148cb2bf4c75[m
+Merge: d45404d b78c981
+Author: Ilyes Sedjal <ilsedjal@f6r12s13.clusters.42paris.fr>
+Date:   Tue Sep 23 14:46:33 2025 +0200
+
+    djskal
+    Merge branch 'exec' into test
+
+[33mcommit b78c98131bd369cf338f26b7ff8d5720573f7389[m
+Author: Ilyes Sedjal <ilsedjal@f6r12s13.clusters.42paris.fr>
+Date:   Tue Sep 23 14:43:25 2025 +0200
+
+    2 builtins, and exec single cmd
+
+[33mcommit d45404dffa3918b8d8bc63b8cb48eeda43944586[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 23 14:38:35 2025 +0200
+
+    new branch test
+
+[33mcommit 9ad6435857ee13dfd7a77429d468b7994e778974[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 18 17:39:52 2025 +0200
+
+    env var ongoing
+
+[33mcommit bb284eaaff611425d8df1f7b02921807407ecbe4[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 18 12:53:31 2025 +0200
+
+    tokenisation ongoing
+
+[33mcommit 3eea88d6141205d52e7158e087bb074eb886742c[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 18 11:51:19 2025 +0200
+
+    tokenization ongoing
+
+[33mcommit a6197149d2c07799f7b5691bfec319b88ce1fa24[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 16 17:54:42 2025 +0200
+
+    tokenizer ongoing
+
+[33mcommit 0323070d46792cd6385ed9f46959c88d76bb2c8f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 16 17:20:25 2025 +0200
+
+    structures fix #2
+
+[33mcommit 565918249c2b92fec76c5c82230275af743733d1[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 16 17:15:24 2025 +0200
+
+    structures fix
+
+[33mcommit d70aa182ac748fb5624269a53b7782e5ce12e8ea[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 16 17:10:58 2025 +0200
+
+    lexer done ?
+
+[33mcommit 135c38c9e36ad5166216525b82f6c11f978b3b85[m
+Author: Ilyes Sedjal <ilsedjal@f6r12s7.clusters.42paris.fr>
+Date:   Tue Sep 16 15:10:14 2025 +0200
+
+    test final
+
+[33mcommit e86c87ad7dca97ee802536e5f1fc641d7aa5c68a[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 16 14:47:08 2025 +0200
+
+    still practicing git
+
+[33mcommit 819ab5e761dd09ff9fd70317139ac7acf86b9ca0[m
+Merge: bc41a2b d6f9e4e
+Author: Ilyes Sedjal <ilsedjal@f6r12s7.clusters.42paris.fr>
+Date:   Tue Sep 16 14:18:10 2025 +0200
+
+    Merge branch 'exec'
+
+[33mcommit d6f9e4ef67ea292c3abb5fc29cf020b3859e12d0[m
+Author: Ilyes Sedjal <ilsedjal@f6r12s7.clusters.42paris.fr>
+Date:   Tue Sep 16 14:16:07 2025 +0200
+
+    test printf
+
+[33mcommit a716f91b56677687ac486093ff49c8d4f2c48877[m
+Author: Ilyes Sedjal <ilsedjal@f6r12s7.clusters.42paris.fr>
+Date:   Tue Sep 16 14:14:48 2025 +0200
+
+    exec printf
+
+[33mcommit bc41a2b040fd03998430a06a2d6ec953cebc6fae[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Tue Sep 16 13:53:43 2025 +0200
+
+    lexer ongoing
+
+[33mcommit 10aef0bdd841a8ad253cffbe7853c6b9757b6c12[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 17:53:30 2025 +0200
+
+    lexer ongoing
+
+[33mcommit 7e62436a969b3ebd91d1faced327c2dc1b9dd1ad[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 14:23:02 2025 +0200
+
+    merge conflicts in minishell.h fixed
+
+[33mcommit fd4a7abc7b0dea65420b2366053df09227625f4e[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 14:16:44 2025 +0200
+
+    some tests
+
+[33mcommit 168cf61f9dd22b6db838cc7c001593b57ab0481e[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 14:11:19 2025 +0200
+
+    banner ongoing
+
+[33mcommit d44de940771061b91dd978fb9952a69789c14667[m
+Merge: 5885d6d 65cc39e
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 12:11:22 2025 +0200
+
+    main loop merged
+
+[33mcommit 65cc39ee94359ff48aa6163bdbddbef154f042a6[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 12:09:34 2025 +0200
+
+    main loop implemented
+
+[33mcommit 5885d6de845a02c9577c23aa8665550febb73806[m[33m ([m[1;31morigin/feature/test-git[m[33m)[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 11:08:19 2025 +0200
+
+    My changes
+
+[33mcommit af35a87ee47b709a65de4bd14035b5bc17df60c1[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Mon Sep 15 11:05:52 2025 +0200
+
+    Added readme
+
+[33mcommit cc96d9e07744a0a2cd99e80ea88001ce3029e7e8[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 17:42:34 2025 +0200
+
+    libft under utils
+
+[33mcommit 16bd9007e3778ef9097df6fa6ef7a47105ad79b2[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 17:08:42 2025 +0200
+
+    libft added
+
+[33mcommit 1a6fa55c35ac23b6f87388c0d4adfa749ea63c06[m
+Merge: 4cae245 1ee7efd
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 16:47:54 2025 +0200
+
+    Merge branch 'main' into parser
+
+[33mcommit 1ee7efd5d324687ba37547a24ef394f46ebbce51[m
+Merge: 3d5d593 188f9a4
+Author: Ilyes Sedjal <ilsedjal@f6r11s9.clusters.42paris.fr>
+Date:   Thu Sep 11 16:00:38 2025 +0200
+
+    adding exec files
+
+[33mcommit 3d5d593b3ef80896580ed84d40d314beab0d5b93[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s9.clusters.42paris.fr>
+Date:   Thu Sep 11 15:57:51 2025 +0200
+
+    rien
+
+[33mcommit 188f9a4ccc0851aa091f9e5656cb683d99722989[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s9.clusters.42paris.fr>
+Date:   Thu Sep 11 15:56:06 2025 +0200
+
+    header creation...
+
+[33mcommit 7b6da1205bc47074ab96a692198728d384433982[m
+Merge: 354bca9 d25c196
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 15:21:15 2025 +0200
+
+    some basics
+
+[33mcommit 354bca998a74743f56601d3b6614e552770a0a21[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 12:55:09 2025 +0200
+
+    test error
+
+[33mcommit d25c196e869fdb8d752858a864031b636179c81b[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s9.clusters.42paris.fr>
+Date:   Thu Sep 11 12:55:02 2025 +0200
+
+    test errors
+
+[33mcommit 327ba3d057e23b52dd560959c86b59d4680147ce[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s9.clusters.42paris.fr>
+Date:   Thu Sep 11 12:52:55 2025 +0200
+
+    test error
+
+[33mcommit 0f9e85c97922fc652632f30cbfa550388da903b3[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 12:37:24 2025 +0200
+
+    test2
+
+[33mcommit 71e40977478a63514b577225d6c36c08fa2d93c8[m
+Author: Ilyes Sedjal <ilsedjal@f6r11s9.clusters.42paris.fr>
+Date:   Thu Sep 11 12:18:42 2025 +0200
+
+    headers
+
+[33mcommit 4cae245fd83b1f24437abc63feb5bc6619856f05[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 12:16:04 2025 +0200
+
+    parser init
+
+[33mcommit cef91fedc0900bdc6c7331aec6a02cd349a2f59f[m
+Author: C4r4cole <c4r4cole.chevalerie@gmail.com>
+Date:   Thu Sep 11 12:09:36 2025 +0200
+
+    firest commit

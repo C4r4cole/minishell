@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
 /*   Updated: 2025/10/30 12:17:57 by ilsedjal         ###   ########.fr       */
@@ -21,12 +21,6 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-// typedef struct s_env
-// {
-// 	char *envp;
-// 	struct s_env *next;
-// } t_env;
 
 int		check_n(const char *str);
 int		ft_echo(char **argv);
@@ -50,13 +44,13 @@ int		export_error(char *arg);
 int		ft_isnumber(char *str);
 void	env_remove(t_env **lst, char *key);
 char	*env_get_value(t_env *env, const char *key);
-// void 	execute_redirections_for_pipe(t_redir *redir);
 
 int		handle_heredoc(char *end_word);
 char	**env_to_tab(t_env *env);
 void	execute_redirections_cmds(t_cmd *cmd);
 int		execute_redirections_builtins(t_redir *redir);
 int		heredoc_before_fork(t_cmd *arg);
+int		heredoc_before_fork_all(t_cmd *cmds);
 void    handle_sigint_heredoc(int sig);
 
 void	setup_signals_main(void);
