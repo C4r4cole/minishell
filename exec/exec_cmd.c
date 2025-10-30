@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/30 12:29:20 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 14:37:11 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 			if (!ft_strcmp(cmds->argv[0], "export") || !ft_strcmp(cmds->argv[0],
 					"unset") || !ft_strcmp(cmds->argv[0], "cd"))
 				exit(1);
-			if (!ft_strcmp(cmds->argv[0], "exit") && ft_isnumber(cmds->argv[1]))
+			if (!ft_strcmp(cmds->argv[0], "exit") && !ft_isnumber(cmds->argv[1]))
 			{
 				ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 				code = ft_exit_return_code(cmds->argv);
