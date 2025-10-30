@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 15:36:27 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 12:17:57 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void    handle_sigint_heredoc(int sig);
 
 void	setup_signals_main(void);
 void	handle_sigint(int sig);
+void	handle_sigquit(int sig);
 extern int g_sig; 
 
 #endif

@@ -6,12 +6,12 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 14:49:26 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 12:17:28 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "exec/exec_header.h"
+#include "minishell.h"
 
 // void	print_env_list(t_env *env)
 // {
@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		// Installe le handler SIGINT juste avant readline
 		setup_signals_main();
+		signal(SIGQUIT, handle_sigquit);
 		input = readline("minishell> ");
 		if (!input)
 			break ;
@@ -105,6 +106,8 @@ int	main(int argc, char **argv, char **envp)
 		// }
 		// 	// Ligne d'Ilyes a rajouter pour faire fonctionner le vrai but de minishell
 		// 	return (0);
+		signal(SIGINT, handle_sigint);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	free_shell(data);
 }

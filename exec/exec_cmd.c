@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 16:45:52 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 12:29:20 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	exec_one_cmd(t_cmd *cmd, t_shell *shell)
 	pid_t	pid;
 	int		status;
 	char	*path;
+	int		sig;
 
 	path = find_path(cmd, shell);
 	// Si find_path a échoué → on ne fork pas !
@@ -40,15 +41,21 @@ int	exec_one_cmd(t_cmd *cmd, t_shell *shell)
 		exit(126);
 	}
 	// ---- PARENT ----
-	signal(SIGINT, SIG_IGN);   // <- IMPORTANT ! Ignore Ctrl-C pendant que l’enfant tourne
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	// <- IMPORTANT ! Ignore Ctrl-C pendant que l’enfant tourne
+	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	signal(SIGINT, handle_sigint); // remet les signaux
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	if (WIFEXITED(status))
 		shell->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		shell->exit_status = 128 + WTERMSIG(status);
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+			write(2, "Quit (core dumped)\n", 20);
+		shell->exit_status = 128 + sig;
+	}
 	free(path);
 	return (shell->exit_status);
 }
@@ -56,28 +63,29 @@ int	exec_one_cmd(t_cmd *cmd, t_shell *shell)
 int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 {
 	t_cmd	*current;
-	//t_cmd	*tmp;
 	pid_t	pid;
 	int		status;
 
+	// t_cmd	*tmp;
 	if (cmds->next) // s'il y a un pipe -> on délègue
 		return (execute_piped_cmds(cmds, shell));
 	current = cmds;
-	//tmp = cmds;
+	// tmp = cmds;
 	if (heredoc_before_fork(cmds) == -1)
-    {
-        shell->exit_status = 130; // status de Ctrl-C
-        return 130;
-    }
+	{
+		shell->exit_status = 130; // status de Ctrl-C
+		return (130);
+	}
 	while (current)
 	{
 		// 🚧 garde-fou indispensable
-		if (!current->argv || !current->argv[0]) {
+		if (!current->argv || !current->argv[0])
+		{
 			// commande vide (ex: ">> A" ou "<< A")
 			// on peut soit ignorer, soit poser un status d’erreur générique
 			shell->exit_status = 2; // bash sort souvent 2 sur erreur de syntaxe
 			current = current->next;
-			continue;
+			continue ;
 		}
 		// ---------- BUILTINS sans redirection ----------
 		if (!current->redir && (!ft_strcmp(current->argv[0], "echo")
@@ -138,6 +146,17 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 	return (shell->exit_status);
 }
 
+int	ft_exit_return_code(char **argv)
+{
+	if (argv[1] && !ft_isnumber(argv[1]))
+	{
+		return (2); // bash error for non numeric
+	}
+	if (argv[1])
+		return (ft_atoi(argv[1]) % 256);
+	return (0);
+}
+
 int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 {
 	int		fd[2];
@@ -147,6 +166,8 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 	int		status;
 	char	*path;
 	pid_t	w;
+	int		code;
+	int		sig;
 
 	in_fd = -1;
 	last_pid = -1;
@@ -184,9 +205,19 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 			// doit exit(1) en cas d'échec d’open/dup2
 			// builtins interdits dans un pipe (pas d’effet → exit 1 comme bash)
 			if (!ft_strcmp(cmds->argv[0], "export") || !ft_strcmp(cmds->argv[0],
-					"unset") || !ft_strcmp(cmds->argv[0], "cd")
-				|| !ft_strcmp(cmds->argv[0], "exit"))
+					"unset") || !ft_strcmp(cmds->argv[0], "cd"))
 				exit(1);
+			if (!ft_strcmp(cmds->argv[0], "exit") && ft_isnumber(cmds->argv[1]))
+			{
+				ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+				code = ft_exit_return_code(cmds->argv);
+				exit(code);
+			}
+			if (!ft_strcmp(cmds->argv[0], "exit"))
+			{
+				code = ft_exit_return_code(cmds->argv);
+				exit(code);
+			}
 			// builtins simples OK dans un pipe
 			if (!ft_strcmp(cmds->argv[0], "echo"))
 				exit(ft_echo(cmds->argv));
@@ -227,7 +258,12 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 			if (WIFEXITED(status))
 				shell->exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				shell->exit_status = 128 + WTERMSIG(status);
+			{
+				sig = WTERMSIG(status);
+				if (sig == SIGQUIT)
+					write(2, "Quit (core dumped)\n", 20);
+				shell->exit_status = 128 + sig;
+			}
 		}
 	}
 	shell->in_pipe = 0;

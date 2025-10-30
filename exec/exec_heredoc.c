@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 16:56:47 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 11:29:24 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ int	handle_heredoc(char *end_word)
 		{
 			line = readline("heredoc> ");
 			if (!line)
+			{
+				ft_printf("bash: warning: here-document at line 1 delimited by end-of-file\n");
 				// EOF (Ctrl-D) ou SIGINT (mais on a déjà _exit(130) dans le handler)
 				break ;
+			}
 			if (ft_strcmp(line, end_word) == 0)
 			{
 				free(line);
