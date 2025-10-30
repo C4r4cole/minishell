@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 10:06:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 16:36:50 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/10/30 14:31:55 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ char	*find_path(t_cmd *cmd, t_shell *shell)
 	char *full_path;
 	int i;
 	struct stat st;
+	char *path_var;
 
 	cmd_name = cmd->argv[0];
 	paths = NULL;
@@ -135,19 +136,31 @@ char	*find_path(t_cmd *cmd, t_shell *shell)
 		return (ft_strdup(cmd_name));
 	}
 	// Cas 2 : sinon cherche dans PATH
-	while (shell->envp && shell->envp[++i])
-	{
-		if (ft_strncmp(shell->envp[i], "PATH=", 5) == 0)
-		{
-			paths = ft_split(shell->envp[i] + 5, ':');
-			break ;
-		}
-	}
-	if (!paths)
+	// while (shell->envp && shell->envp[++i])
+	// {
+	// 	if (ft_strncmp(shell->envp[i], "PATH=", 5) == 0)
+	// 	{
+	// 		paths = ft_split(shell->envp[i] + 5, ':');
+	// 		break ;
+	// 	}
+	// }
+	// if (!paths)
+	// {
+	// 	shell->exit_status = 127;
+	// 	return (NULL);
+	// }
+
+	path_var = env_get_value(shell->envp_lst, "PATH");
+	if (!path_var)
 	{
 		shell->exit_status = 127;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_name, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (NULL);
 	}
+	paths = ft_split(path_var, ':');
+	
 	// Cas 3 : tester chaque dossier de PATH
 	i = -1;
 	while (paths[++i])
