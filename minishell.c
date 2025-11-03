@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/30 18:31:15 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/03 14:03:23 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(input);
 		tokens = parse_input(input, data);
 		free(input);
+		data->current_cmd_list = tokens;
 		if (tokens)
 		{
 			if (tokens->next)

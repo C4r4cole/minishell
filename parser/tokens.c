@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/30 16:38:03 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/03 15:32:40 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	*remove_quotes(char *str)
 			res[j++] = str[i++];
 	}
 	res[j] = '\0';
+	free(str);
 	return (res);
 }
 
@@ -70,6 +71,8 @@ int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 {
 	t_redir	*new_redir;
 	int		type;
+	char	*file;
+	char	*tmp;
 
 	if (!tokens[*i + 1])
 		return (0);
@@ -78,18 +81,34 @@ int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 	if (type == -1)
 		return (0);
 
-	new_redir = malloc(sizeof(t_redir));
-	if (!new_redir)
+	file = ft_strdup(tokens[*i + 1]);
+	if (!file)
 		return (0);
 
+	tmp = remove_quotes(file);
+	if (!tmp)
+	{
+		free(file);
+		return (0);
+	}
+	file = tmp;
+
+	new_redir = malloc(sizeof(t_redir));
+	if (!new_redir)
+	{
+		free(file);
+		return (0);
+	}
+
 	new_redir->type = type;
-	new_redir->file = remove_quotes(ft_strdup(tokens[*i + 1]));
+	new_redir->file = file;
 	new_redir->next = NULL;
 
 	ft_rediradd_back(redirection_list, new_redir);
 	*i += 2;
 	return (1);
 }
+
 
 char	**create_cmd_args(char **tokens, int start, int count)
 {

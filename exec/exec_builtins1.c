@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:41:24 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/30 18:26:18 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/03 14:01:32 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,6 @@ int	ft_cd(char **argv, t_shell *shell)
     return (0);
 }
 
-
-
 int	ft_exit(char **argv, t_shell *shell)
 {
 	long long	status;
@@ -151,6 +149,9 @@ int	ft_exit(char **argv, t_shell *shell)
 	else
 		status = ft_atoi(argv[1]);
 	// remplacer par un atoll car on peut quitter avec un code erreur au dessus de int
+	if (shell->current_cmd_list)
+		free_cmd_list(shell->current_cmd_list);
+	
 	// liberer la env aussi
 	free_shell(shell);
 	// quit avc le bon status

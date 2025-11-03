@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:21:00 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/29 13:38:50 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/03 14:02:29 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-    char   **envp;
-	t_env  *envp_lst;
-    int      exit_status;
-	int     in_pipe; 
+    char	**envp;
+	t_env	*envp_lst;
+    int		exit_status;
+	int     in_pipe;
+	t_cmd	*current_cmd_list;
 }   t_shell;
 
 #endif

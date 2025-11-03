@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/30 17:39:27 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/03 15:03:47 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_splitter
 char	**input_splitter(char *input, t_shell *shell);
 char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
 t_cmd	*parse_input(char *user_input, t_shell *shell);
-void	ft_rediradd_back(t_redir **lst, t_redir *new);
+int		ft_rediradd_back(t_redir **lst, t_redir *new);
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 void	ft_envadd_back(t_env **lst, t_env *new);
 int		is_redirection(char *present_token);

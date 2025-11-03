@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/17 11:11:02 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/03 15:03:31 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ void	ft_cmdadd_back(t_cmd **lst, t_cmd *new)
 	current_elem->next = new;
 }
 
-void	ft_rediradd_back(t_redir **lst, t_redir *new)
+int	ft_rediradd_back(t_redir **lst, t_redir *new)
 {
 	t_redir	*current_elem;
 	
 	if (!lst || !new)
-	return ;
+	return (0);
 	if (!*lst)
 	{
 		*lst = new;
-		return ;
+		return (1);
 	}
 	current_elem = *lst;
 	while (current_elem->next != NULL)
@@ -80,4 +80,5 @@ void	ft_rediradd_back(t_redir **lst, t_redir *new)
 		current_elem = current_elem->next;
 	}
 	current_elem->next = new;
+	return (1);
 }
