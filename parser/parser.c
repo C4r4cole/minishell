@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/03 15:56:14 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/03 16:41:25 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,8 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 			}
 
 			// 🔸 Gérer la redirection normalement
-			handle_redirection(tokens, &i, &current_cmd->redir);
+			if (!handle_redirection(tokens, &i, &current_cmd->redir))
+				return (cleanup_parse_error(cmd_list, redirection_list, tokens), NULL);
 			continue;
 		}
 
