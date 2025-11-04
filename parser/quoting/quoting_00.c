@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:35:56 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/09/25 18:35:27 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 14:11:50 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,23 @@ int	is_pipe(char c)
 {
 	return (c == PIPE);
 }
-int	is_slash(char c)
+
+int is_redirection_in(char c)
 {
-	return (c == SLASH);
+	return (c == REDIRECTION_IN);
 }
 
-int is_backslash(char c)
+int	is_redirection_out(char c)
 {
-	return (c == BACKSLASH);
+	return (c == REDIRECTION_OUT);
 }
 
-int	is_hyphen(char c)
+int	is_space(char c)
 {
-	return (c == HYPHEN);
+	return (c == SPACE);
 }
 
-int	is_underscore(char c)
+int is_tab(char c)
 {
-	return (c == UNDERSCORE);
+	return (c == TAB);
 }

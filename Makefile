@@ -6,7 +6,7 @@
 #    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/10/30 11:43:55 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/11/04 14:24:52 by fmoulin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,14 +17,13 @@ SRCS_DIR = .
 OBJS_DIR = obj
 
 # Sources comunes
-SRCS =	minishell.c parser/cleaner.c \
-		parser/expand.c parser/lexer.c parser/parser.c parser/syntax.c \
-		parser/tokens.c parser/quoting/quoting_00.c parser/quoting/quoting_01.c \
-		parser/quoting/quoting_02.c parser/quoting/quoting_03.c parser/quoting/quoting_04.c \
-		parser/quoting/quoting_symbols.c exec/exec_cmd.c exec/exec_utils1.c exec/exec_utils2.c \
-		exec/exec_utils3.c parser/parser_utils.c parser/quoting/quoting_05.c exec/exec_heredoc.c  \
+SRCS =	minishell.c parser/cleaner.c parser/expand.c parser/lexer.c \
+		parser/parser.c parser/syntax.c parser/tokens.c \
+		parser/quoting/quoting_00.c parser/quoting/quoting_01.c \
+		utils/redir_utils.c utils/cmd_utils.c utils/env_utils.c\
+		exec/exec_cmd.c exec/exec_utils1.c exec/exec_utils2.c exec/exec_utils3.c \
 		exec/exec_redirections.c exec/exec_signals.c exec/exec_builtins1.c exec/exec_builtins2.c  \
-		
+		exec/exec_heredoc.c \
 
 # Mains
 MAIN = minishell.c
