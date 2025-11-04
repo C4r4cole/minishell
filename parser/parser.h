@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 17:07:53 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 17:52:51 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,9 @@ int			add_split_meta_len(	t_splitter *initialized, char *input);
 int			add_split_on_space(t_splitter *initialized, char *input);
 char		**copy_old_split(char **old, int count);
 char		*str_append_char(char *str, char c);
+
+	// tokens utils
+void		skip_quotes(char *str, int *i, int *j, char *res);
 
 	// cleaner's functions
 void		free_cmd_list(t_cmd *cmd_list);

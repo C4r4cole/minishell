@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 16:56:24 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 17:51:32 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ char	*remove_quotes(char *str)
 {
 	int		i;
 	int		j;
-	char	quote;
 	char	*res;
 
 	if (!str)
@@ -29,19 +28,12 @@ char	*remove_quotes(char *str)
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
-		{
-			quote = str[i++];
-			while (str[i] && str[i] != quote)
-				res[j++] = str[i++];
-			if (str[i] == quote)
-				i++;
-		}
+			skip_quotes(str, &i, &j, res);
 		else
 			res[j++] = str[i++];
 	}
 	res[j] = '\0';
-	free(str);
-	return (res);
+	return (free(str), res);
 }
 
 int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
