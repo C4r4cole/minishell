@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 17:52:51 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 18:11:37 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,6 @@ typedef struct s_splitter
 	// main function
 t_cmd		*parse_input(char *user_input, t_shell *shell);
 
-	// tokens' functions
-char		**create_cmd_args(char **tokens, int start, int count);
-int			handle_redirection(char **tokens, int *i, t_redir **redirection_list);
-int			handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
-
 	// syntax
 int			syntax_error(char *token);
 int			check_syntax_errors(char **tokens);
@@ -115,8 +110,15 @@ int			add_split_on_space(t_splitter *initialized, char *input);
 char		**copy_old_split(char **old, int count);
 char		*str_append_char(char *str, char c);
 
+	// tokens' functions
+char		**create_cmd_args(char **tokens, int start, int count);
+int			handle_redirection(char **tokens, int *i, t_redir **redirection_list);
+int			handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
+
 	// tokens utils
 void		skip_quotes(char *str, int *i, int *j, char *res);
+int			redirection_type(char **tokens, int *i);
+char		*redirection_file(char **tokens, int *i);
 
 	// cleaner's functions
 void		free_cmd_list(t_cmd *cmd_list);

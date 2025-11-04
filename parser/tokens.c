@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 17:51:32 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 18:10:27 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,34 +45,18 @@ int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 
 	if (!tokens[*i + 1])
 		return (0);
-
-	type = get_redir_type(tokens[*i]);
-	if (type == -1)
-		return (0);
-
-	file = ft_strdup(tokens[*i + 1]);
-	if (!file)
-		return (0);
-
+	type = redirection_type(tokens, i);
+	file = redirection_file(tokens, i);
 	tmp = remove_quotes(file);
 	if (!tmp)
-	{
-		free(file);
-		return (0);
-	}
+		return (free(file), 0);
 	file = tmp;
-
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-	{
-		free(file);
-		return (0);
-	}
-
+		return (free(file), 0);
 	new_redir->type = type;
 	new_redir->file = file;
 	new_redir->next = NULL;
-
 	ft_rediradd_back(redirection_list, new_redir);
 	*i += 2;
 	return (1);
