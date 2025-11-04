@@ -6,33 +6,11 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 11:42:09 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 14:24:30 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 16:29:47 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-char	*str_append_char(char *str, char c)
-{
-	char tmp[2];
-	char *joined;
-	
-	tmp[0] = c;
-	tmp[1] = '\0';
-	joined = ft_strjoin(str, tmp);
-	free(str);
-	return (joined);
-}
-
-char *ft_strjoin_free(char *s1, char *s2)
-{
-	char *joined;
-
-	joined = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (joined);
-}
 
 char	*expand_one_dollar(char *input, int *index, t_shell *shell)
 {
@@ -71,4 +49,22 @@ char	*expand_one_dollar(char *input, int *index, t_shell *shell)
     free(name);
     *index = i;
     return (value);
+}
+
+int	expand_and_join(t_splitter *initialized, char *input, t_shell *shell)
+{
+	char *expanded;
+	char *joined;
+	
+	if (is_dollar(input[initialized->i]))
+	{
+		initialized->i++;
+		expanded = expand_one_dollar(input, &initialized->i, shell);
+		joined = ft_strjoin(initialized->buf, expanded);
+		free(initialized->buf);
+		free(expanded);
+		initialized->buf = joined;
+		return (1);
+	}
+	return (0);
 }

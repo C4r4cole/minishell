@@ -6,34 +6,11 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/03 15:32:40 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 16:56:24 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-int is_redirection(char *present_token)
-{
-	if (!present_token)
-		return (0);
-	return (ft_strcmp(present_token, "<") == 0
-			|| ft_strcmp(present_token, ">") == 0
-			|| ft_strcmp(present_token, "<<") == 0
-			|| ft_strcmp(present_token, ">>") == 0);
-}
-
-int	get_redir_type(char *token)
-{
-	if (!ft_strcmp(token, "<"))
-		return (REDIRECTION_IN);
-	if (!ft_strcmp(token, ">"))
-		return (REDIRECTION_OUT);
-	if (!ft_strcmp(token, ">>"))
-		return (REDIRECTION_APPEND);
-	if (!ft_strcmp(token, "<<"))
-		return (HEREDOC);
-	return (-1);
-}
 
 char	*remove_quotes(char *str)
 {
@@ -157,8 +134,3 @@ int	handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirectio
     return (1);
 }
 
-int	handle_pipe(int *i)
-{
-	(*i)++;
-	return (1);
-}

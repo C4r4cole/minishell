@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/03 15:03:47 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/04 17:07:53 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,65 +77,76 @@ typedef struct s_splitter
 // ====== FONCTIONS ====== //
 // ======================= //
 
-char	**input_splitter(char *input, t_shell *shell);
-char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
-t_cmd	*parse_input(char *user_input, t_shell *shell);
-int		ft_rediradd_back(t_redir **lst, t_redir *new);
-void	ft_cmdadd_back(t_cmd **lst, t_cmd *new);
-void	ft_envadd_back(t_env **lst, t_env *new);
-int		is_redirection(char *present_token);
-t_cmd	*ft_cmdnew(char **argv, t_redir *redir);
-t_redir	*ft_redirnew(char *type, char *file);
-t_env	*ft_envnew(char *key, char *value);
-void	free_cmd_list(t_cmd *cmd_list);
-void	free_redir_list(t_redir *redir_list);
-void	free_tokens(char **tokens);
-void	free_tab(char **tab);
-void	free_splitter(t_splitter *s);
-void	free_env_list(t_env *env);
-int		handle_redirection(char **tokens, int *i, t_redir **redirection_list);
-char	**create_cmd_args(char **tokens, int start, int count);
-int		handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
-int		handle_pipe(int *i);
-char	*expand_one_dollar(char *input, int *idx, t_shell *shell);
-int		syntax_error(char *token);
-int		check_syntax_errors(char **tokens);
-int		check_unclosed_quotes(char *input);
-char	*str_append_char(char *str, char c);
+	// main function
+t_cmd		*parse_input(char *user_input, t_shell *shell);
+
+	// tokens' functions
+char		**create_cmd_args(char **tokens, int start, int count);
+int			handle_redirection(char **tokens, int *i, t_redir **redirection_list);
+int			handle_command(char **tokens, int *i, t_cmd **cmd_list, t_redir **redirection_list);
+
+	// syntax
+int			syntax_error(char *token);
+int			check_syntax_errors(char **tokens);
+int			check_unclosed_quotes(char *input);
+
+	// expand
+char		*expand_one_dollar(char *input, int *idx, t_shell *shell);
+int			expand_and_join(t_splitter *initialized, char *input, t_shell *shell);
+
+	// redir utils
+t_redir		*ft_redirnew(char *type, char *file);
+int			ft_rediradd_back(t_redir **lst, t_redir *new);
+
+	// env utils
+t_env		*ft_envnew(char *key, char *value);
+void		ft_envadd_back(t_env **lst, t_env *new);
+
+	// cmd utils
+t_cmd		*ft_cmdnew(char **argv, t_redir *redir);
+void		ft_cmdadd_back(t_cmd **lst, t_cmd *new);
+
+	// lexer's splits functions
+char		**input_splitter(char *input, t_shell *shell);
+t_splitter	*splitter_init(void);
+char		**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len);
+int			add_split_meta_len(	t_splitter *initialized, char *input);
+int			add_split_on_space(t_splitter *initialized, char *input);
+char		**copy_old_split(char **old, int count);
+char		*str_append_char(char *str, char c);
+
+	// cleaner's functions
+void		free_cmd_list(t_cmd *cmd_list);
+void		free_redir_list(t_redir *redir_list);
+void		free_tokens(char **tokens);
+void		free_tab(char **tab);
+void		free_splitter(t_splitter *s);
+void		free_env_list(t_env *env);
 
 // ======================= //
 // == QUOTING FONCTIONS == //
 // ======================= //
 
-int	is_pipe(char c);
-int	is_slash(char c);
-int is_backslash(char c);
-int	is_hyphen(char c);
-int	is_underscore(char c);
-int	is_dollar(char c);
-int	is_question_mark(char c);
-int	is_double_quote(char c);
+	// single quotes
 int is_single_quote(char c);
-int is_ampersand(char c);
+int	set_in_single(t_splitter *initialized, char *input);
+int	unset_in_single(t_splitter *initialized, char *input);
+
+	// double quotes
+int	is_double_quote(char c);
+int	set_in_double(t_splitter *initialized, char *input);
+int	unset_in_double(t_splitter *initialized, char *input);
+
+	// redirections
 int is_redirection_in(char c);
 int	is_redirection_out(char c);
-int is_semicolon(char c);
-int is_opening_parenthesis(char c);
-int is_closing_parenthesis(char c);
-int is_backtick(char c);
+int	is_redirection(char *present_token);
+int	get_redir_type(char *token);
+
+	// others
 int	is_space(char c);
 int is_tab(char c);
-int	is_new_line(char c);
-int	is_star(char c);
-int	is_open_bracket(char c);
-int	is_close_bracket(char c);
-int is_o_curly_bracket(char c);
-int is_c_curly_bracket(char c);
-int	is_hash(char c);
-int	is_tilde(char c);
-int	is_equal(char c);
-int	is_percent(char c);
-int	is_metacharacter(char c);
-int	is_quote(char c);
+int	is_pipe(char c);
+int	is_dollar(char c);
 
 #endif
