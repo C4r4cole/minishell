@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 18:11:37 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/05 13:23:29 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ typedef struct s_splitter
 
 	// main function
 t_cmd		*parse_input(char *user_input, t_shell *shell);
+
+	// parser utils
+int	handle_pipe_case(char **tokens, int *i, t_cmd **current_cmd, t_cmd **cmd_list);
+int	handle_redir_case(char **tokens, int *i, t_cmd **current_cmd, t_cmd **list);
 
 	// syntax
 int			syntax_error(char *token);
