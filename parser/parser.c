@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 19:13:11 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 20:08:41 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,11 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 	parse_input_init(&current_cmd, &cmd_list, &redirection_list, &i);
 	while (tokens[i])
 	{
-		if (handle_pipe_case(tokens, &i, &current_cmd, &cmd_list))
-			continue ;
-		if (handle_redir_case(tokens, &i, &current_cmd, &cmd_list))
+		if (pipe_and_redir_management(tokens, &i, &current_cmd, &cmd_list))
 			continue ;
 		if (!current_cmd && !handle_command(tokens, &i, &cmd_list,
 				&redirection_list))
-			return (cleanup_parse_error(cmd_list, redirection_list, tokens),
-				NULL);
+			return (cleanup(cmd_list, redirection_list, tokens), NULL);
 		if (!current_cmd)
 			current_cmd = ft_lstlast(cmd_list);
 		else

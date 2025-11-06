@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 19:18:01 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 20:09:05 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,10 @@ int						handle_pipe_case(char **tokens, int *i,
 							t_cmd **current_cmd, t_cmd **cmd_list);
 int						handle_redir_case(char **tokens, int *i,
 							t_cmd **current_cmd, t_cmd **list);
-void					cleanup_parse_error(t_cmd *cmd_list,
-							t_redir *redirection_list, char **tokens);
+void					cleanup(t_cmd *cmd_list, t_redir *redirection_list,
+							char **tokens);
+int						pipe_and_redir_management(char **tokens, int *i,
+							t_cmd **current_cmd, t_cmd **cmd_list);
 
 // syntax
 int						syntax_error(char *token);
