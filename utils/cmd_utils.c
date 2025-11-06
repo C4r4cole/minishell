@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 14:20:31 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 17:33:07 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ t_cmd	*ft_cmdnew(char **argv, t_redir *redir)
 void	ft_cmdadd_back(t_cmd **lst, t_cmd *new)
 {
 	t_cmd	*current_elem;
-	
+
 	if (!lst || !new)
-	return ;
+		return ;
 	if (!*lst)
 	{
 		*lst = new;

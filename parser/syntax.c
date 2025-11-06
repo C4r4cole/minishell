@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 17:49:43 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/10/16 18:35:52 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 14:00:57 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	syntax_error(char *token)
 int	check_syntax_errors(char **tokens)
 {
 	int	i;
-	
+
 	i = 0;
 	while (tokens[i])
 	{
@@ -34,7 +34,8 @@ int	check_syntax_errors(char **tokens)
 		}
 		else if (is_redirection(tokens[i]))
 		{
-			if (!tokens[i + 1] || is_pipe(tokens[i + 1][0]) || is_redirection(tokens[i + 1]))
+			if (!tokens[i + 1] || is_pipe(tokens[i + 1][0])
+				|| is_redirection(tokens[i + 1]))
 				return (syntax_error(tokens[i]));
 		}
 		i++;
@@ -45,7 +46,7 @@ int	check_syntax_errors(char **tokens)
 int	check_unclosed_quotes(char *input)
 {
 	int	i;
-	int quote;
+	int	quote;
 
 	i = 0;
 	quote = 0;

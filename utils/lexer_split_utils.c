@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 16:01:07 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 17:33:18 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**copy_old_split(char **old, int count)
 {
 	char	**new;
 	int		i;
-	
+
 	new = malloc(sizeof(char *) * (count + 2));
 	if (!new)
 		return (NULL);
@@ -37,11 +37,12 @@ char	**copy_old_split(char **old, int count)
 	return (new);
 }
 
-char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start, int len)
+char	**add_split(char **string_to_subsplit, int *nb_splitted, char *start,
+		int len)
 {
 	char	**new_split_tab;
 	char	*special_character;
-	
+
 	if (len <= 0)
 		return (string_to_subsplit);
 	new_split_tab = copy_old_split(string_to_subsplit, *nb_splitted);
@@ -71,25 +72,29 @@ int	get_metacharacter_length(char *str)
 	if ((is_redirection_in(str[0]) && is_redirection_in(str[1]))
 		|| (is_redirection_out(str[0]) && is_redirection_out(str[1])))
 		return (2);
-	if (is_redirection_in(str[0]) || is_redirection_out(str[0]) || is_pipe(str[0]))
+	if (is_redirection_in(str[0]) || is_redirection_out(str[0])
+		|| is_pipe(str[0]))
 		return (1);
 	return (0);
 }
 
-int	add_split_meta_len(	t_splitter *initialized, char *input)
+int	add_split_meta_len(t_splitter *initialized, char *input)
 {
-	int meta_len;
-	
+	int	meta_len;
+
 	meta_len = get_metacharacter_length(&input[initialized->i]);
 	if (meta_len > 0)
 	{
 		if (initialized->buf[0] != '\0')
 		{
-			initialized->output = add_split(initialized->output, &initialized->count, initialized->buf, ft_strlen(initialized->buf));
+			initialized->output = add_split(initialized->output,
+					&initialized->count, initialized->buf,
+					ft_strlen(initialized->buf));
 			free(initialized->buf);
 			initialized->buf = ft_strdup("");
 		}
-		initialized->output = add_split(initialized->output, &initialized->count, &input[initialized->i], meta_len);
+		initialized->output = add_split(initialized->output,
+				&initialized->count, &input[initialized->i], meta_len);
 		initialized->i += meta_len;
 		return (1);
 	}
@@ -102,7 +107,9 @@ int	add_split_on_space(t_splitter *initialized, char *input)
 	{
 		if (initialized->buf[0] != '\0')
 		{
-			initialized->output = add_split(initialized->output, &initialized->count, initialized->buf, ft_strlen(initialized->buf));
+			initialized->output = add_split(initialized->output,
+					&initialized->count, initialized->buf,
+					ft_strlen(initialized->buf));
 			free(initialized->buf);
 			initialized->buf = ft_strdup("");
 		}

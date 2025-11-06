@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 16:29:41 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 14:01:06 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,31 @@ int	actions_on_quotes(t_splitter *initialized, char *input, t_shell *shell)
 	}
 	else if (initialized->in_double)
 	{
-		if(double_quote_actions(initialized, input, shell))
+		if (double_quote_actions(initialized, input, shell))
 			return (1);
 	}
 	return (0);
 }
 
-char **input_splitter(char *input, t_shell *shell)
+char	**input_splitter(char *input, t_shell *shell)
 {
 	t_splitter	*initialized;
 	char		**result;
 
 	initialized = splitter_init();
-    while (input[initialized->i])
+	while (input[initialized->i])
 	{
-		if(actions_on_quotes(initialized, input, shell))
+		if (actions_on_quotes(initialized, input, shell))
 			continue ;
-        initialized->buf = str_append_char(initialized->buf, input[initialized->i]);
-        initialized->i++;
-    }
-    if (initialized->buf[0] != '\0')
-        initialized->output = add_split(initialized->output, &initialized->count, initialized->buf, ft_strlen(initialized->buf));
-    result = initialized->output;
+		initialized->buf = str_append_char(initialized->buf,
+				input[initialized->i]);
+		initialized->i++;
+	}
+	if (initialized->buf[0] != '\0')
+		initialized->output = add_split(initialized->output,
+				&initialized->count, initialized->buf,
+				ft_strlen(initialized->buf));
+	result = initialized->output;
 	free_splitter(initialized);
-    return (result);
+	return (result);
 }

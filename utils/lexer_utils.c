@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/04 15:43:11 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 17:33:22 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 t_splitter	*splitter_init(void)
 {
-	t_splitter *init;
-	
+	t_splitter	*init;
+
 	init = malloc(sizeof(t_splitter));
 	if (!init)
 		return (NULL);
@@ -25,15 +25,14 @@ t_splitter	*splitter_init(void)
 	init->in_single = 0;
 	init->in_double = 0;
 	init->buf = ft_strdup("");
-
 	return (init);
 }
 
 char	*str_append_char(char *str, char c)
 {
-	char tmp[2];
-	char *joined;
-	
+	char	tmp[2];
+	char	*joined;
+
 	tmp[0] = c;
 	tmp[1] = '\0';
 	joined = ft_strjoin(str, tmp);

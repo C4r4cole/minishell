@@ -1,44 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:33:38 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/06 17:33:26 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parser.h"
 
-void	skip_quotes(char *str, int *i, int *j, char *res)
+int	handle_pipe_case(char **tokens, int *i, t_cmd **current_cmd,
+		t_cmd **cmd_list)
 {
-	char	quote;
-
-	quote = str[*i++];
-	while (str[*i] && str[*i] != quote)
-		res[*j++] = str[*i++];
-	if (str[*i] == quote)
-		i++;
+	if (is_pipe(tokens[*i][0]))
+	{
+		(*i)++;
+		*current_cmd = ft_cmdnew(NULL, NULL);
+		if (!*current_cmd)
+			return (0);
+		ft_cmdadd_back(cmd_list, *current_cmd);
+		return (1);
+	}
+	return (0);
 }
 
-int	redirection_type(char **tokens, int *i)
+int	handle_redir_case(char **tokens, int *i, t_cmd **current_cmd, t_cmd **list)
 {
-	int	type;
-
-	type = get_redir_type(tokens[*i]);
-	if (type == -1)
+	if (!is_redirection(tokens[*i]))
 		return (0);
-	return (type);
-}
-
-char	*redirection_file(char **tokens, int *i)
-{
-	char	*file;
-
-	file = ft_strdup(tokens[*i + 1]);
-	if (!file)
+	if (!*current_cmd)
+	{
+		*current_cmd = ft_cmdnew(NULL, NULL);
+		if (!*current_cmd)
+			return (0);
+		ft_cmdadd_back(list, *current_cmd);
+	}
+	if (!handle_redirection(tokens, i, &(*current_cmd)->redir))
 		return (0);
-	return (file);
+	return (1);
 }
