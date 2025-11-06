@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+         #
+#    By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/11/04 17:53:46 by fmoulin          ###   ########.fr        #
+#    Updated: 2025/11/06 13:05:07 by ilsedjal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ SRCS =	minishell.c parser/cleaner.c parser/expand.c parser/lexer.c parser/parser
 		parser/quoting/quoting_single_quotes.c \
 		utils/redir_utils.c utils/cmd_utils.c utils/env_utils.c utils/lexer_utils.c utils/lexer_split_utils.c \
 		utils/tokens_utils.c \
-		exec/exec_cmd.c exec/exec_utils1.c exec/exec_utils2.c exec/exec_utils3.c \
-		exec/exec_redirections.c exec/exec_signals.c exec/exec_builtins1.c exec/exec_builtins2.c  \
-		exec/exec_heredoc.c \
+		exec/exec_cmd_list.c exec/exec_utils1.c exec/exec_utils2.c exec/exec_utils3.c exec/exec_utils4.c \
+		exec/exec_redirections_cmds.c exec/exec_redirections_builtins.c exec/exec_signals.c exec/exec_builtins1.c exec/exec_builtins2.c  \
+		exec/exec_heredoc.c exec/exec_piped_cmd.c 
 
 # Mains
 MAIN = minishell.c

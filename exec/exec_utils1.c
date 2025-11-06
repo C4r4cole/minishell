@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/30 18:27:46 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/05 16:06:09 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->exit_status = 0;
 	shell->in_pipe = 0;
 }
+
 void	free_shell(t_shell *data)
 {
 	if (!data)
-		return;
+		return ;
 	free_env_list(data->envp_lst);
 	rl_clear_history();
 	free(data);
@@ -65,6 +66,7 @@ int	check_n(const char *str)
 	}
 	return (0);
 }
+
 void	update_pwd(t_shell *shell, char *oldpwd)
 {
 	char	*newpwd;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/03 14:03:23 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 13:16:25 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(int argc, char **argv, char **envp)
 	using_history();
 	while (1)
 	{
-		// Installe le handler SIGINT juste avant readline
 		setup_signals_main();
 		signal(SIGQUIT, handle_sigquit);
 		input = readline("minishell> ");
@@ -52,8 +51,6 @@ int	main(int argc, char **argv, char **envp)
 				execute_cmds_list(tokens, data);
 			free_cmd_list(tokens);
 		}
-		signal(SIGINT, handle_sigint);
-		signal(SIGQUIT, SIG_IGN);
 	}
 	free_shell(data);
 }

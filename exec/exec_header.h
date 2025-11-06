@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/30 18:26:53 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/05 16:11:58 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_EXEC_H
-# define MINISHELL_EXEC_H
+#ifndef EXEC_HEADER_H
+# define EXEC_HEADER_H
 
 # include "../minishell.h"
 # include "../structures.h"
@@ -51,11 +51,12 @@ void	execute_redirections_cmds(t_cmd *cmd);
 int		execute_redirections_builtins(t_redir *redir);
 int		heredoc_before_fork(t_cmd *arg);
 int		heredoc_before_fork_all(t_cmd *cmds);
-void    handle_sigint_heredoc(int sig);
+void	handle_sigint_heredoc(int sig);
 
 void	setup_signals_main(void);
 void	handle_sigint(int sig);
 void	handle_sigquit(int sig);
-extern int g_sig; 
+int		ft_exit_return_code(char **argv);
+extern int	g_sig;
 
 #endif

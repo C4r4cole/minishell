@@ -6,44 +6,49 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 10:06:48 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/10/29 11:02:00 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:16:40 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
+t_env	*env_create_node_from_line(char *line)
+{
+	char	*eq;
+	char	*key;
+	char	*value;
+	t_env	*node;
+
+	eq = ft_strchr(line, '=');
+	if (!eq)
+		return (NULL);
+	key = ft_substr(line, 0, eq - line);
+	value = ft_strdup(eq + 1);
+	node = ft_envnew(key, value);
+	return (node);
+}
+
 t_env	*env_list_from_envp(char **envp)
 {
 	t_env	*head;
 	t_env	*tail;
+	t_env	*node;
 	int		i;
-	char	*equal;
-	int		key_len;
-	char	*key;
-	char	*value;
-	t_env	*new;
 
 	head = NULL;
 	tail = NULL;
 	i = 0;
 	while (envp && envp[i])
 	{
-		// Découpe la variable en key et value
-		equal = ft_strchr(envp[i], '=');
-		if (!equal)
+		node = env_create_node_from_line(envp[i]);
+		if (node)
 		{
-			i++;
-			continue ;
+			if (!head)
+				head = node;
+			else
+				tail->next = node;
+			tail = node;
 		}
-		key_len = equal - envp[i];
-		key = ft_substr(envp[i], 0, key_len);
-		value = ft_strdup(equal + 1);
-		new = ft_envnew(key, value);
-		if (!head)
-			head = new;
-		else
-			tail->next = new;
-		tail = new;
 		i++;
 	}
 	return (head);
@@ -52,6 +57,7 @@ t_env	*env_list_from_envp(char **envp)
 void	env_update_or_add(t_env **lst, char *key, char *value)
 {
 	t_env	*tmp;
+	char	*new_value;
 
 	tmp = *lst;
 	while (tmp)
@@ -59,14 +65,21 @@ void	env_update_or_add(t_env **lst, char *key, char *value)
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			free(tmp->value);
-			tmp->value = value ? ft_strdup(value) : NULL;
+			if (value)
+				tmp->value = ft_strdup(value);
+			else
+				tmp->value = NULL;
 			return ;
 		}
 		tmp = tmp->next;
 	}
-	ft_envadd_back(lst, ft_envnew(ft_strdup(key),
-			value ? ft_strdup(value) : NULL));
+	if (value)
+		new_value = ft_strdup(value);
+	else
+		new_value = NULL;
+	ft_envadd_back(lst, ft_envnew(ft_strdup(key), new_value));
 }
+
 int	is_valid_env_name(const char *str)
 {
 	int	i;
@@ -83,18 +96,10 @@ int	is_valid_env_name(const char *str)
 	return (1);
 }
 
-int	export_error(char *arg)
-{
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
 void	env_remove(t_env **lst, char *key)
 {
-	t_env *prev;
-	t_env *tmp;
+	t_env	*prev;
+	t_env	*tmp;
 
 	prev = NULL;
 	tmp = *lst;
