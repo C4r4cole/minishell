@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/05 13:43:55 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/06 12:17:45 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ t_cmd	*parse_input(char *user_input, t_shell *shell)
 
 	if (is_empty_input(user_input))
 		return (NULL);
-    tokens = get_tokens(user_input, shell);
-	if (!tokens || check_syntax_errors(tokens))
+	if (!(tokens = get_tokens(user_input, shell)) || check_syntax_errors(tokens))
         return (free_tokens(tokens), NULL);
 	parse_input_init(&current_cmd, &cmd_list, &redirection_list, &i);
 	while (tokens[i])
