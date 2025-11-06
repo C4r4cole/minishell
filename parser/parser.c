@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:53:29 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:28:18 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/06 19:13:11 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,6 @@ char	**get_tokens(char *user_input, t_shell *shell)
 		return (NULL);
 	}
 	return (tokens);
-}
-
-void	cleanup_parse_error(t_cmd *cmd_list, t_redir *redirection_list,
-		char **tokens)
-{
-	free_cmd_list(cmd_list);
-	free_redir_list(redirection_list);
-	free_tokens(tokens);
 }
 
 void	add_arg_to_cmd(t_cmd *cmd, char *arg)

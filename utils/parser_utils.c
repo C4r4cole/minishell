@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:33:26 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/06 19:13:19 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,12 @@ int	handle_redir_case(char **tokens, int *i, t_cmd **current_cmd, t_cmd **list)
 	if (!handle_redirection(tokens, i, &(*current_cmd)->redir))
 		return (0);
 	return (1);
+}
+
+void	cleanup_parse_error(t_cmd *cmd_list, t_redir *redirection_list,
+		char **tokens)
+{
+	free_cmd_list(cmd_list);
+	free_redir_list(redirection_list);
+	free_tokens(tokens);
 }
