@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/10 21:11:34 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/10 21:36:10 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 		free(file);
 		file = tmp;
 	}
-	// was_quoted = str_has_quote(file);
 	tmp = remove_quotes(file);
 	if (!tmp)
 		return (free(file), 0);
