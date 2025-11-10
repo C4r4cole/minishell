@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:46:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/10 16:14:02 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/10 18:48:30 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	handle_sigquit(int sig)
 {
 	(void)sig;
 	rl_on_new_line();
+	rl_replace_line("", 0);
     rl_redisplay();
 }
 

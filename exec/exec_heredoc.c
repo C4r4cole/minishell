@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/05 15:57:53 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:02:31 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	heredoc_child_routine(int *fd, char *end_word)
 	char	*line;
 
 	signal(SIGINT, handle_sigint_heredoc);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, handle_sigquit);
 	close(fd[0]);
 	while (1)
 	{
@@ -54,10 +54,10 @@ int	handle_heredoc(char *end_word)
 		return (perror("fork"), close(fd[0]), close(fd[1]), -1);
 	if (pid == 0)
 		heredoc_child_routine(fd, end_word);
-	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	close(fd[1]);
 	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigquit);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		return (close(fd[0]), -1);
