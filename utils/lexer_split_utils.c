@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:33:18 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 20:57:58 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,11 @@ int	add_split_meta_len(t_splitter *initialized, char *input)
 	if (meta_len > 0)
 	{
 		if (initialized->buf[0] != '\0')
-		{
-			initialized->output = add_split(initialized->output,
-					&initialized->count, initialized->buf,
-					ft_strlen(initialized->buf));
-			free(initialized->buf);
-			initialized->buf = ft_strdup("");
-		}
+			flush_buf(initialized);
 		initialized->output = add_split(initialized->output,
 				&initialized->count, &input[initialized->i], meta_len);
+		if (meta_len == 2 && input[initialized->i] == '<' && input[initialized->i + 1] == '<')
+			initialized->heredoc_next = 1;
 		initialized->i += meta_len;
 		return (1);
 	}
@@ -106,13 +102,7 @@ int	add_split_on_space(t_splitter *initialized, char *input)
 	if (is_space(input[initialized->i]) || is_tab(input[initialized->i]))
 	{
 		if (initialized->buf[0] != '\0')
-		{
-			initialized->output = add_split(initialized->output,
-					&initialized->count, initialized->buf,
-					ft_strlen(initialized->buf));
-			free(initialized->buf);
-			initialized->buf = ft_strdup("");
-		}
+			flush_buf(initialized);
 		initialized->i++;
 		return (1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/06 13:10:50 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:58:12 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 
 	if (cmds->next)
 		return (execute_piped_cmds(cmds, shell));
-	if (heredoc_before_fork(cmds) == -1)
+	if (heredoc_before_fork(cmds, shell) == -1)
 		return (shell->exit_status = 130, 130);
 	current = cmds;
 	while (current)

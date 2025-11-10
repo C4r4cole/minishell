@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:21:00 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:36:02 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:20:32 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_redir
 	int				type;
 	char			*file;
 	int				heredoc_fd;
+	int				expand_heredoc;
 	struct s_redir	*next;
 }					t_redir;
 

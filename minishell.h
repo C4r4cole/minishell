@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:52:30 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:36:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:31:23 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,9 @@
 # include "utils/libft/get_next_line.h"
 # include <readline/readline.h>
 # include <readline/history.h>
-// # include <signal.h>
 # include <termios.h>
 # include "exec/exec_header.h"
 # include "parser/parser.h"
 # include "exec/exec_header.h"
-
-// ======================= //
-// ====== FONCTIONS ====== //
-// ======================= //
-
-void	print_banner(void);
-// t_cmd	*parse_input(char *user_input, t_env *env);
-// t_cmd	*parse_input(char *user_input);
 
 #endif

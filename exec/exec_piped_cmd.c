@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_piped_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:58:33 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/05 16:03:07 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:54:36 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 	pid_t (last_pid) = -1;
 	signal(SIGPIPE, SIG_IGN);
 	shell->in_pipe = 1;
-	if (heredoc_before_fork_all(cmds) == -1)
+	if (heredoc_before_fork_all(cmds, shell) == -1)
 		return (shell->exit_status = 130, 130);
 	while (cmds)
 	{

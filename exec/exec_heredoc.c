@@ -6,15 +6,51 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/10 19:02:31 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/10 21:25:25 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-static void	heredoc_child_routine(int *fd, char *end_word)
+static char *heredoc_expand_line(char *str, t_shell *shell)
+{
+	int	i;
+	char *out;
+	char *exp;
+	char *tmp;
+	char buf[2];
+
+	i = 0;
+	out = ft_strdup("");
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			i++;
+			exp = expand_one_dollar(str, &i, shell);
+			tmp = ft_strjoin(out, exp);
+			free(out);
+			free(exp);
+			out = tmp;
+		}
+		else
+		{
+			buf[0] = str[i];
+			buf[1] = 0;
+			tmp = ft_strjoin(out, buf);
+			free(out);
+			out = tmp;
+			i++;
+		}
+	}
+	return (out);
+}
+
+static void	heredoc_child_routine(int *fd, char *end_word, int expand, t_shell *shell)
 {
 	char	*line;
+	char	*to_write;
+	char	*expanded;
 
 	signal(SIGINT, handle_sigint_heredoc);
 	signal(SIGQUIT, handle_sigquit);
@@ -33,15 +69,22 @@ static void	heredoc_child_routine(int *fd, char *end_word)
 			free(line);
 			break ;
 		}
-		write(fd[1], line, ft_strlen(line));
+		to_write = line;
+		if (expand)
+		{
+			expanded = heredoc_expand_line(line, shell);
+			free(line);
+			to_write = expanded;
+		}
+		write(fd[1], to_write, ft_strlen(to_write));
 		write(fd[1], "\n", 1);
-		free(line);
+		free(to_write);
 	}
 	close(fd[1]);
 	_exit(0);
 }
 
-int	handle_heredoc(char *end_word)
+int	handle_heredoc(char *end_word, int expand, t_shell *shell)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -53,7 +96,7 @@ int	handle_heredoc(char *end_word)
 	if (pid == -1)
 		return (perror("fork"), close(fd[0]), close(fd[1]), -1);
 	if (pid == 0)
-		heredoc_child_routine(fd, end_word);
+		heredoc_child_routine(fd, end_word, expand, shell);
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[1]);
 	waitpid(pid, &status, 0);
@@ -69,7 +112,7 @@ int	handle_heredoc(char *end_word)
 	return (fd[0]);
 }
 
-int	heredoc_before_fork(t_cmd *cmd)
+int	heredoc_before_fork(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*r;
 	int		fd;
@@ -79,7 +122,7 @@ int	heredoc_before_fork(t_cmd *cmd)
 	{
 		if (r->type == HEREDOC)
 		{
-			fd = handle_heredoc(r->file);
+			fd = handle_heredoc(r->file, r->expand_heredoc, shell);
 			if (fd == -1)
 				return (-1);
 			r->heredoc_fd = fd;
@@ -89,14 +132,14 @@ int	heredoc_before_fork(t_cmd *cmd)
 	return (0);
 }
 
-int	heredoc_before_fork_all(t_cmd *cmds)
+int	heredoc_before_fork_all(t_cmd *cmds, t_shell *shell)
 {
 	t_cmd	*current;
 
 	current = cmds;
 	while (current)
 	{
-		if (heredoc_before_fork(current) == -1)
+		if (heredoc_before_fork(current, shell) == -1)
 			return (-1);
 		current = current->next;
 	}

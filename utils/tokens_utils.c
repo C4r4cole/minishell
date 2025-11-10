@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 17:33:38 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 21:09:24 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,3 +42,19 @@ char	*redirection_file(char **tokens, int *i)
 		return (0);
 	return (file);
 }
+
+// int	str_has_quote(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (!str)
+// 		return (0);
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '\'' || str[i] == '"')
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }

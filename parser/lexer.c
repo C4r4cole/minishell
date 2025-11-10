@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 16:44:59 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 14:01:06 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 20:58:56 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ char	**input_splitter(char *input, t_shell *shell)
 		initialized->i++;
 	}
 	if (initialized->buf[0] != '\0')
-		initialized->output = add_split(initialized->output,
-				&initialized->count, initialized->buf,
-				ft_strlen(initialized->buf));
+		flush_buf(initialized);
 	result = initialized->output;
 	free_splitter(initialized);
 	return (result);

@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 20:09:05 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/10 20:53:28 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ typedef struct s_splitter
 	int					in_single;
 	int					in_double;
 	char				*buf;
+	int					heredoc_next;
+	int					token_saw_quote;
 	struct s_splitter	*next;
 }						t_splitter;
 
@@ -124,6 +126,7 @@ int						add_split_on_space(t_splitter *initialized,
 							char *input);
 char					**copy_old_split(char **old, int count);
 char					*str_append_char(char *str, char c);
+void					flush_buf(t_splitter *init);
 
 // tokens' functions
 char					**create_cmd_args(char **tokens, int start, int count);
@@ -136,6 +139,7 @@ int						handle_command(char **tokens, int *i, t_cmd **cmd_list,
 void					skip_quotes(char *str, int *i, int *j, char *res);
 int						redirection_type(char **tokens, int *i);
 char					*redirection_file(char **tokens, int *i);
+int						str_has_quote(char *str);
 
 // cleaner's functions
 void					free_cmd_list(t_cmd *cmd_list);

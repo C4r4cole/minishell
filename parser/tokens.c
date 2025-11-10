@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 14:00:48 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/10 21:11:34 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,20 @@ int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 	int		type;
 	char	*file;
 	char	*tmp;
+	int		was_quoted;
 
 	if (!tokens[*i + 1])
 		return (0);
 	type = redirection_type(tokens, i);
 	file = redirection_file(tokens, i);
+	if (type == HEREDOC && file[0] == '\1')
+	{
+		was_quoted = 1;
+		tmp = ft_strdup(file + 1);
+		free(file);
+		file = tmp;
+	}
+	// was_quoted = str_has_quote(file);
 	tmp = remove_quotes(file);
 	if (!tmp)
 		return (free(file), 0);
@@ -56,7 +65,12 @@ int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 		return (free(file), 0);
 	new_redir->type = type;
 	new_redir->file = file;
+	new_redir->heredoc_fd = -1;
 	new_redir->next = NULL;
+	if (type == HEREDOC && !was_quoted)
+		new_redir->expand_heredoc = 1;
+	else
+		new_redir->expand_heredoc = 0;
 	ft_rediradd_back(redirection_list, new_redir);
 	*i += 2;
 	return (1);
