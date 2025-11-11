@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_piped_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:58:33 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/10 19:54:36 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/11 13:49:28 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,29 +103,64 @@ static void	parent_io_management(t_cmd *cmds, int *in_fd, pid_t pid, int *fd)
 
 int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 {
-	int		fd[2];
-	pid_t	pid;
+    int		fd[2];
+    pid_t	pid;
+    int		in_fd = -1;
+    pid_t	last_pid = -1;
+    t_cmd	*current = cmds;
+    t_cmd	*last = cmds;
 
-	int (in_fd) = -1;
-	pid_t (last_pid) = -1;
-	signal(SIGPIPE, SIG_IGN);
-	shell->in_pipe = 1;
-	if (heredoc_before_fork_all(cmds, shell) == -1)
-		return (shell->exit_status = 130, 130);
-	while (cmds)
-	{
-		if (cmds->next && pipe(fd) == -1)
-			return (perror("pipe"), 1);
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork"), 1);
-		if (pid == 0)
-			(child_io_setup(cmds, in_fd, fd), execute_child_command(cmds,
-					shell));
-		last_pid = pid;
-		parent_io_management(cmds, &in_fd, pid, fd);
-		cmds = cmds->next;
-	}
-	return (wait_for_all_children(last_pid, shell), shell->in_pipe = 0,
-		shell->exit_status);
+    // Trouve la dernière commande
+    while (last && last->next)
+        last = last->next;
+
+    // Vérifie si le dernier est un builtin shell-altering
+    int is_shell_builtin = 0;
+    if (last && last->argv[0] &&
+        (!ft_strcmp(last->argv[0], "cd") ||
+         !ft_strcmp(last->argv[0], "export") ||
+         !ft_strcmp(last->argv[0], "unset") ||
+         !ft_strcmp(last->argv[0], "exit")))
+        is_shell_builtin = 1;
+
+    signal(SIGPIPE, SIG_IGN);
+    shell->in_pipe = 1;
+    if (heredoc_before_fork_all(cmds, shell) == -1)
+        return (shell->exit_status = 130, 130);
+
+    // Exécute le pipeline sauf le dernier builtin shell
+    while (current)
+    {
+        if (is_shell_builtin && current == last)
+            break;
+        if (current->next && pipe(fd) == -1)
+            return (perror("pipe"), 1);
+        pid = fork();
+        if (pid == -1)
+            return (perror("fork"), 1);
+        if (pid == 0)
+            (child_io_setup(current, in_fd, fd), execute_child_command(current, shell));
+        last_pid = pid;
+        parent_io_management(current, &in_fd, pid, fd);
+        current = current->next;
+    }
+    wait_for_all_children(last_pid, shell);
+    shell->in_pipe = 0;
+
+    // Exécute le builtin shell dans le parent
+    if (is_shell_builtin)
+    {
+        int ret = -1;
+        if (!ft_strcmp(last->argv[0], "cd"))
+            ret = ft_cd(last->argv, shell);
+        else if (!ft_strcmp(last->argv[0], "export"))
+            ret = ft_export(last->argv, shell);
+        else if (!ft_strcmp(last->argv[0], "unset"))
+            ret = ft_unset(last->argv, shell);
+        else if (!ft_strcmp(last->argv[0], "exit"))
+            ret = ft_exit(last->argv, shell);
+        shell->exit_status = ret;
+        return ret;
+    }
+    return shell->exit_status;
 }
