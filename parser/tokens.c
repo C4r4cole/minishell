@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:16:20 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/10 21:36:10 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/12 10:38:44 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,39 +38,19 @@ char	*remove_quotes(char *str)
 
 int	handle_redirection(char **tokens, int *i, t_redir **redirection_list)
 {
-	t_redir	*new_redir;
 	int		type;
 	char	*file;
-	char	*tmp;
 	int		was_quoted;
 
+	was_quoted = 0;
 	if (!tokens[*i + 1])
 		return (0);
 	type = redirection_type(tokens, i);
 	file = redirection_file(tokens, i);
-	if (type == HEREDOC && file[0] == '\1')
-	{
-		was_quoted = 1;
-		tmp = ft_strdup(file + 1);
-		free(file);
-		file = tmp;
-	}
-	tmp = remove_quotes(file);
-	if (!tmp)
-		return (free(file), 0);
-	file = tmp;
-	new_redir = malloc(sizeof(t_redir));
-	if (!new_redir)
-		return (free(file), 0);
-	new_redir->type = type;
-	new_redir->file = file;
-	new_redir->heredoc_fd = -1;
-	new_redir->next = NULL;
-	if (type == HEREDOC && !was_quoted)
-		new_redir->expand_heredoc = 1;
-	else
-		new_redir->expand_heredoc = 0;
-	ft_rediradd_back(redirection_list, new_redir);
+	if (!prepare_redirection_file(type, &file, &was_quoted))
+		return (0);
+	if (!finalize_and_push_redir(type, file, was_quoted, redirection_list))
+		return (0);
 	*i += 2;
 	return (1);
 }
@@ -104,7 +84,6 @@ int	handle_command(char **tokens, int *i, t_cmd **cmd_list,
 		t_redir **redirection_list)
 {
 	char	**cmd_args;
-	t_cmd	*cmd;
 	int		start;
 	int		count;
 
@@ -117,9 +96,9 @@ int	handle_command(char **tokens, int *i, t_cmd **cmd_list,
 		return (1);
 	cmd_args = create_cmd_args(tokens, start, count);
 	if (!cmd_args)
+		return (cleanup_build_cmd_args(redirection_list), 0);
+	if (!push_cmd_with_redirs(cmd_list, cmd_args, redirection_list))
 		return (0);
-	cmd = ft_cmdnew(cmd_args, *redirection_list);
-	ft_cmdadd_back(cmd_list, cmd);
 	*redirection_list = NULL;
 	return (1);
 }

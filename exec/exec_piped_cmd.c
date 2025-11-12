@@ -6,161 +6,66 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:58:33 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/11 13:49:28 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 13:45:36 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-static void	execute_child_command(t_cmd *cmds, t_shell *shell)
+static pid_t	run_pipeline(t_cmd *cmds, t_cmd *last, int is_shell_builtin,
+		t_shell *shell)
 {
-	char	*path;
-	int		code;
+	int		fd[2];
+	pid_t	pid;
+	int		in_fd;
+	pid_t	last_pid;
+	t_cmd	*current;
 
-	if (!ft_strcmp(cmds->argv[0], "export") || !ft_strcmp(cmds->argv[0],
-			"unset") || !ft_strcmp(cmds->argv[0], "cd"))
-		exit(1);
-	if (!ft_strcmp(cmds->argv[0], "exit"))
+	in_fd = -1;
+	last_pid = -1;
+	current = cmds;
+	while (current)
 	{
-		code = ft_exit_return_code(cmds->argv);
-		if (!ft_isnumber(cmds->argv[1]))
-			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-		exit(code);
-	}
-	if (!ft_strcmp(cmds->argv[0], "echo"))
-		exit(ft_echo(cmds->argv));
-	if (!ft_strcmp(cmds->argv[0], "pwd"))
-		exit(ft_pwd(shell));
-	if (!ft_strcmp(cmds->argv[0], "env"))
-		exit(ft_env(shell));
-	path = find_path(cmds, shell);
-	if (!path)
-		exit(shell->exit_status);
-	execve(path, cmds->argv, shell->envp);
-	perror("execve");
-	exit(126);
-}
-
-static void	child_io_setup(t_cmd *cmds, int in_fd, int *fd)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (in_fd != -1)
-	{
-		if (dup2(in_fd, STDIN_FILENO) == -1)
-			(perror("dup2 in"), exit(1));
-		close(in_fd);
-	}
-	if (cmds->next)
-	{
-		close(fd[0]);
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-			(perror("dup2 out"), exit(1));
-		close(fd[1]);
-	}
-	if (cmds->redir)
-		execute_redirections_cmds(cmds);
-}
-
-static void	wait_for_all_children(pid_t last_pid, t_shell *shell)
-{
-	pid_t	w;
-	int		status;
-	int		sig;
-
-	while (1)
-	{
-		w = waitpid(-1, &status, 0);
-		if (w == -1)
+		if (is_shell_builtin && current == last)
 			break ;
-		if (w == last_pid)
-		{
-			if (WIFEXITED(status))
-				shell->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-			{
-				sig = WTERMSIG(status);
-				if (sig == SIGQUIT)
-					write(2, "Quit (core dumped)\n", 20);
-				shell->exit_status = 128 + sig;
-			}
-		}
+		if (current->next && pipe(fd) == -1)
+			return (-1);
+		pid = spawn_stage(current, in_fd, fd, shell);
+		if (pid == -1)
+			return (-1);
+		last_pid = pid;
+		parent_io_management(current, &in_fd, pid, fd);
+		current = current->next;
 	}
-}
-// gestion pipe cote parent
-
-static void	parent_io_management(t_cmd *cmds, int *in_fd, pid_t pid, int *fd)
-{
-	(void)pid;
-	if (*in_fd != -1)
-		close(*in_fd);
-	if (cmds->next)
-	{
-		close(fd[1]);
-		*in_fd = fd[0];
-	}
+	return (last_pid);
 }
 
 int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 {
-    int		fd[2];
-    pid_t	pid;
-    int		in_fd = -1;
-    pid_t	last_pid = -1;
-    t_cmd	*current = cmds;
-    t_cmd	*last = cmds;
+	t_cmd	*last;
+	int		is_shell_builtin;
+	pid_t	last_pid;
+	int		ret;
 
-    // Trouve la dernière commande
-    while (last && last->next)
-        last = last->next;
-
-    // Vérifie si le dernier est un builtin shell-altering
-    int is_shell_builtin = 0;
-    if (last && last->argv[0] &&
-        (!ft_strcmp(last->argv[0], "cd") ||
-         !ft_strcmp(last->argv[0], "export") ||
-         !ft_strcmp(last->argv[0], "unset") ||
-         !ft_strcmp(last->argv[0], "exit")))
-        is_shell_builtin = 1;
-
-    signal(SIGPIPE, SIG_IGN);
-    shell->in_pipe = 1;
-    if (heredoc_before_fork_all(cmds, shell) == -1)
-        return (shell->exit_status = 130, 130);
-
-    // Exécute le pipeline sauf le dernier builtin shell
-    while (current)
-    {
-        if (is_shell_builtin && current == last)
-            break;
-        if (current->next && pipe(fd) == -1)
-            return (perror("pipe"), 1);
-        pid = fork();
-        if (pid == -1)
-            return (perror("fork"), 1);
-        if (pid == 0)
-            (child_io_setup(current, in_fd, fd), execute_child_command(current, shell));
-        last_pid = pid;
-        parent_io_management(current, &in_fd, pid, fd);
-        current = current->next;
-    }
-    wait_for_all_children(last_pid, shell);
-    shell->in_pipe = 0;
-
-    // Exécute le builtin shell dans le parent
-    if (is_shell_builtin)
-    {
-        int ret = -1;
-        if (!ft_strcmp(last->argv[0], "cd"))
-            ret = ft_cd(last->argv, shell);
-        else if (!ft_strcmp(last->argv[0], "export"))
-            ret = ft_export(last->argv, shell);
-        else if (!ft_strcmp(last->argv[0], "unset"))
-            ret = ft_unset(last->argv, shell);
-        else if (!ft_strcmp(last->argv[0], "exit"))
-            ret = ft_exit(last->argv, shell);
-        shell->exit_status = ret;
-        return ret;
-    }
-    return shell->exit_status;
+	find_last_and_builtin(cmds, &last, &is_shell_builtin);
+	signal(SIGPIPE, SIG_IGN);
+	shell->in_pipe = 1;
+	if (heredoc_before_fork_all(cmds, shell) == -1)
+		return (shell->in_pipe = 0, shell->exit_status = 130, 130);
+	last_pid = run_pipeline(cmds, last, is_shell_builtin, shell);
+	if (last_pid == -1)
+		return (shell->in_pipe = 0, perror("pipe/fork"), 1);
+	wait_for_all_children(last_pid, shell);
+	shell->in_pipe = 0;
+	if (is_shell_builtin)
+	{
+		ret = exec_last_builtin_parent(last, shell);
+		/* Now that the parent builtin consumed its redirections, we can close leftovers */
+		close_heredoc_fds_parent(cmds);
+		shell->exit_status = ret;
+		return (ret);
+	}
+	/* No parent builtin: safe to cleanup heredoc FDs now */
+	close_heredoc_fds_parent(cmds);
+	return (shell->exit_status);
 }

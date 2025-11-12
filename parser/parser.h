@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:48:50 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/10 20:53:28 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/12 10:39:39 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,15 @@ int						handle_redirection(char **tokens, int *i,
 							t_redir **redirection_list);
 int						handle_command(char **tokens, int *i, t_cmd **cmd_list,
 							t_redir **redirection_list);
+/* tokens_helpers.c */
+int						prepare_redirection_file(int type, char **file,
+							int *was_quoted);
+int						finalize_and_push_redir(int type, char *file,
+							int was_quoted, t_redir **redirection_list);
+int						push_cmd_with_redirs(t_cmd **cmd_list, char **cmd_args,
+							t_redir **redirection_list);
+void					cleanup_build_cmd_args(t_redir **redirection_list);
+char					*remove_quotes(char *str);
 
 // tokens utils
 void					skip_quotes(char *str, int *i, int *j, char *res);

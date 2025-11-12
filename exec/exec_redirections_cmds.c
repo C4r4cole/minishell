@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:50:21 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/05 16:04:54 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 13:45:30 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	handle_heredoc_cmd(t_redir *redir)
 	if (dup2(redir->heredoc_fd, STDIN_FILENO) < 0)
 		perror("dup2");
 	close(redir->heredoc_fd);
+	redir->heredoc_fd = -1;
 }
 
 static void	handle_redir_in_cmd(t_redir *redir)

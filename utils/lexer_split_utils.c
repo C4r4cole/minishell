@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/10 20:57:58 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/12 10:32:13 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ int	add_split_meta_len(t_splitter *initialized, char *input)
 			flush_buf(initialized);
 		initialized->output = add_split(initialized->output,
 				&initialized->count, &input[initialized->i], meta_len);
-		if (meta_len == 2 && input[initialized->i] == '<' && input[initialized->i + 1] == '<')
+		if (meta_len == 2
+			&& input[initialized->i] == '<'
+			&& input[initialized->i + 1] == '<')
 			initialized->heredoc_next = 1;
 		initialized->i += meta_len;
 		return (1);

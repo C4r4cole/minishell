@@ -6,51 +6,18 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/11 13:44:44 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 10:27:19 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-static char *heredoc_expand_line(char *str, t_shell *shell)
-{
-	int	i;
-	char *out;
-	char *exp;
-	char *tmp;
-	char buf[2];
+/* helpers are implemented in exec_heredoc_utils.c */
 
-	i = 0;
-	out = ft_strdup("");
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			i++;
-			exp = expand_one_dollar(str, &i, shell);
-			tmp = ft_strjoin(out, exp);
-			free(out);
-			free(exp);
-			out = tmp;
-		}
-		else
-		{
-			buf[0] = str[i];
-			buf[1] = 0;
-			tmp = ft_strjoin(out, buf);
-			free(out);
-			out = tmp;
-			i++;
-		}
-	}
-	return (out);
-}
-
-static void	heredoc_child_routine(int *fd, char *end_word, int expand, t_shell *shell)
+static void	heredoc_child_routine(int *fd, char *end_word, int expand,
+		t_shell *shell)
 {
 	char	*line;
-	char	*to_write;
-	char	*expanded;
 
 	signal(SIGINT, handle_sigint_heredoc);
 	signal(SIGQUIT, handle_sigquit);
@@ -64,21 +31,9 @@ static void	heredoc_child_routine(int *fd, char *end_word, int expand, t_shell *
 			ft_printf("here-document at line 1 delimited by end-of-file\n");
 			break ;
 		}
-		if (ft_strcmp(line, end_word) == 0)
-		{
-			free(line);
+		if (line_is_end(line, end_word))
 			break ;
-		}
-		to_write = line;
-		if (expand)
-		{
-			expanded = heredoc_expand_line(line, shell);
-			free(line);
-			to_write = expanded;
-		}
-		write(fd[1], to_write, ft_strlen(to_write));
-		write(fd[1], "\n", 1);
-		free(to_write);
+		write_heredoc(fd[1], line, expand, shell);
 	}
 	close(fd[1]);
 	_exit(0);
@@ -104,13 +59,9 @@ int	handle_heredoc(char *end_word, int expand, t_shell *shell)
 	signal(SIGINT, handle_sigquit);
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
 		return (close(fd[0]), -1);
-	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
 		return (close(fd[0]), -1);
-	}
 	return (fd[0]);
 }
 

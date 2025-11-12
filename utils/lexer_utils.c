@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/10 21:25:14 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/12 09:52:00 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,30 @@ t_splitter	*splitter_init(void)
 	return (init);
 }
 
-void flush_buf(t_splitter *init)
+void	flush_buf(t_splitter *init)
 {
-    char	*to_push;
+	char	*to_push;
 	char	prefix[2];
 	char	*tmp;
-	
+
 	to_push = init->buf;
-    if (init->heredoc_next)
-    {
-        if (init->token_saw_quote)
-        {
-            prefix[0] = '\1';
+	if (init->heredoc_next)
+	{
+		if (init->token_saw_quote)
+		{
+			prefix[0] = '\1';
 			prefix[1] = 0;
-            tmp = ft_strjoin(prefix, to_push);
-            free(to_push);
-            to_push = tmp;
-        }
-        init->heredoc_next = 0;
-        init->token_saw_quote = 0;
-    }
-    init->output = add_split(init->output, &init->count, to_push, ft_strlen(to_push));
-    free(to_push);
-    init->buf = ft_strdup("");
+			tmp = ft_strjoin(prefix, to_push);
+			free(to_push);
+			to_push = tmp;
+		}
+		init->heredoc_next = 0;
+		init->token_saw_quote = 0;
+	}
+	init->output = add_split(init->output, &init->count, to_push,
+			ft_strlen(to_push));
+	free(to_push);
+	init->buf = ft_strdup("");
 }
 
 char	*str_append_char(char *str, char c)
