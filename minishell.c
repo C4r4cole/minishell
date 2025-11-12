@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/12 14:04:04 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/12 15:15:13 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,14 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*data;
 	char	*input;
-	int		interactive;
 
 	data = malloc(sizeof(t_shell));
 	main_init(&data, argc, argv, envp);
-	interactive = isatty(STDIN_FILENO);
-	if (!isatty(STDOUT_FILENO))
-		rl_outstream = stderr;
 	while (1)
 	{
 		setup_signals_main();
 		signal(SIGQUIT, handle_sigquit);
-		if (interactive)
-			input = readline("minishell> ");
-		else
-			input = readline(NULL);
+		input = readline("minishell> ");
 		if (!input)
 			break ;
 		handle_sigint_status(data);
