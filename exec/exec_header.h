@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 13:45:41 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:42:48 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	find_last_and_builtin(t_cmd *cmds, t_cmd **last, int *is_builtin);
 int		exec_last_builtin_parent(t_cmd *last, t_shell *shell);
 pid_t	spawn_stage(t_cmd *current, int in_fd, int fd[2], t_shell *shell);
 int		try_child_builtin(char **argv, t_shell *shell, int *handled);
+void	apply_redirs_noop_heredocs(t_redir *redir);
 
 /* exec_heredoc_utils.c */
 char	*heredoc_expand_line(char *str, t_shell *shell);
@@ -67,6 +68,7 @@ void	process_dollar(char **out, char *str, int *i, t_shell *shell);
 int		line_is_end(char *line, char *end_word);
 void	write_heredoc(int fd, char *line, int expand, t_shell *shell);
 void	close_heredoc_fds_parent(t_cmd *cmds);
+int		apply_redirs_noop_files(t_redir *redir);
 
 void	setup_signals_main(void);
 void	handle_sigint(int sig);

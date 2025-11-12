@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:58:33 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 13:45:36 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:16:42 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,16 @@ int	execute_piped_cmds(t_cmd *cmds, t_shell *shell)
 	last_pid = run_pipeline(cmds, last, is_shell_builtin, shell);
 	if (last_pid == -1)
 		return (shell->in_pipe = 0, perror("pipe/fork"), 1);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	wait_for_all_children(last_pid, shell);
 	shell->in_pipe = 0;
 	if (is_shell_builtin)
 	{
 		ret = exec_last_builtin_parent(last, shell);
-		/* Now that the parent builtin consumed its redirections, we can close leftovers */
 		close_heredoc_fds_parent(cmds);
 		shell->exit_status = ret;
 		return (ret);
 	}
-	/* No parent builtin: safe to cleanup heredoc FDs now */
-	close_heredoc_fds_parent(cmds);
-	return (shell->exit_status);
+	return (close_heredoc_fds_parent(cmds), shell->exit_status);
 }

@@ -6,51 +6,11 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 14:01:20 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:40:57 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
-
-static int	apply_redirs_noop(t_redir *redir)
-{
-	int	fd;
-
-	while (redir)
-	{
-		if (redir->type == REDIRECTION_IN)
-		{
-			fd = open(redir->file, O_RDONLY);
-			if (fd < 0)
-				return (perror(redir->file), 1);
-			close(fd);
-		}
-		else if (redir->type == REDIRECTION_OUT)
-		{
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd < 0)
-				return (perror(redir->file), 1);
-			close(fd);
-		}
-		else if (redir->type == REDIRECTION_APPEND)
-		{
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd < 0)
-				return (perror(redir->file), 1);
-			close(fd);
-		}
-		else if (redir->type == HEREDOC)
-		{
-			if (redir->heredoc_fd != -1)
-			{
-				close(redir->heredoc_fd);
-				redir->heredoc_fd = -1;
-			}
-		}
-		redir = redir->next;
-	}
-	return (0);
-}
 
 static int	handle_shell_altering_builtins(t_cmd *cmd, t_shell *shell)
 {
@@ -135,8 +95,8 @@ int	execute_cmds_list(t_cmd *cmds, t_shell *shell)
 	{
 		if (!current->argv || !current->argv[0])
 		{
-			exit_code = apply_redirs_noop(current->redir);
-			/* ensure any heredoc FDs not consumed are closed */
+			exit_code = apply_redirs_noop_files(current->redir);
+			apply_redirs_noop_heredocs(current->redir);
 			close_heredoc_fds_parent(current);
 		}
 		else
