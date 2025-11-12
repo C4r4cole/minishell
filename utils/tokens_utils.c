@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:49:39 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/12 15:13:40 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 15:17:28 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,3 @@ char	*redirection_file(char **tokens, int *i)
 		return (0);
 	return (file);
 }
-
