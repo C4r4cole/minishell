@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:05:00 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 13:45:37 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 13:54:37 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,6 @@ void	write_heredoc(int fd, char *line, int expand, t_shell *shell)
 	free(to_write);
 }
 
-/*
-** Close any leftover heredoc read-ends held by the parent after execution.
-** Children/builtins close theirs after dup2; this ensures the parent
-** does not retain extra open FDs that Valgrind would report at exit.
-*/
 void	close_heredoc_fds_parent(t_cmd *cmds)
 {
 	t_cmd   *c;
