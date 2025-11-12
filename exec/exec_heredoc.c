@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/12 10:27:19 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/12 16:46:48 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	heredoc_child_routine(int *fd, char *end_word, int expand,
 	char	*line;
 
 	signal(SIGINT, handle_sigint_heredoc);
-	signal(SIGQUIT, handle_sigquit);
+	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
 	while (1)
 	{
@@ -56,7 +56,7 @@ int	handle_heredoc(char *end_word, int expand, t_shell *shell)
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[1]);
 	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_sigquit);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		return (close(fd[0]), -1);
