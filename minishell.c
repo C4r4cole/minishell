@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/12 16:45:07 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 12:58:21 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	process_input(char *input, t_shell *data)
 		else
 			execute_cmds_list(tokens, data);
 		free_cmd_list(tokens);
+		data->current_cmd_list = NULL;
 	}
 }
 

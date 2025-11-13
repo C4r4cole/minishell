@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 14:40:57 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 14:08:43 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,51 @@ static int	handle_shell_altering_builtins(t_cmd *cmd, t_shell *shell)
 	return (-1);
 }
 
+static void	echo_pwd_env_behavior(char *cmd_name, t_cmd *cmd, t_shell *shell)
+{
+	int	ret;
+
+	if (!ft_strcmp(cmd_name, "echo"))
+	{
+		ret = ft_echo(cmd->argv);
+		child_cleanup_and_exit(shell, ret);
+	}
+	if (!ft_strcmp(cmd_name, "pwd"))
+	{
+		ret = ft_pwd(shell);
+		child_cleanup_and_exit(shell, ret);
+	}
+	if (!ft_strcmp(cmd_name, "env"))
+	{
+		ret = ft_env(shell);
+		child_cleanup_and_exit(shell, ret);
+	}
+}
+
 static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 {
 	char	*cmd_name;
 	char	*path;
+	char	**env_tab;
 
 	cmd_name = cmd->argv[0];
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (cmd->redir)
 		execute_redirections_cmds(cmd);
-	if (!ft_strcmp(cmd_name, "echo"))
-		exit(ft_echo(cmd->argv));
-	if (!ft_strcmp(cmd_name, "pwd"))
-		exit(ft_pwd(shell));
-	if (!ft_strcmp(cmd_name, "env"))
-		exit(ft_env(shell));
+	echo_pwd_env_behavior(cmd_name, cmd, shell);
 	if (!ft_strcmp(cmd_name, "cd") || !ft_strcmp(cmd_name, "export")
 		|| !ft_strcmp(cmd_name, "unset") || !ft_strcmp(cmd_name, "exit"))
 		exit(handle_shell_altering_builtins(cmd, shell));
 	path = find_path(cmd, shell);
 	if (!path)
 		exit(shell->exit_status);
-	execve(path, cmd->argv, shell->envp);
+	env_tab = env_to_tab(shell->envp_lst);
+	if (!env_tab)
+		free_path_env_tab(path);
+	execve(path, cmd->argv, env_tab);
 	perror("execve");
+	free_tab(env_tab);
 	free(path);
 	exit(126);
 }

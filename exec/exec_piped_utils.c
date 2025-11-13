@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:35:00 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 10:44:22 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 12:45:55 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,21 @@
 static void	execve_or_exit(t_cmd *cmds, t_shell *shell)
 {
 	char	*path;
+	char	**env_tab;
 
 	path = find_path(cmds, shell);
 	if (!path)
 		exit(shell->exit_status);
-	execve(path, cmds->argv, shell->envp);
+	env_tab = env_to_tab(shell->envp_lst);
+	if (!env_tab)
+	{
+		perror("env_to_tab");
+		free(path);
+		exit(126);
+	}
+	execve(path, cmds->argv, env_tab);
 	perror("execve");
+	free_tab(env_tab);
 	exit(126);
 }
 

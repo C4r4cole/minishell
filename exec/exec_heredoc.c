@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/12 16:46:48 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:33:26 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* helpers are implemented in exec_heredoc_utils.c */
 
 static void	heredoc_child_routine(int *fd, char *end_word, int expand,
-		t_shell *shell)
+	t_shell *shell)
 {
 	char	*line;
 
@@ -36,6 +36,10 @@ static void	heredoc_child_routine(int *fd, char *end_word, int expand,
 		write_heredoc(fd[1], line, expand, shell);
 	}
 	close(fd[1]);
+	if (shell && shell->current_cmd_list)
+		free_cmd_list(shell->current_cmd_list);
+	if (shell)
+		free_shell(shell);
 	_exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 10:03:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/05 16:15:22 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:30:23 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,15 @@ int	ft_exit(char **argv, t_shell *shell)
 		status = 2;
 	}
 	else if (argv[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		shell->exit_status = 1;
-		return (1);
-	}
+		return (ft_putstr_fd("minishell: exit: too many arguments\n", 2),
+			shell->exit_status = 1, 1);
 	else
-		status = ft_atoi(argv[1]);
+		status = ft_atoll(argv[1]);
 	if (shell->current_cmd_list)
+	{
 		free_cmd_list(shell->current_cmd_list);
+		shell->current_cmd_list = NULL;
+	}
 	free_shell(shell);
 	exit((int)status);
 }
