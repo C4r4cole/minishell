@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:49:56 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/05 16:06:09 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 11:46:52 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
-
-void	init_shell(t_shell *shell, char **envp)
-{
-	shell->envp = envp;
-	shell->envp_lst = env_list_from_envp(envp);
-	shell->exit_status = 0;
-	shell->in_pipe = 0;
-}
 
 void	free_shell(t_shell *data)
 {

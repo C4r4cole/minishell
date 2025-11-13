@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/12 14:42:48 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 11:47:11 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	setup_signals_main(void);
 void	handle_sigint(int sig);
 void	handle_sigquit(int sig);
 int		ft_exit_return_code(char **argv);
+void    add_env_var(t_shell *shell, const char *key, const char *value);
 extern int	g_sig;
 
 #endif
