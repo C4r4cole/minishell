@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 17:27:02 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/06 14:01:15 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:32:20 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ void	free_redir_list(t_redir *redir_list)
 		next = current->next;
 		if (current->file)
 			free(current->file);
+		if (current->heredoc_fd >= 0)
+		{
+			close(current->heredoc_fd);
+			current->heredoc_fd = -1;
+		}
 		free(current);
 		current = next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 11:37:47 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/18 15:25:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:45:45 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	heredoc_child_routine(int *fd, char *end_word, int expand,
 		free_cmd_list(shell->current_cmd_list);
 	if (shell)
 		free_shell(shell);
-	_exit(0);
+	exit(0);
 }
 
 int	handle_heredoc(char *end_word, int expand, t_shell *shell)

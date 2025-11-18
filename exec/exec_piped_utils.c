@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_piped_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:35:00 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 15:49:17 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:51:03 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	parent_io_management(t_cmd *cmds, int *in_fd, pid_t pid, int *fd)
 		close(fd[1]);
 		*in_fd = fd[0];
 	}
+	free_redir_list(cmds->redir);
+	cmds->redir = 0;
 }
 
 pid_t	spawn_stage(t_cmd *current, int in_fd, int fd[2], t_shell *shell)

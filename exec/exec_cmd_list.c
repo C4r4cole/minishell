@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 16:39:33 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:13:29 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 	signal(SIGQUIT, SIG_DFL);
 	if (cmd->redir)
 		execute_redirections_cmds(cmd);
+	// if (cmd->redir && execute_redirections_cmds(cmd)) // Faire ca cest cool :)
+	// 	free shell, exit avec error 127 sans doute
 	echo_pwd_env_behavior(cmd_name, cmd, shell);
 	if (!ft_strcmp(cmd_name, "cd") || !ft_strcmp(cmd_name, "export")
 		|| !ft_strcmp(cmd_name, "unset") || !ft_strcmp(cmd_name, "exit"))

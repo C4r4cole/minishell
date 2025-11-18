@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 10:03:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/13 13:30:23 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:31:53 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	ft_exit(char **argv, t_shell *shell)
 	ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 		status = shell->exit_status;
-	else if (!ft_isnumber(argv[1]))
+	else if (!ft_isnumber(argv[1]) || is_ll_overflow(argv[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);

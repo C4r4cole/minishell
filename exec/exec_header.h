@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_header.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 16:38:16 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:27:26 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../structures.h"
 # include "../utils/libft/libft.h"
 # include <fcntl.h>
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -80,6 +81,7 @@ void		free_path_env_tab(char *path, t_shell *shell);
 void		child_cleanup_and_exit(t_shell *shell, int status);
 void		child_cleanup_and_exit_execve(t_shell *shell, int status,
 				char *path, char **env_tab);
+int			is_ll_overflow(const char *str);
 extern int	g_sig;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirections_cmds.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:50:21 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/12 13:45:30 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:12:10 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static void	handle_redir_in_cmd(t_redir *redir)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(redir->file, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		exit(1);
+		exit(1);	// NON RETURN ERROR ET FREE
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
 		perror("dup2");
-		exit(1);
+		exit(1);	// NON RETURN ERROR ET FREE
 	}
 	close(fd);
 }
@@ -50,12 +50,12 @@ static void	handle_redir_out_cmd(t_redir *redir)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(redir->file, 2);
 		ft_putstr_fd(": Permission denied\n", 2);
-		exit(1);
+		exit(1);	// NON RETURN ERROR ET FREE
 	}
 	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
 		perror("dup2");
-		exit(1);
+		exit(1);	// NON RETURN ERROR ET FREE
 	}
 	close(fd);
 }
@@ -70,31 +70,36 @@ static void	handle_redir_append_cmd(t_redir *redir)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(redir->file, 2);
 		ft_putstr_fd(": Permission denied\n", 2);
-		exit(1);
+		exit(1);	// NON RETURN ERROR ET FREE
 	}
 	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
 		perror("dup2");
-		exit(1);
+		exit(1);	// NON RETURN ERROR ET FREE
 	}
 	close(fd);
 }
 
+// mettre en int, recupere les valeurs de [Handle_....] qui von renvoyer une err
+// remonter l erruer et free t_shell * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 :):):):)
 void	execute_redirections_cmds(t_cmd *cmd)
 {
+	// int err = 0;
 	t_redir	*redir;
 
 	redir = cmd->redir;
-	while (redir)
+	while (redir) // && !err
 	{
 		if (redir->type == HEREDOC)
-			handle_heredoc_cmd(redir);
+			handle_heredoc_cmd(redir);	// NON RETURN ERROR ET FREE
+		// err == handle_heredoc_cmd(redir);	// NON RETURN ERROR ET FREE
 		else if (redir->type == REDIRECTION_IN)
-			handle_redir_in_cmd(redir);
+			handle_redir_in_cmd(redir);	// NON RETURN ERROR ET FREE
 		else if (redir->type == REDIRECTION_OUT)
-			handle_redir_out_cmd(redir);
+			handle_redir_out_cmd(redir);	// NON RETURN ERROR ET FREE
 		else if (redir->type == REDIRECTION_APPEND)
-			handle_redir_append_cmd(redir);
+			handle_redir_append_cmd(redir); 	// NON RETURN ERROR ET FREE
 		redir = redir->next;
 	}
+	// return err
 }
