@@ -6,7 +6,7 @@
 #    By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 14:02:02 by fmoulin           #+#    #+#              #
-#    Updated: 2025/11/13 13:57:09 by ilsedjal         ###   ########.fr        #
+#    Updated: 2025/11/18 14:40:23 by ilsedjal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
 # Compilation
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 IFLAGS = -Iinclude -Ilibft
 RM = rm -f
 

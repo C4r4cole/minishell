@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/13 14:08:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 16:29:41 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,23 @@ static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 	echo_pwd_env_behavior(cmd_name, cmd, shell);
 	if (!ft_strcmp(cmd_name, "cd") || !ft_strcmp(cmd_name, "export")
 		|| !ft_strcmp(cmd_name, "unset") || !ft_strcmp(cmd_name, "exit"))
-		exit(handle_shell_altering_builtins(cmd, shell));
+	{
+		int	code;
+
+		code = handle_shell_altering_builtins(cmd, shell);
+		child_cleanup_and_exit(shell, code);
+	}
 	path = find_path(cmd, shell);
 	if (!path)
-		exit(shell->exit_status);
+		child_cleanup_and_exit(shell, shell->exit_status);
 	env_tab = env_to_tab(shell->envp_lst);
 	if (!env_tab)
-		free_path_env_tab(path);
+		free_path_env_tab(path, shell);
 	execve(path, cmd->argv, env_tab);
 	perror("execve");
 	free_tab(env_tab);
 	free(path);
-	exit(126);
+	child_cleanup_and_exit(shell, 126);
 }
 
 static int	run_in_child_process(t_cmd *current, t_shell *shell)

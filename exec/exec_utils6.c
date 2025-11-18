@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:27:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/13 14:08:03 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/13 16:29:42 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	child_cleanup_and_exit(t_shell *shell, int status)
 	exit(status);
 }
 
-void	free_path_env_tab(char *path)
+void	free_path_env_tab(char *path, t_shell *shell)
 {
 	perror("env_to_tab");
 	free(path);
-	exit(126);
+	child_cleanup_and_exit(shell, 126);
 }
