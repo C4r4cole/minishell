@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 17:27:26 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/18 20:04:36 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char		*env_get_value(t_env *env, const char *key);
 
 int			handle_heredoc(char *end_word, int expand, t_shell *shell);
 char		**env_to_tab(t_env *env);
-void		execute_redirections_cmds(t_cmd *cmd);
+int			execute_redirections_cmds(t_cmd *cmd);
 int			execute_redirections_builtins(t_redir *redir);
 int			heredoc_before_fork(t_cmd *cmd, t_shell *shell);
 int			heredoc_before_fork_all(t_cmd *cmds, t_shell *shell);

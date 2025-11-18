@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 19:13:29 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/18 20:14:06 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 	cmd_name = cmd->argv[0];
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (cmd->redir)
-		execute_redirections_cmds(cmd);
-	// if (cmd->redir && execute_redirections_cmds(cmd)) // Faire ca cest cool :)
-	// 	free shell, exit avec error 127 sans doute
+	if (cmd->redir && execute_redirections_cmds(cmd) != 0)
+	{
+		free_cmd_list(shell->current_cmd_list);
+		free_shell(shell);
+		exit(1);
+	}
 	echo_pwd_env_behavior(cmd_name, cmd, shell);
 	if (!ft_strcmp(cmd_name, "cd") || !ft_strcmp(cmd_name, "export")
 		|| !ft_strcmp(cmd_name, "unset") || !ft_strcmp(cmd_name, "exit"))
