@@ -6,12 +6,28 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 14:49:27 by fmoulin           #+#    #+#             */
-/*   Updated: 2025/11/13 16:11:00 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:42:54 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec/exec_header.h"
 #include "minishell.h"
+
+static int	is_blank_line(char *s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (1);
+	while (s[i])
+	{
+		if (s[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static int	main_init(t_shell **data, int argc, char **argv, char **envp)
 {
@@ -38,7 +54,8 @@ static void	process_input(char *input, t_shell *data)
 {
 	t_cmd	*tokens;
 
-	add_history(input);
+	if (input && !is_blank_line(input))
+		add_history(input);
 	tokens = parse_input(input, data);
 	free(input);
 	data->current_cmd_list = tokens;

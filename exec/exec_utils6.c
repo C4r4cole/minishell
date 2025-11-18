@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:27:42 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/13 16:29:42 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:36:42 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,19 @@ char	**env_to_tab(t_env *env)
 
 void	child_cleanup_and_exit(t_shell *shell, int status)
 {
+	if (shell && shell->current_cmd_list)
+		free_cmd_list(shell->current_cmd_list);
+	if (shell)
+		free_shell(shell);
+	exit(status);
+}
+
+void	child_cleanup_and_exit_execve(t_shell *shell, int status, char *path,
+		char **env_tab)
+{
+	perror("execve");
+	free_tab(env_tab);
+	free(path);
 	if (shell && shell->current_cmd_list)
 		free_cmd_list(shell->current_cmd_list);
 	if (shell)

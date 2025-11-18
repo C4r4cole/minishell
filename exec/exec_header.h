@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/13 16:29:43 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:38:16 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void		add_env_var(t_shell *shell, const char *key, const char *value);
 char		**env_to_tab(t_env *env);
 void		free_path_env_tab(char *path, t_shell *shell);
 void		child_cleanup_and_exit(t_shell *shell, int status);
+void		child_cleanup_and_exit_execve(t_shell *shell, int status,
+				char *path, char **env_tab);
 extern int	g_sig;
 
 #endif

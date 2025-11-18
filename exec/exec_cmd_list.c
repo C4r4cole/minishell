@@ -6,7 +6,7 @@
 /*   By: ilsedjal <ilsedjal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/13 16:29:41 by ilsedjal         ###   ########.fr       */
+/*   Updated: 2025/11/18 16:39:33 by ilsedjal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 	char	*cmd_name;
 	char	*path;
 	char	**env_tab;
+	int		code;
 
 	cmd_name = cmd->argv[0];
 	signal(SIGINT, SIG_DFL);
@@ -63,8 +64,6 @@ static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 	if (!ft_strcmp(cmd_name, "cd") || !ft_strcmp(cmd_name, "export")
 		|| !ft_strcmp(cmd_name, "unset") || !ft_strcmp(cmd_name, "exit"))
 	{
-		int	code;
-
 		code = handle_shell_altering_builtins(cmd, shell);
 		child_cleanup_and_exit(shell, code);
 	}
@@ -75,10 +74,7 @@ static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
 	if (!env_tab)
 		free_path_env_tab(path, shell);
 	execve(path, cmd->argv, env_tab);
-	perror("execve");
-	free_tab(env_tab);
-	free(path);
-	child_cleanup_and_exit(shell, 126);
+	child_cleanup_and_exit_execve(shell, 126, path, env_tab);
 }
 
 static int	run_in_child_process(t_cmd *current, t_shell *shell)
