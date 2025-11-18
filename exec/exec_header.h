@@ -6,7 +6,7 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:26:49 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 20:04:36 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/18 20:35:46 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ void		child_cleanup_and_exit(t_shell *shell, int status);
 void		child_cleanup_and_exit_execve(t_shell *shell, int status,
 				char *path, char **env_tab);
 int			is_ll_overflow(const char *str);
+int			dispatch_redir(t_redir *redir);
+void		execute_command_in_child(t_cmd *cmd, t_shell *shell);
+void		echo_pwd_env_behavior(char *cmd_name, t_cmd *cmd, t_shell *shell);
+int			handle_shell_altering_builtins(t_cmd *cmd, t_shell *shell);
 extern int	g_sig;
 
 #endif

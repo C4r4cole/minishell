@@ -6,13 +6,13 @@
 /*   By: fmoulin <fmoulin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:27:10 by ilsedjal          #+#    #+#             */
-/*   Updated: 2025/11/18 20:14:06 by fmoulin          ###   ########.fr       */
+/*   Updated: 2025/11/18 20:35:24 by fmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec_header.h"
 
-static int	handle_shell_altering_builtins(t_cmd *cmd, t_shell *shell)
+int	handle_shell_altering_builtins(t_cmd *cmd, t_shell *shell)
 {
 	if (cmd->redir)
 		return (-2);
@@ -27,7 +27,7 @@ static int	handle_shell_altering_builtins(t_cmd *cmd, t_shell *shell)
 	return (-1);
 }
 
-static void	echo_pwd_env_behavior(char *cmd_name, t_cmd *cmd, t_shell *shell)
+void	echo_pwd_env_behavior(char *cmd_name, t_cmd *cmd, t_shell *shell)
 {
 	int	ret;
 
@@ -46,39 +46,6 @@ static void	echo_pwd_env_behavior(char *cmd_name, t_cmd *cmd, t_shell *shell)
 		ret = ft_env(shell);
 		child_cleanup_and_exit(shell, ret);
 	}
-}
-
-static void	execute_command_in_child(t_cmd *cmd, t_shell *shell)
-{
-	char	*cmd_name;
-	char	*path;
-	char	**env_tab;
-	int		code;
-
-	cmd_name = cmd->argv[0];
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (cmd->redir && execute_redirections_cmds(cmd) != 0)
-	{
-		free_cmd_list(shell->current_cmd_list);
-		free_shell(shell);
-		exit(1);
-	}
-	echo_pwd_env_behavior(cmd_name, cmd, shell);
-	if (!ft_strcmp(cmd_name, "cd") || !ft_strcmp(cmd_name, "export")
-		|| !ft_strcmp(cmd_name, "unset") || !ft_strcmp(cmd_name, "exit"))
-	{
-		code = handle_shell_altering_builtins(cmd, shell);
-		child_cleanup_and_exit(shell, code);
-	}
-	path = find_path(cmd, shell);
-	if (!path)
-		child_cleanup_and_exit(shell, shell->exit_status);
-	env_tab = env_to_tab(shell->envp_lst);
-	if (!env_tab)
-		free_path_env_tab(path, shell);
-	execve(path, cmd->argv, env_tab);
-	child_cleanup_and_exit_execve(shell, 126, path, env_tab);
 }
 
 static int	run_in_child_process(t_cmd *current, t_shell *shell)
